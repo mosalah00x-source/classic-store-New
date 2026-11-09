@@ -7,12 +7,19 @@ on:
   pull_request:
     branches: [FrontendApp]
     paths: ['frontend/**', '.github/workflows/frontend-ci.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
 
 jobs:
   frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
@@ -21,6 +28,20 @@ jobs:
       - name: Complete npm lock metadata
         working-directory: frontend
         run: npm install --package-lock-only --ignore-scripts
+      - name: Commit generated lockfile to same-repository PR branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- package-lock.json; then
+            git add package-lock.json
+            git commit -m "build(frontend): commit resolved npm lockfile"
+            git push origin "HEAD:${BRANCH_NAME}"
+            gh workflow run frontend-ci.yml --ref "${BRANCH_NAME}"
+          fi
       - name: Install from lockfile
         working-directory: frontend
         run: npm ci
