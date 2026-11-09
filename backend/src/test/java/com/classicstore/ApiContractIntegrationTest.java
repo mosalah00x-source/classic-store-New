@@ -7,6 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +43,13 @@ class ApiContractIntegrationTest {
    .andExpect(jsonPath("$.messageAr").isNotEmpty()).andExpect(jsonPath("$.messageEn").isNotEmpty())
    .andExpect(jsonPath("$.traceId").value("unauth-test")).andExpect(jsonPath("$.details").isMap());
  }
- @TestConfiguration static class TestEndpoints { @Bean TestController testController(){return new TestController();} }
+ @TestConfiguration static class TestEndpoints {
+  @Bean @Order(0) SecurityFilterChain businessErrorTestChain(HttpSecurity http) throws Exception {
+   return http.securityMatcher("/test/business-error").csrf(AbstractHttpConfigurer::disable)
+    .authorizeHttpRequests(a->a.anyRequest().permitAll()).build();
+  }
+  @Bean TestController testController(){return new TestController();}
+ }
  @RestController static class TestController {
   @GetMapping("/test/business-error") String businessError(){
    throw new BusinessException("ORDER_NOT_ALLOWED","لا يمكن تنفيذ الطلب","The order cannot be submitted",
