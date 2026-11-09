@@ -1,0 +1,14 @@
+{
+  "HomePage": {
+    "title": "Welcome to Classic Store",
+    "subtitle": "The foundational storefront interface — a clear starting point for a smooth shopping experience.",
+    "loadingTitle": "Loading",
+    "loadingMessage": "Preparing your content.",
+    "emptyTitle": "No products yet",
+    "emptyMessage": "Products will appear here when available.",
+    "errorTitle": "Unable to load data",
+    "successTitle": "Everything is ready",
+    "successMessage": "The interface is ready.",
+    "language": "العربية"
+  }
+}

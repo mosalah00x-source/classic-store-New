@@ -1,0 +1,14 @@
+{
+  "HomePage": {
+    "title": "مرحبًا بك في كلاسيك ستور",
+    "subtitle": "واجهة المتجر الأساسية — نقطة انطلاق لتجربة تسوق واضحة وسلسة",
+    "loadingTitle": "جارٍ التحميل",
+    "loadingMessage": "نجهز المحتوى لك.",
+    "emptyTitle": "لا توجد منتجات بعد",
+    "emptyMessage": "ستظهر المنتجات هنا عند توفرها.",
+    "errorTitle": "تعذر تحميل البيانات",
+    "successTitle": "كل شيء جاهز",
+    "successMessage": "تم تجهيز الواجهة بنجاح.",
+    "language": "English"
+  }
+}
