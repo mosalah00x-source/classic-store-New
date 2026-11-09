@@ -10,12 +10,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import com.classicstore.common.tracing.CorrelationIdFilter;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import java.util.Map;
 @Configuration
 public class SecurityConfig {
- @Bean SecurityFilterChain securityFilterChain(HttpSecurity http,ObjectMapper mapper)throws Exception{
+ @Bean SecurityFilterChain securityFilterChain(HttpSecurity http,ObjectMapper mapper,CorrelationIdFilter correlationIdFilter)throws Exception{
   AuthenticationEntryPoint entry=(request,response,ex)->write(mapper,response,HttpStatus.UNAUTHORIZED,
    new ApiError("UNAUTHORIZED","يلزم تسجيل الدخول","Authentication is required",traceId(request),Map.of()));
   AccessDeniedHandler denied=(request,response,ex)->write(mapper,response,HttpStatus.FORBIDDEN,
@@ -23,7 +26,13 @@ public class SecurityConfig {
   return http.csrf(AbstractHttpConfigurer::disable)
    .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
    .authorizeHttpRequests(a->a.requestMatchers("/actuator/health").permitAll().anyRequest().authenticated())
-   .exceptionHandling(e->e.authenticationEntryPoint(entry).accessDeniedHandler(denied)).build();
+   .exceptionHandling(e->e.authenticationEntryPoint(entry).accessDeniedHandler(denied))
+   .addFilterBefore(correlationIdFilter, UsernamePasswordAuthenticationFilter.class).build();
+ }
+ @Bean FilterRegistrationBean<CorrelationIdFilter> correlationIdFilterRegistration(CorrelationIdFilter filter){
+  FilterRegistrationBean<CorrelationIdFilter> registration=new FilterRegistrationBean<>(filter);
+  registration.setEnabled(false);
+  return registration;
  }
  private static String traceId(jakarta.servlet.http.HttpServletRequest request){Object v=request.getAttribute("traceId");return v==null?"":v.toString();}
  private static void write(ObjectMapper mapper,HttpServletResponse response,HttpStatus status,ApiError body)throws java.io.IOException{
