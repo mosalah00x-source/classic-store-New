@@ -8,6 +8,7 @@
 -- Verify PostgreSQL version, extension permissions, and all tests before production.
 -- DB naming convention: snake_case. REST camelCase conversion belongs in Java.
 --
+-- citext is installed into this schema, so create it before the extension.
 CREATE SCHEMA IF NOT EXISTS store;
 
 BEGIN;
