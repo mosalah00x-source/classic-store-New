@@ -1,5 +1,6 @@
 package com.classicstore;
 import com.classicstore.common.error.BusinessException;
+import com.classicstore.common.tracing.CorrelationIdFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,9 +45,10 @@ class ApiContractIntegrationTest {
    .andExpect(jsonPath("$.traceId").value("unauth-test")).andExpect(jsonPath("$.details").isMap());
  }
  @TestConfiguration static class TestEndpoints {
-  @Bean @Order(0) SecurityFilterChain businessErrorTestChain(HttpSecurity http) throws Exception {
+  @Bean @Order(0) SecurityFilterChain businessErrorTestChain(HttpSecurity http, CorrelationIdFilter correlationIdFilter) throws Exception {
    return http.securityMatcher("/test/business-error").csrf(AbstractHttpConfigurer::disable)
-    .authorizeHttpRequests(a->a.anyRequest().permitAll()).build();
+    .authorizeHttpRequests(a->a.anyRequest().permitAll())
+    .addFilterBefore(correlationIdFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class).build();
   }
   @Bean TestController testController(){return new TestController();}
  }
