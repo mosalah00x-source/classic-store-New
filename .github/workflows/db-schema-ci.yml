@@ -1,0 +1,113 @@
+name: db-schema-ci
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'db/reference/**'
+      - '.github/workflows/db-schema-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'db/reference/**'
+      - '.github/workflows/db-schema-ci.yml'
+
+jobs:
+  postgres-16-schema:
+    name: PostgreSQL 16 schema validation
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: classic_store_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d classic_store_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGDATABASE: classic_store_test
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+
+      - name: Execute consolidated SQL on a clean database
+        run: |
+          psql -v ON_ERROR_STOP=1 -f db/reference/Classic_Store_Consolidated_V1-V7.sql
+
+      - name: Assert extension schema, table and column counts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          extension_schema="$(psql -v ON_ERROR_STOP=1 -Atqc "SELECT extnamespace::regnamespace::text FROM pg_extension WHERE extname = 'citext';")"
+          echo "citext schema: ${extension_schema}"
+          test "${extension_schema}" = "store"
+
+          table_count="$(psql -v ON_ERROR_STOP=1 -Atqc "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'store' AND table_type = 'BASE TABLE';")"
+          echo "table count: ${table_count}"
+          test "${table_count}" = "32"
+
+          column_count="$(psql -v ON_ERROR_STOP=1 -Atqc "SELECT count(*) FROM information_schema.columns WHERE table_schema = 'store';")"
+          echo "column count: ${column_count}"
+          test "${column_count}" = "251"
+
+      - name: Assert case-insensitive citext comparison
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          INSERT INTO store.users(email) VALUES ('Ali@Example.com');
+          SELECT count(*) AS case_insensitive_match_count
+          FROM store.users
+          WHERE email OPERATOR(store.=) 'ali@example.com';
+          DO $assert$
+          DECLARE
+            matched_rows integer;
+          BEGIN
+            SELECT count(*) INTO matched_rows
+            FROM store.users
+            WHERE email OPERATOR(store.=) 'ali@example.com';
+
+            IF matched_rows <> 1 THEN
+              RAISE EXCEPTION 'Expected one case-insensitive match, got %', matched_rows;
+            END IF;
+            RAISE NOTICE 'PASS: case-insensitive citext comparison returned one row';
+          END
+          $assert$;
+          SQL
+
+      - name: Assert case-insensitive unique constraint
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          DO $assert$
+          DECLARE
+            duplicate_rejected boolean := false;
+          BEGIN
+            BEGIN
+              INSERT INTO store.users(email) VALUES ('ali@example.com');
+            EXCEPTION
+              WHEN unique_violation THEN
+                duplicate_rejected := true;
+            END;
+
+            IF NOT duplicate_rejected THEN
+              RAISE EXCEPTION 'Expected duplicate email to raise SQLSTATE 23505';
+            END IF;
+
+            RAISE NOTICE 'PASS: duplicate case-insensitive email rejected with SQLSTATE 23505';
+          END
+          $assert$;
+          SQL
