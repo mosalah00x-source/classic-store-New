@@ -2,7 +2,6 @@ name: db-schema-ci
 
 on:
   push:
-    branches: [main]
     paths:
       - 'db/reference/**'
       - '.github/workflows/db-schema-ci.yml'
