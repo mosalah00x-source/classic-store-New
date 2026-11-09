@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationEntryPoint;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import java.util.Map;
 @Configuration
 public class SecurityConfig {
