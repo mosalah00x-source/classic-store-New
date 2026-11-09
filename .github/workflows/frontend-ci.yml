@@ -7,42 +7,21 @@ on:
   pull_request:
     branches: [FrontendApp]
     paths: ['frontend/**', '.github/workflows/frontend-ci.yml']
-  workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 jobs:
   frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: npm
           cache-dependency-path: frontend/package-lock.json
-      - name: Complete npm lock metadata
-        working-directory: frontend
-        run: npm install --package-lock-only --ignore-scripts
-      - name: Commit generated lockfile to same-repository PR branch
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: ${{ github.head_ref }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet -- frontend/package-lock.json; then
-            git add frontend/package-lock.json
-            git commit -m "build(frontend): commit resolved npm lockfile"
-            git push origin "HEAD:${BRANCH_NAME}"
-            gh workflow run frontend-ci.yml --ref "${BRANCH_NAME}"
-          fi
-      - name: Install from lockfile
+      - name: Install dependencies
         working-directory: frontend
         run: npm ci
       - name: Lint
@@ -57,9 +36,3 @@ jobs:
       - name: Production build
         working-directory: frontend
         run: npm run build
-      - name: Preserve generated lockfile for review
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-generated-package-lock
-          path: frontend/package-lock.json
-          if-no-files-found: error
