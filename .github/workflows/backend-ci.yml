@@ -6,18 +6,72 @@ on:
   pull_request:
     branches: [BackendApp]
     paths: ['backend/**', '.github/workflows/backend-ci.yml']
+
+permissions:
+  contents: read
+
 jobs:
-  backend:
+  verify-migrations:
+    name: verify migrations
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: classic_store
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d classic_store"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-python@v5
         with:
-          distribution: temurin
-          java-version: '21'
-          cache: maven
-      - name: Verify backend
-        working-directory: backend
+          python-version: '3.12'
+      - name: Fetch immutable database source
+        env:
+          SOURCE_COMMIT: 0c6e9f1ad9614aba87e2a91b5e7f5f3c72b4ee85
+        run: git fetch --no-tags --depth=1 origin "$SOURCE_COMMIT"
+      - name: Verify generated migrations and lock
+        run: python backend/scripts/generate-migrations.py --check
+      - name: Verify hash tamper detection
+        run: python backend/scripts/generate-migrations.py --check --self-test
+      - name: Apply all migrations to clean PostgreSQL 16
         run: |
-          chmod +x mvnw
-          ./mvnw -B verify
+          docker run --rm --network host \
+            -v "$PWD/backend/src/main/resources/db/migration:/flyway/sql:ro" \
+            redgate/flyway:10.20.1 \
+            -url=jdbc:postgresql://127.0.0.1:5432/classic_store \
+            -user=postgres -password=postgres -connectRetries=30 migrate
+      - name: Verify Flyway is idempotent
+        shell: bash
+        run: |
+          output="$(docker run --rm --network host \
+            -v "$PWD/backend/src/main/resources/db/migration:/flyway/sql:ro" \
+            redgate/flyway:10.20.1 \
+            -url=jdbc:postgresql://127.0.0.1:5432/classic_store \
+            -user=postgres -password=postgres -connectRetries=30 migrate)"
+          printf '%s\n' "$output"
+          grep -Eiq 'Schema is up to date|No migration necessary' <<<"$output"
+      - name: Verify migration history and database invariants
+        shell: bash
+        run: |
+          psql_docker() {
+            docker run --rm --network host -e PGPASSWORD=postgres postgres:16-alpine \
+              psql -h 127.0.0.1 -U postgres -d classic_store -v ON_ERROR_STOP=1 -Atqc "$1"
+          }
+          applied="$(psql_docker "SELECT count(*) FROM public.flyway_schema_history WHERE success")"
+          tables="$(psql_docker "SELECT count(*) FROM information_schema.tables WHERE table_schema='store' AND table_type='BASE TABLE'")"
+          columns="$(psql_docker "SELECT count(*) FROM information_schema.columns WHERE table_schema='store'")"
+          citext_schema="$(psql_docker "SELECT n.nspname FROM pg_extension e JOIN pg_namespace n ON n.oid=e.extnamespace WHERE e.extname='citext'")"
+          citext_equal="$(psql_docker "SELECT ('Mixed@Example.com'::store.citext OPERATOR(store.=) 'mixed@example.com'::store.citext)")"
+          test "$applied" = "7"
+          test "$tables" = "32"
+          test "$columns" = "251"
+          test "$citext_schema" = "store"
+          test "$citext_equal" = "t"
