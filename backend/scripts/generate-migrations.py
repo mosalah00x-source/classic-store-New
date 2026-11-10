@@ -151,10 +151,9 @@ def generate() -> tuple[dict[str, str], str, dict[str, str]]:
     if not first_object:
         raise ValueError("V1 has no database object definitions")
     last_extension = max(
-        blocks[0].lower().find("create extension if not exists " + name)
-        for name in extensions
+        blocks[0].lower().find(line.lower()) for line in expected_extensions
     )
-    if last_extension > first_object.start():
+    if last_extension < 0 or last_extension > first_object.start():
         raise ValueError("An extension appears after a V1 database object")
 
     assigned = classify_comments(source, blocks)
