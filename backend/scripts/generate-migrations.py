@@ -130,13 +130,20 @@ def generate() -> tuple[dict[str, str], str, dict[str, str]]:
     if outside.strip():
         raise ValueError(f"Unexpected SQL outside approved blocks:\n{outside.strip()}")
 
-    extensions = re.findall(
-        r"(?im)^\s*CREATE EXTENSION IF NOT EXISTS (pgcrypto|citext|btree_gist)"
-        r"(?:\s+SCHEMA\s+store)?;\s*$",
-        blocks[0],
-    )
-    if extensions != ["pgcrypto", "citext", "btree_gist"]:
-        raise ValueError(f"Unexpected V1 extension sequence: {extensions}")
+    extension_lines = [
+        line.strip()
+        for line in blocks[0].splitlines()
+        if re.match(r"(?i)^\s*CREATE EXTENSION IF NOT EXISTS\\b", line)
+    ]
+    expected_extensions = [
+        "CREATE EXTENSION IF NOT EXISTS pgcrypto;",
+        "CREATE EXTENSION IF NOT EXISTS citext SCHEMA store;",
+        "CREATE EXTENSION IF NOT EXISTS btree_gist;",
+    ]
+    if extension_lines != expected_extensions:
+        raise ValueError(
+            f"Unexpected V1 extension sequence or citext schema: {extension_lines}"
+        )
     first_object = re.search(
         r"(?im)^\s*CREATE\s+(?:TYPE|TABLE|FUNCTION|OR REPLACE FUNCTION)\b",
         blocks[0],
