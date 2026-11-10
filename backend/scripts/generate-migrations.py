@@ -133,7 +133,7 @@ def generate() -> tuple[dict[str, str], str, dict[str, str]]:
     extension_lines = [
         line.strip()
         for line in blocks[0].splitlines()
-        if re.match(r"(?i)^\s*CREATE EXTENSION IF NOT EXISTS\\b", line)
+        if re.match(r"(?i)^\s*CREATE EXTENSION IF NOT EXISTS ", line)
     ]
     expected_extensions = [
         "CREATE EXTENSION IF NOT EXISTS pgcrypto;",
