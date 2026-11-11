@@ -6,6 +6,7 @@ Status: implementation decisions authorized by Product Owner on 11 November 2026
 - SRS v1.1.1 sections 5.1, 9.2–9.4, 10.4, 8.2, 14.
 - OpenAPI baseline: `docs/api/openapi.yaml`, original blob SHA `596b683283d46b172bb58dc2f075c808e3bb4e23`.
 - V1 schema is authoritative for identity persistence: `store.users`, `store.addresses`, `store.countries`, `store.governorates`, `store.cities`.
+- A separate `DATA_DICTIONARY_DETAILED_AR` artifact was not present in the checked repository or available Project/Library files. Accordingly, field mapping is derived from SRS v1.1.1 and the actual V1 DDL only; no undocumented Data Dictionary fields are assumed.
 - Only the 14 T-07 operations are in scope. `GET /me/orders` is not included.
 - No migration, V8, or `password_reset_tokens` table is introduced.
 
