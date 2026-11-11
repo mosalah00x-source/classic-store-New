@@ -1168,7 +1168,6 @@ paths:
       security:
         - {}
         - bearerAuth: []
-      x-auth-requirement: Guest/Customer
       x-auth-requirement: "Guest/Customer"
       requestBody:
         required: true
@@ -1235,7 +1234,6 @@ paths:
       security:
         - {}
         - bearerAuth: []
-      x-auth-requirement: Guest/Customer
       x-auth-requirement: "Guest/Customer، Idempotency-Key"
       parameters:
         - name: Idempotency-Key
@@ -1589,7 +1587,6 @@ paths:
       description: "SRS section 9 operation 30. Auth: Guest token. Unspecified fields are not invented."
       security:
         - guestTokenAuth: []
-      x-auth-requirement: Guest token
       x-auth-requirement: "Guest token"
       parameters:
         - name: token
