@@ -19,7 +19,7 @@ public class TokenService {
  }
  public String issue(UserRecord u,String type){
   Instant now=Instant.now();var ttl=type.equals("access")?cfg.accessTtl():cfg.refreshTtl();
-  return Jwts.builder().subject(u.id().toString()).claims(Map.of("role",u.role(),"typ",type))
+  return Jwts.builder().claims(Map.of("role",u.role(),"typ",type)).subject(u.id().toString())
    .issuedAt(Date.from(now)).expiration(Date.from(now.plus(ttl))).signWith(key).compact();
  }
  public Claims parse(String token){return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();}
