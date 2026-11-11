@@ -36,9 +36,12 @@ public class IdentityController {
  @Transactional @PutMapping("/me/addresses/{id}") AddressView put(Authentication a,@PathVariable UUID id,@Valid @RequestBody IdentityDtos.AddressRequest r){validateAddress(r);UUID user=UUID.fromString(a.getName());return addresses.update(user,id,r).orElseThrow(()->notFound());}
  @DeleteMapping("/me/addresses/{id}") ResponseEntity<Void> delete(Authentication a,@PathVariable UUID id){if(!addresses.delete(UUID.fromString(a.getName()),id))throw notFound();return ResponseEntity.noContent().build();}
  private AddressView owned(Authentication a,UUID id){return addresses.get(UUID.fromString(a.getName()),id).orElseThrow(()->notFound());}
- private static void validateAddress(IdentityDtos.AddressRequest r){
+ private void validateAddress(IdentityDtos.AddressRequest r){
   if(r.latitude()!=null&&(r.latitude() < -90||r.latitude()>90)||r.longitude()!=null&&(r.longitude() < -180||r.longitude()>180)||(r.latitude()==null)!=(r.longitude()==null))throw new BusinessException("VALIDATION_ERROR","بيانات الإدخال غير صحيحة","Invalid input data",HttpStatus.BAD_REQUEST,Map.of());
-  if(r.countryCode().length()!=2)throw new BusinessException("VALIDATION_ERROR","بيانات الإدخال غير صحيحة","Invalid input data",HttpStatus.BAD_REQUEST,Map.of());
+  if(r.countryCode().length()!=2||!addresses.countryEnabled(r.countryCode())
+   ||!addresses.governorateBelongs(r.governorateId(),r.countryCode())
+   ||!addresses.cityBelongs(r.cityId(),r.governorateId()))
+   throw new BusinessException("VALIDATION_ERROR","بيانات الإدخال غير صحيحة","Invalid input data",HttpStatus.BAD_REQUEST,Map.of());
  }
  private static IdentityDtos.UserResponse view(UserRecord u){return new IdentityDtos.UserResponse(u.id().toString(),u.email(),u.phone(),u.firstName(),u.lastName(),u.role());}
  private static BusinessException notFound(){return new BusinessException("NOT_FOUND","المورد غير موجود","Resource not found",HttpStatus.NOT_FOUND,Map.of());}
