@@ -382,30 +382,9 @@ paths:
       responses:
         '204':
           description: Logout completed on client; no token revocation claim.
-        '400':
-          description: HTTP 400 response.
-          x-error-codes: [VALIDATION_ERROR]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         '401':
           description: HTTP 401 response.
           x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: HTTP 403 response.
-          x-error-codes: [FORBIDDEN]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: HTTP 404 response.
-          x-error-codes: [NOT_FOUND]
           content:
             application/json:
               schema:
@@ -478,27 +457,6 @@ paths:
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: HTTP 401 response.
-          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: HTTP 403 response.
-          x-error-codes: [FORBIDDEN]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: HTTP 404 response.
-          x-error-codes: [NOT_FOUND]
           content:
             application/json:
               schema:
