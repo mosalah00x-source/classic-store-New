@@ -20,6 +20,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -35,7 +41,7 @@ public class SecurityConfig {
   };
   AccessDeniedHandler denied=(request,response,ex)->write(mapper,response,HttpStatus.FORBIDDEN,
    new ApiError("FORBIDDEN","ليس لديك صلاحية لهذا الإجراء","You do not have permission",traceId(request),Map.of()));
-  return http.csrf(AbstractHttpConfigurer::disable)
+  return http.cors(cors->cors.configurationSource(corsConfigurationSource)).csrf(AbstractHttpConfigurer::disable)
    .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
    .authorizeHttpRequests(a->a
     .requestMatchers("/actuator/health").permitAll()
@@ -47,6 +53,17 @@ public class SecurityConfig {
    .exceptionHandling(e->e.authenticationEntryPoint(entry).accessDeniedHandler(denied))
    .addFilterBefore(correlationIdFilter,UsernamePasswordAuthenticationFilter.class)
    .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class).build();
+ }
+ @Bean CorsConfigurationSource corsConfigurationSource(@Value("${security.cors.allowed-origins:}") String allowedOrigins){
+  CorsConfiguration config=new CorsConfiguration();
+  config.setAllowedOrigins(Arrays.stream(allowedOrigins.split(",")).map(String::trim).filter(v->!v.isEmpty()).toList());
+  config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+  config.setAllowedHeaders(List.of("Authorization","Content-Type","X-Correlation-Id"));
+  config.setExposedHeaders(List.of("X-Correlation-Id"));
+  config.setAllowCredentials(false);
+  UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
+  source.registerCorsConfiguration("/api/**",config);
+  return source;
  }
  @Bean FilterRegistrationBean<CorrelationIdFilter> correlationIdFilterRegistration(CorrelationIdFilter filter){
   FilterRegistrationBean<CorrelationIdFilter> r=new FilterRegistrationBean<>(filter);r.setEnabled(false);return r;
