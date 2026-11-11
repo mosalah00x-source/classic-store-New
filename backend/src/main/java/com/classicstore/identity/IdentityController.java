@@ -35,7 +35,7 @@ public class IdentityController {
   if(!rateLimiter.allow("forgot:"+r.email().trim().toLowerCase(Locale.ROOT),5,Duration.ofHours(1)))throw rateLimited();
   service.forgot(r);return ResponseEntity.accepted().body(new IdentityDtos.MessageResponse("If the account exists, password reset instructions will be sent."));
  }
- @PostMapping("/auth/password/reset") ResponseEntity<Void> reset(@RequestHeader("Authorization") String authorization,@Valid @RequestBody IdentityDtos.ResetRequest r){if(authorization==null||!authorization.startsWith("Bearer "))throw invalidToken();service.reset(authorization.substring(7),r.newPassword());return ResponseEntity.ok().build();}
+ @PostMapping("/auth/password/reset") ResponseEntity<Void> reset(@RequestHeader(value="Authorization",required=false) String authorization,@Valid @RequestBody IdentityDtos.ResetRequest r){if(authorization==null||!authorization.startsWith("Bearer "))throw invalidToken();service.reset(authorization.substring(7),r.newPassword());return ResponseEntity.ok().build();}
  @GetMapping("/me") IdentityDtos.UserResponse me(Authentication a){return view(service.requireUser(UUID.fromString(a.getName())));}
  @PatchMapping("/me") IdentityDtos.UserResponse patchMe(Authentication a,@Valid @RequestBody IdentityDtos.ProfilePatchRequest r){
   UUID id=UUID.fromString(a.getName());users.updateProfile(id,r.firstName(),r.lastName(),r.phone());return view(service.requireUser(id));
