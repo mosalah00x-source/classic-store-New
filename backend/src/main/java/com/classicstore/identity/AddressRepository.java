@@ -22,4 +22,8 @@ public class AddressRepository {
   return jdbc.query("update store.addresses set recipient_name=?,phone=?,country_code=?,governorate_id=?,city_id=?,district=?,street=?,building=?,apartment=?,postal_code=?,latitude=?,longitude=?,is_default=? where user_id=? and id=? returning *",M,a.recipientName(),a.phone(),a.countryCode(),a.governorateId(),a.cityId(),a.district(),a.street(),a.building(),a.apartment(),a.postalCode(),a.latitude(),a.longitude(),a.isDefault(),user,id).stream().findFirst();
  }
  public boolean delete(UUID user,UUID id){return jdbc.update("delete from store.addresses where user_id=? and id=?",user,id)==1;}
+
+ public boolean countryEnabled(String code){return !jdbc.query("select 1 from store.countries where code=? and is_enabled=true",(r,n)->1,code).isEmpty();}
+ public boolean governorateBelongs(Long id,String country){return id==null||!jdbc.query("select 1 from store.governorates where id=? and country_code=?",(r,n)->1,id,country).isEmpty();}
+ public boolean cityBelongs(Long id,Long governorate){return id==null||governorate!=null&&!jdbc.query("select 1 from store.cities where id=? and governorate_id=?",(r,n)->1,id,governorate).isEmpty();}
 }
