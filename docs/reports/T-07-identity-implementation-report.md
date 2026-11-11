@@ -29,12 +29,12 @@ Excluded: GET /me/orders.
 
 ## CI evidence
 
-**All checks green.** Tested commit: `bc298c27a0d79f4cb70994547f4a80d097781e6b`.
+**All checks green.** Tested application commit: `e75ff678208a3f424559ddf887bf761a9cb237d7`.
 
-- Workflow run: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43056518538
-- `backend`: success — job 130647867963
-- `verify migrations`: success — job 130647301645
-- `api-lint`: success — job 130647302339
+- Workflow run: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43056993748
+- `backend`: success — job 130649509712
+- `verify migrations`: success — job 130648990388
+- `api-lint`: success — job 130648989967
 - Backend test summary: 38 tests, 0 failures, 0 errors, 0 skipped (including Testcontainers PostgreSQL 16 integration tests).
 - Migration verification: all existing migrations applied to clean PostgreSQL 16 and Flyway idempotency/history checks passed. No migration file changed.
 
