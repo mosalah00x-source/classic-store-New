@@ -36,7 +36,7 @@ public class IdentityService {
   if(!users.updatePasswordIfCurrent(id,u.passwordHash(),passwords.encode(r.newPassword())))throw err("INVALID_CREDENTIALS",401);
  }
  public void forgot(IdentityDtos.ForgotRequest r){
-  users.byIdentifier(r.email()).filter(u->u.active()&&u.email()!=null).ifPresent(u->{try{mailer.send(u.email(),resets.issue(u));}catch(Exception ex){log.warn("Password reset email delivery failed for user {}",u.id());}});
+  users.byIdentifier(r.email()).filter(u->u.active()&&u.email()!=null).ifPresent(u->{try{mailer.send(u.email(),resets.issue(u));}catch(Exception ex){log.warn("Password reset email delivery failed");}});
  }
  @Transactional public void reset(String token,String newPassword){
   UUID id;
