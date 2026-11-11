@@ -16,7 +16,10 @@ public class IdentityService {
   if(r.email()!=null&&users.emailExists(r.email()))throw err("EMAIL_ALREADY_REGISTERED",409);
   if(r.phone()!=null&&users.phoneExists(r.phone()))throw err("PHONE_ALREADY_REGISTERED",409);
   try{return users.create(blank(r.email()),blank(r.phone()),passwords.encode(r.password()),r.firstName(),r.lastName());}
-  catch(org.springframework.dao.DuplicateKeyException e){throw err(r.email()!=null?"EMAIL_ALREADY_REGISTERED":"PHONE_ALREADY_REGISTERED",409);}
+  catch(org.springframework.dao.DuplicateKeyException e){
+   String cause=e.getMostSpecificCause().getMessage();
+   throw err(cause!=null&&cause.contains("users_email_key")?"EMAIL_ALREADY_REGISTERED":"PHONE_ALREADY_REGISTERED",409);
+  }
  }
  public UserRecord login(IdentityDtos.LoginRequest r){
   UserRecord u=users.byIdentifier(r.identifier()).orElseThrow(()->err("INVALID_CREDENTIALS",401));
