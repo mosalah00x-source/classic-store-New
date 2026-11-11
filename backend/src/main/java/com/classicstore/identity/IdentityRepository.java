@@ -16,9 +16,8 @@ public class IdentityRepository {
  public UserRecord create(String email,String phone,String hash,String first,String last){
   return jdbc.queryForObject("insert into store.users(email,phone,password_hash,first_name,last_name,role) values (?,?,?,?,?,'CUSTOMER') returning *",M,email,phone,hash,first,last);
  }
- public void updatePassword(UUID id,String expectedHash,String newHash){
-  int n=jdbc.update("update store.users set password_hash=?,updated_at=now() where id=? and password_hash=?",newHash,id,expectedHash);
-  if(n!=1)throw new IllegalStateException("Password changed concurrently");
+ public boolean updatePasswordIfCurrent(UUID id,String expectedHash,String newHash){
+  return jdbc.update("update store.users set password_hash=?,updated_at=now() where id=? and password_hash=?",newHash,id,expectedHash)==1;
  }
  public void updateProfile(UUID id,String first,String last,String phone){
   jdbc.update("update store.users set first_name=?,last_name=?,phone=?,updated_at=now() where id=?",first,last,phone,id);
