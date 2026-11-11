@@ -27,8 +27,12 @@ public class SecurityConfig {
 
  @Bean SecurityFilterChain securityFilterChain(HttpSecurity http,ObjectMapper mapper,
    CorrelationIdFilter correlationIdFilter,JwtAuthenticationFilter jwtFilter)throws Exception {
-  AuthenticationEntryPoint entry=(request,response,ex)->write(mapper,response,HttpStatus.UNAUTHORIZED,
-   new ApiError("UNAUTHENTICATED","يجب تسجيل الدخول","Authentication required",traceId(request),Map.of()));
+  AuthenticationEntryPoint entry=(request,response,ex)->{
+   boolean invalid=Boolean.TRUE.equals(request.getAttribute("identity.invalidToken"));
+   write(mapper,response,HttpStatus.UNAUTHORIZED,invalid
+    ? new ApiError("INVALID_TOKEN","رمز الدخول غير صالح أو منتهٍ","Invalid or expired token",traceId(request),Map.of())
+    : new ApiError("UNAUTHENTICATED","يجب تسجيل الدخول","Authentication required",traceId(request),Map.of()));
+  };
   AccessDeniedHandler denied=(request,response,ex)->write(mapper,response,HttpStatus.FORBIDDEN,
    new ApiError("FORBIDDEN","ليس لديك صلاحية لهذا الإجراء","You do not have permission",traceId(request),Map.of()));
   return http.csrf(AbstractHttpConfigurer::disable)
