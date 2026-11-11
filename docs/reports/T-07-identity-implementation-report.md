@@ -46,5 +46,3 @@ The CI run above is against the tested code head; subsequent report-only documen
 - The in-process auth rate limiter is single-instance defense-in-depth; production multi-instance deployments must enforce distributed limits at a gateway/WAF using trusted client-IP forwarding.
 - Configure `CORS_ALLOWED_ORIGINS`, `JWT_SECRET_BASE64`, `PASSWORD_RESET_FINGERPRINT_SECRET_BASE64`, mail host/credentials, and `PASSWORD_RESET_URL` in deployment. TLS termination and trusted proxy settings are infrastructure responsibilities.
 - DEC-GOV-01 / AR-03: internal single-owner approval is not independent. Independent Security Review is a mandatory production release gate.
-- Mail provider host/credentials, JWT signing secret, reset HMAC secret, and reset frontend URL must be supplied through deployment environment.
-- SRS approval is single-owner; independent Security Review is required before production (AR-03).
