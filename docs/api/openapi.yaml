@@ -791,6 +791,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       x-open-question: [OPEN-11, OPEN-12]
       responses:
         '200':
@@ -848,6 +849,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       x-open-question: [OPEN-11, OPEN-12]
       requestBody:
         required: true
@@ -911,6 +913,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         '204':
           description: Successful response; detailed fields only where defined by SRS.
