@@ -24,10 +24,10 @@ public class IdentityService {
   return u;
  }
  public IdentityDtos.TokenResponse issue(UserRecord u){return new IdentityDtos.TokenResponse(tokens.issue(u,"access"),tokens.issue(u,"refresh"),"Bearer",props.jwt().accessTtl().toSeconds());}
- public UserRecord requireUser(UUID id){return users.byId(id).orElseThrow(()->err("UNAUTHENTICATED",401));}
+ public UserRecord requireUser(UUID id){return users.byId(id).filter(UserRecord::active).orElseThrow(()->err("UNAUTHENTICATED",401));}
  @Transactional public void changePassword(UUID id,IdentityDtos.ChangePasswordRequest r){
   UserRecord u=requireUser(id);if(!passwords.matches(r.currentPassword(),u.passwordHash()))throw err("INVALID_CREDENTIALS",401);
-  users.updatePassword(id,u.passwordHash(),passwords.encode(r.newPassword()));
+  if(!users.updatePasswordIfCurrent(id,u.passwordHash(),passwords.encode(r.newPassword())))throw err("INVALID_CREDENTIALS",401);
  }
  public void forgot(IdentityDtos.ForgotRequest r){
   users.byIdentifier(r.email()).filter(u->u.active()&&u.email()!=null).ifPresent(u->{try{mailer.send(u.email(),resets.issue(u));}catch(Exception ignored){/* Never disclose account existence. Delivery failure is monitored by mail infrastructure. */}});
@@ -40,7 +40,7 @@ public class IdentityService {
   }catch(Exception e){throw err("INVALID_TOKEN",401);}
   UserRecord u=users.byId(id).orElseThrow(()->err("INVALID_TOKEN",401));
   if(!resets.verify(token,u))throw err("INVALID_TOKEN",401);
-  users.updatePassword(id,u.passwordHash(),passwords.encode(newPassword));
+  if(!users.updatePasswordIfCurrent(id,u.passwordHash(),passwords.encode(newPassword)))throw err("INVALID_TOKEN",401);
  }
  private static String blank(String s){return s==null||s.isBlank()?null:s;}
  private static BusinessException err(String code,int status){
