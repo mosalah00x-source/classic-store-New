@@ -11,16 +11,27 @@ servers:
         default: api.example.invalid
 tags:
   - name: "Catalog"
+    description: "Public catalog browsing endpoints for products, categories, and brands."
   - name: "Identity"
+    description: "Registration, authentication, session, and password operations."
   - name: "Account"
+    description: "Customer profile, saved addresses, and customer order listing."
   - name: "Cart"
+    description: "Guest and customer cart operations."
   - name: "Checkout & Orders"
+    description: "Checkout quote, order creation, payment, cancellation, and order tracking."
   - name: "Returns"
+    description: "Customer return request and return lookup operations."
   - name: "Catalog Admin"
+    description: "Administrative product, variant, and category operations."
   - name: "Coupons & Shipping"
+    description: "Coupon and shipping-zone administration."
   - name: "Inventory"
+    description: "Warehouse and inventory administration and movement history."
   - name: "Operations"
+    description: "Order allocation, fulfillment, return processing, and refunds."
   - name: "Administration"
+    description: "User administration, reports, and audit-log access."
 paths:
   "/products":
     get:
