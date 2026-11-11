@@ -19,7 +19,7 @@ The SRS does not define all wire-level identity DTOs. The following minimal shap
 - Change password: `currentPassword`, `newPassword`; access token required.
 - Forgot: `email`; always returns 202 and the exact same response body regardless of account existence.
 - Reset: `newPassword` body and reset token through the existing `resetTokenAuth` Bearer scheme.
-- Profile: response contains only `id,email,phone,firstName,lastName,role`; PATCH accepts profile fields only. Role and active status are never writable by this endpoint.
+- Profile: response contains only `id,email,phone,firstName,lastName,role`; PATCH accepts one or more optional profile fields (`firstName`, `lastName`, `phone`) and leaves omitted fields unchanged. Role and active status are never writable by this endpoint.
 - Address request/response uses the V1 `store.addresses` columns represented in camelCase: recipientName, phone, countryCode, governorateId, cityId, district, street, building, apartment, postalCode, latitude, longitude, isDefault. IDs are UUIDs for users/addresses and bigint for governorates/cities.
 - Address ownership is enforced in the SQL predicate `user_id = authenticated subject`; missing and foreign-owned IDs both return 404.
 
