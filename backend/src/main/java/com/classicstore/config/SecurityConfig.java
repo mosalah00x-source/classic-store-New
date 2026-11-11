@@ -32,7 +32,7 @@ public class SecurityConfig {
  @Bean PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(12); }
 
  @Bean SecurityFilterChain securityFilterChain(HttpSecurity http,ObjectMapper mapper,
-   CorrelationIdFilter correlationIdFilter,JwtAuthenticationFilter jwtFilter)throws Exception {
+   CorrelationIdFilter correlationIdFilter,JwtAuthenticationFilter jwtFilter,CorsConfigurationSource corsConfigurationSource)throws Exception {
   AuthenticationEntryPoint entry=(request,response,ex)->{
    boolean invalid=Boolean.TRUE.equals(request.getAttribute("identity.invalidToken"));
    write(mapper,response,HttpStatus.UNAUTHORIZED,invalid
