@@ -461,13 +461,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        '500':
-          description: HTTP 500 response.
-          x-error-codes: [INTERNAL_ERROR]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         '429':
           description: HTTP 429 response.
           x-error-codes: [RATE_LIMITED]
