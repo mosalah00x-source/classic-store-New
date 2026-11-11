@@ -37,6 +37,8 @@ spring:
     default-schema: public
     create-schemas: true
 security:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:}
   jwt:
     secret-base64: ${JWT_SECRET_BASE64:}
     access-ttl: PT15M
