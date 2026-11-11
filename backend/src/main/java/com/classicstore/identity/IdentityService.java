@@ -31,6 +31,12 @@ public class IdentityService {
  }
  public IdentityDtos.TokenResponse issue(UserRecord u){return new IdentityDtos.TokenResponse(tokens.issue(u,"access"),tokens.issue(u,"refresh"),"Bearer",props.jwt().accessTtl().toSeconds());}
  public UserRecord requireUser(UUID id){return users.byId(id).filter(UserRecord::active).orElseThrow(()->err("UNAUTHENTICATED",401));}
+ @Transactional public UserRecord updateProfile(UUID id,IdentityDtos.ProfilePatchRequest r){
+  requireUser(id);
+  try{users.updateProfile(id,r.firstName(),r.lastName(),r.phone());}
+  catch(org.springframework.dao.DuplicateKeyException e){throw err("PHONE_ALREADY_REGISTERED",409);}
+  return requireUser(id);
+ }
  @Transactional public void changePassword(UUID id,IdentityDtos.ChangePasswordRequest r){
   UserRecord u=requireUser(id);if(!passwords.matches(r.currentPassword(),u.passwordHash()))throw err("INVALID_CREDENTIALS",401);
   if(!users.updatePasswordIfCurrent(id,u.passwordHash(),passwords.encode(r.newPassword())))throw err("INVALID_CREDENTIALS",401);
