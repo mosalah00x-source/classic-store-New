@@ -2,6 +2,9 @@ server:
   error:
     include-message: never
 management:
+  health:
+    mail:
+      enabled: false
   endpoints:
     web:
       exposure:
