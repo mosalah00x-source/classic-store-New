@@ -93,9 +93,9 @@ class IdentityIntegrationTest {
    .andExpect(status().isTooManyRequests()).andExpect(jsonPath("$.code").value("RATE_LIMITED"));
 
   for(int i=0;i<5;i++)mvc.perform(post("/api/v1/auth/password/forgot").contentType(APPLICATION_JSON)
-   .content("{\"identifier\":\"throttle@example.test\",\"password\":\"wrong-password\"}"))
+   .content("{\"email\":\"forgot-throttle@example.test\"}")).andExpect(status().isAccepted());
   mvc.perform(post("/api/v1/auth/password/forgot").contentType(APPLICATION_JSON)
-   .content("{\"identifier\":\"throttle@example.test\",\"password\":\"wrong-password\"}"))
+   .content("{\"email\":\"forgot-throttle@example.test\"}"))
    .andExpect(status().isTooManyRequests()).andExpect(jsonPath("$.code").value("RATE_LIMITED"));
  }
 
