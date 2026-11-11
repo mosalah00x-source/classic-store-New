@@ -14,12 +14,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@SpringBootTest @AutoConfigureMockMvc @Import(ApiContractIntegrationTest.TestEndpoints.class)
+@SpringBootTest @AutoConfigureMockMvc @ActiveProfiles("test") @Import(ApiContractIntegrationTest.TestEndpoints.class)
 class ApiContractIntegrationTest {
  @Autowired MockMvc mvc;
  @Test void actuatorHealthIsPublicAndUp() throws Exception {
