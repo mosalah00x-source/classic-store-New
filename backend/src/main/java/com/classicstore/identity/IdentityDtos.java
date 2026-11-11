@@ -8,7 +8,10 @@ public final class IdentityDtos {
  public record ChangePasswordRequest(@NotBlank String currentPassword,@NotBlank @Size(min=10,max=72) String newPassword){}
  public record ForgotRequest(@Email @NotBlank String email){}
  
- public record ProfilePatchRequest(@NotBlank @Size(max=100) String firstName,@NotBlank @Size(max=100) String lastName,@Pattern(regexp="^\\+?[0-9]{7,24}$") String phone){}
+ public record ProfilePatchRequest(@Size(max=100) String firstName,@Size(max=100) String lastName,@Pattern(regexp="^\\+?[0-9]{7,24}$") String phone){
+  @AssertTrue(message="At least one profile field must be supplied")
+  public boolean hasAtLeastOneField(){return firstName!=null||lastName!=null||phone!=null;}
+ }
  public record AddressRequest(@NotBlank String recipientName,@NotBlank String phone,@NotBlank String countryCode,Long governorateId,Long cityId,String district,@NotBlank String street,String building,String apartment,String postalCode,Double latitude,Double longitude,boolean isDefault){}
  public record TokenResponse(String accessToken,String refreshToken,String tokenType,long expiresIn){}
  public record UserResponse(String id,String email,String phone,String firstName,String lastName,String role){}
