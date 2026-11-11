@@ -1166,7 +1166,9 @@ paths:
       summary: "POST /checkout/quote"
       description: "SRS section 9 operation 24. Auth: Guest/Customer. Unspecified fields are not invented."
       security:
+        - {}
         - bearerAuth: []
+      x-auth-requirement: Guest/Customer
       x-auth-requirement: "Guest/Customer"
       requestBody:
         required: true
@@ -1177,7 +1179,11 @@ paths:
       x-open-question: [OPEN-03, OPEN-05, OPEN-07, OPEN-12]
       responses:
         '200':
-          description: Successful response; detailed fields only where defined by SRS.
+          description: Checkout quote.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutQuoteResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -1227,7 +1233,9 @@ paths:
       summary: "POST /checkout/orders"
       description: "SRS section 9 operation 25. Auth: Guest/Customer، Idempotency-Key. Unspecified fields are not invented."
       security:
+        - {}
         - bearerAuth: []
+      x-auth-requirement: Guest/Customer
       x-auth-requirement: "Guest/Customer، Idempotency-Key"
       parameters:
         - name: Idempotency-Key
@@ -1247,7 +1255,11 @@ paths:
       x-open-question: [OPEN-03, OPEN-05, OPEN-07, OPEN-11, OPEN-12]
       responses:
         '201':
-          description: Successful response; detailed fields only where defined by SRS.
+          description: Order created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutOrderResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -1449,7 +1461,11 @@ paths:
       x-open-question: [OPEN-01]
       responses:
         '201':
-          description: Successful response; detailed fields only where defined by SRS.
+          description: Payment attempt created; provider-specific fields remain OPEN-01.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAttemptResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -1572,7 +1588,8 @@ paths:
       summary: "GET /guest/orders/{token}"
       description: "SRS section 9 operation 30. Auth: Guest token. Unspecified fields are not invented."
       security:
-        - bearerAuth: []
+        - guestTokenAuth: []
+      x-auth-requirement: Guest token
       x-auth-requirement: "Guest token"
       parameters:
         - name: token
@@ -3666,6 +3683,10 @@ components:
       type: http
       scheme: bearer
       description: Stateless refresh token (DEC-08).
+    guestTokenAuth:
+      type: http
+      scheme: bearer
+      description: Guest order tracking token.
     resetTokenAuth:
       type: http
       scheme: bearer
@@ -3698,6 +3719,56 @@ components:
     Currency:
       type: string
       const: EGP
+    CheckoutQuoteResponse:
+      type: object
+      required: [subtotal, discount, shipping, tax, grandTotal, currency]
+      properties:
+        subtotal:
+          $ref: '#/components/schemas/Money'
+        discount:
+          $ref: '#/components/schemas/Money'
+        shipping:
+          $ref: '#/components/schemas/Money'
+        tax:
+          $ref: '#/components/schemas/Money'
+        grandTotal:
+          $ref: '#/components/schemas/Money'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        warehouseCandidate:
+          type: string
+          description: Candidate warehouse identifier for display only; not an allocation.
+    CheckoutOrderResponse:
+      type: object
+      required: [orderId, orderNumber, status, paymentStatus, currency, grandTotal, reservationExpiresAt]
+      properties:
+        orderId:
+          type: string
+        orderNumber:
+          type: string
+        status:
+          type: string
+          const: PENDING
+        paymentStatus:
+          type: string
+          const: PENDING
+        currency:
+          $ref: '#/components/schemas/Currency'
+        grandTotal:
+          $ref: '#/components/schemas/Money'
+        reservationExpiresAt:
+          type: string
+          format: date-time
+    PaymentAttemptResponse:
+      type: object
+      required: [paymentId, paymentStatus]
+      properties:
+        paymentId:
+          type: string
+        paymentStatus:
+          type: string
+          const: PENDING
+      description: Provider-specific response fields remain unresolved under OPEN-01.
     CheckoutQuoteRequest:
       type: object
       additionalProperties: false
