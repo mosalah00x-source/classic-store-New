@@ -20,7 +20,7 @@ public class IdentityController {
  @PostMapping("/auth/login") IdentityDtos.TokenResponse login(@Valid @RequestBody IdentityDtos.LoginRequest r){return service.issue(service.login(r));}
  @PostMapping("/auth/refresh") IdentityDtos.TokenResponse refresh(@RequestHeader("Authorization") String authorization){
   try{if(!authorization.startsWith("Bearer "))throw new IllegalArgumentException();Claims c=tokens.parse(authorization.substring(7));if(!"refresh".equals(c.get("typ",String.class)))throw new IllegalArgumentException();return service.issue(service.requireUser(tokens.subject(c)));}
-  catch(BusinessException e){throw e;}catch(Exception e){throw invalidToken();}
+  catch(Exception e){throw invalidToken();}
  }
  @PostMapping("/auth/logout") ResponseEntity<Void> logout(){return ResponseEntity.noContent().build();}
  @PostMapping("/auth/password/change") ResponseEntity<Void> change(Authentication a,@Valid @RequestBody IdentityDtos.ChangePasswordRequest r){service.changePassword(UUID.fromString(a.getName()),r);return ResponseEntity.ok().build();}
