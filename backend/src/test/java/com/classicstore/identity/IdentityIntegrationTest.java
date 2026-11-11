@@ -58,6 +58,14 @@ class IdentityIntegrationTest {
   mvc.perform(post("/api/v1/auth/refresh").header("Authorization","Bearer "+refresh)).andExpect(status().isOk());
  }
 
+ @Test void profilePatchLeavesOmittedFieldsUnchanged()throws Exception{
+  JsonNode pair=json.readTree(registerAndLogin("profile-patch@example.test"));
+  mvc.perform(patch("/api/v1/me").header("Authorization","Bearer "+pair.get("accessToken").asText())
+   .contentType(APPLICATION_JSON).content("{\\"firstName\\":\\"Updated\\"}"))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.firstName").value("Updated"))
+   .andExpect(jsonPath("$.lastName").value("User"));
+ }
+
  @Test void passwordChangeDoesNotInvalidateExistingRefreshToken()throws Exception{
   JsonNode pair=json.readTree(registerAndLogin("password-change@example.test"));
   String access=pair.get("accessToken").asText(),refresh=pair.get("refreshToken").asText();
