@@ -32,10 +32,12 @@ public class IdentityService {
  public void forgot(IdentityDtos.ForgotRequest r){
   users.byIdentifier(r.email()).filter(u->u.active()&&u.email()!=null).ifPresent(u->{try{mailer.send(u.email(),resets.issue(u));}catch(Exception ignored){/* Never disclose account existence. Delivery failure is monitored by mail infrastructure. */}});
  }
- @Transactional public void reset(IdentityDtos.ResetRequest r){
+ @Transactional public void reset(String token,String newPassword){
   UUID id;
-  try{String decoded=new String(java.util.Base64.getUrlDecoder().decode(r.token()),java.nio.charset.StandardCharsets.UTF_8);id=UUID.fromString(decoded.split("\\.",3)[0]);}
-  catch(Exception e){throw err("INVALID_TOKEN",401);}
+  try{
+   String decoded=new String(java.util.Base64.getUrlDecoder().decode(token),java.nio.charset.StandardCharsets.UTF_8);
+   id=UUID.fromString(decoded.split("\\\\.",3)[0]);
+  }catch(Exception e){throw err("INVALID_TOKEN",401);}
   UserRecord u=users.byId(id).orElseThrow(()->err("INVALID_TOKEN",401));
   if(!resets.verify(token,u))throw err("INVALID_TOKEN",401);
   users.updatePassword(id,u.passwordHash(),passwords.encode(newPassword));
