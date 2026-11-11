@@ -3,11 +3,14 @@ import com.classicstore.common.error.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 import java.util.UUID;
 @Service
 public class IdentityService {
+ private static final Logger log=LoggerFactory.getLogger(IdentityService.class);
  private final IdentityRepository users;private final PasswordEncoder passwords;private final TokenService tokens;
  private final PasswordResetTokenService resets;private final PasswordResetMailer mailer;private final IdentityProperties props;
  public IdentityService(IdentityRepository u,PasswordEncoder p,TokenService t,PasswordResetTokenService r,PasswordResetMailer m,IdentityProperties props){users=u;passwords=p;tokens=t;resets=r;mailer=m;this.props=props;}
@@ -33,7 +36,7 @@ public class IdentityService {
   if(!users.updatePasswordIfCurrent(id,u.passwordHash(),passwords.encode(r.newPassword())))throw err("INVALID_CREDENTIALS",401);
  }
  public void forgot(IdentityDtos.ForgotRequest r){
-  users.byIdentifier(r.email()).filter(u->u.active()&&u.email()!=null).ifPresent(u->{try{mailer.send(u.email(),resets.issue(u));}catch(Exception ignored){/* Never disclose account existence. Delivery failure is monitored by mail infrastructure. */}});
+  users.byIdentifier(r.email()).filter(u->u.active()&&u.email()!=null).ifPresent(u->{try{mailer.send(u.email(),resets.issue(u));}catch(Exception ex){log.warn("Password reset email delivery failed for user {}",u.id());}});
  }
  @Transactional public void reset(String token,String newPassword){
   UUID id;
