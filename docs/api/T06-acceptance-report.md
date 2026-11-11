@@ -3,7 +3,9 @@
 - Source: `docs/reference/Classic_Store_SRS_v1.1.1.md` sections 8.2 and 9.
 - Scope: 69 operations; 23 error codes.
 - Status: Draft PR only; no merge.
-- Latest Redocly `api-lint` step: **success** on workflow run [#16](https://github.com/mosalah00x-source/classic-store-New/actions/runs/43010110147). The overall workflow is still running at report preparation time.
+- Redocly CLI is pinned to `@redocly/cli@2.77.0`; CI prints the exact CLI version before linting.
+- Latest commit after the requested corrections: `a9766d5b332ff804a2d7672c1538c6186edb2c0f`.
+- Fresh CI evidence for this commit is pending; do not treat the previous run #16 as evidence for this commit.
 
 ## Operation coverage
 
@@ -79,6 +81,15 @@ Automated source-to-contract comparison: 69 expected rows; 69 operations; 69 uni
 68. `postAdminBrands` — `POST /admin/brands`
 69. `getAdminOrdersIdStatusHistory` — `GET /admin/orders/{id}/status-history`
 
+## Authentication response corrections
+
+- `POST /auth/password/forgot`: only `202`, `400`, and `429` are documented. The `202` response remains identical for existing and unknown accounts (DEC-15); no `401`, `403`, or `404` responses.
+- `POST /auth/logout`: only `204`, `401`, and `500` are documented; no `400`, `403`, or `404` responses.
+
+## Toolchain
+
+- Redocly CLI: `@redocly/cli@2.77.0` (pinned; no `@latest`).
+
 ## Error catalog
 
 All 23 SRS 8.2 codes are defined under `components.responses` with the specified HTTP status and both `messageAr` and `messageEn`. The shared Error schema requires `code`, `messageAr`, `messageEn`, `traceId`, and `details`.
@@ -102,8 +113,10 @@ Confirmed absent from `x-open-question`: OPEN-08, OPEN-10, and all NEW-Q identif
 ## CI
 
 - Workflow: `backend-ci`.
-- `api-lint`: Redocly lint step succeeded on run #16.
-- `verify-migrations`: running at report preparation time.
+- `api-lint`: pending a fresh run on commit `a9766d5b332ff804a2d7672c1538c6186edb2c0f`.
+- `verify-migrations`: pending a fresh run on the same commit.
+- `backend`: pending a fresh run on the same commit.
+- Previous run #16 is historical evidence only and is not used as the acceptance result for the latest commit.
 - The workflow path filters include `docs/api/**` for push and pull_request events.
 - No required-check ruleset was changed.
 
