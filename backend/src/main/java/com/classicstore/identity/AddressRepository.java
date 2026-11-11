@@ -18,8 +18,11 @@ public class AddressRepository {
   return jdbc.queryForObject("insert into store.addresses(user_id,recipient_name,phone,country_code,governorate_id,city_id,district,street,building,apartment,postal_code,latitude,longitude,is_default) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?) returning *",M,user,a.recipientName(),a.phone(),a.countryCode(),a.governorateId(),a.cityId(),a.district(),a.street(),a.building(),a.apartment(),a.postalCode(),a.latitude(),a.longitude(),a.isDefault());
  }
  public Optional<AddressView> update(UUID user,UUID id,IdentityDtos.AddressRequest a){
+  if(get(user,id).isEmpty())return Optional.empty();
   if(a.isDefault())jdbc.update("update store.addresses set is_default=false where user_id=?",user);
-  return jdbc.query("update store.addresses set recipient_name=?,phone=?,country_code=?,governorate_id=?,city_id=?,district=?,street=?,building=?,apartment=?,postal_code=?,latitude=?,longitude=?,is_default=? where user_id=? and id=? returning *",M,a.recipientName(),a.phone(),a.countryCode(),a.governorateId(),a.cityId(),a.district(),a.street(),a.building(),a.apartment(),a.postalCode(),a.latitude(),a.longitude(),a.isDefault(),user,id).stream().findFirst();
+  jdbc.update("update store.addresses set recipient_name=?,phone=?,country_code=?,governorate_id=?,city_id=?,district=?,street=?,building=?,apartment=?,postal_code=?,latitude=?,longitude=?,is_default=? where user_id=? and id=?",
+   a.recipientName(),a.phone(),a.countryCode(),a.governorateId(),a.cityId(),a.district(),a.street(),a.building(),a.apartment(),a.postalCode(),a.latitude(),a.longitude(),a.isDefault(),user,id);
+  return get(user,id);
  }
  public boolean delete(UUID user,UUID id){return jdbc.update("delete from store.addresses where user_id=? and id=?",user,id)==1;}
 
