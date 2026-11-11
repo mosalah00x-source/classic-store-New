@@ -41,7 +41,7 @@ class ApiContractIntegrationTest {
  @Test void protectedPathReturnsStandard401ErrorBody() throws Exception {
   mvc.perform(get("/test/protected").header("X-Correlation-Id","unauth-test"))
    .andExpect(status().isUnauthorized()).andExpect(header().string("X-Correlation-Id","unauth-test"))
-   .andExpect(jsonPath("$.code").value("UNAUTHORIZED"))
+   .andExpect(jsonPath("$.code").value("UNAUTHENTICATED"))
    .andExpect(jsonPath("$.messageAr").isNotEmpty()).andExpect(jsonPath("$.messageEn").isNotEmpty())
    .andExpect(jsonPath("$.traceId").value("unauth-test")).andExpect(jsonPath("$.details").isMap());
  }
