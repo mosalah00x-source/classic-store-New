@@ -37,8 +37,8 @@ public class IdentityService {
   try{String decoded=new String(java.util.Base64.getUrlDecoder().decode(r.token()),java.nio.charset.StandardCharsets.UTF_8);id=UUID.fromString(decoded.split("\\.",3)[0]);}
   catch(Exception e){throw err("INVALID_TOKEN",401);}
   UserRecord u=users.byId(id).orElseThrow(()->err("INVALID_TOKEN",401));
-  if(!resets.verify(r.token(),u))throw err("INVALID_TOKEN",401);
-  users.updatePassword(id,u.passwordHash(),passwords.encode(r.newPassword()));
+  if(!resets.verify(token,u))throw err("INVALID_TOKEN",401);
+  users.updatePassword(id,u.passwordHash(),passwords.encode(newPassword));
  }
  private static String blank(String s){return s==null||s.isBlank()?null:s;}
  private static BusinessException err(String code,int status){
