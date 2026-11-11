@@ -25,7 +25,7 @@ public class PasswordResetTokenService {
   try{
    String decoded=new String(Base64.getUrlDecoder().decode(token),StandardCharsets.UTF_8);
    String[] p=decoded.split("\\.",3);if(p.length!=3||!UUID.fromString(p[0]).equals(u.id()))return false;
-   long exp=Long.parseLong(p[1]);if(Instant.now().getEpochSecond()>exp)return false;
+   long exp=Long.parseLong(p[1]);if(Instant.now().getEpochSecond()>=exp)return false;
    return MessageDigest.isEqual(p[2].getBytes(StandardCharsets.US_ASCII),mac(p[0]+"."+p[1]+"."+u.passwordHash()).getBytes(StandardCharsets.US_ASCII));
   }catch(Exception e){return false;}
  }
