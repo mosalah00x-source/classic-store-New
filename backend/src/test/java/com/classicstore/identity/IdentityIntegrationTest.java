@@ -84,6 +84,21 @@ class IdentityIntegrationTest {
   assertThat(known).isEqualTo(unknown);
  }
 
+ @Test void loginAndForgotRateLimitsUseSrsThresholds()throws Exception{
+  for(int i=0;i<10;i++)mvc.perform(post("/api/v1/auth/login").contentType(APPLICATION_JSON)
+   .content("{\\"identifier\\":\\"throttle@example.test\\",\\"password\\":\\"wrong-password\\"}"))
+   .andExpect(status().isUnauthorized());
+  mvc.perform(post("/api/v1/auth/login").contentType(APPLICATION_JSON)
+   .content("{\\"identifier\\":\\"throttle@example.test\\",\\"password\\":\\"wrong-password\\"}"))
+   .andExpect(status().isTooManyRequests()).andExpect(jsonPath("$.code").value("RATE_LIMITED"));
+
+  for(int i=0;i<5;i++)mvc.perform(post("/api/v1/auth/password/forgot").contentType(APPLICATION_JSON)
+   .content("{\\"email\\":\\"forgot-throttle@example.test\\"}")).andExpect(status().isAccepted());
+  mvc.perform(post("/api/v1/auth/password/forgot").contentType(APPLICATION_JSON)
+   .content("{\\"email\\":\\"forgot-throttle@example.test\\"}"))
+   .andExpect(status().isTooManyRequests()).andExpect(jsonPath("$.code").value("RATE_LIMITED"));
+ }
+
  @Test void foreignAddressIsNotReadableWritableOrDeletable()throws Exception{
   UUID owner=UUID.randomUUID(),other=UUID.randomUUID(),address=UUID.randomUUID();
   jdbc.update("insert into store.users(id,email,password_hash,first_name,last_name) values (?,?,?,?,?)",owner,"owner-"+owner+"@example.test",encoder.encode("StrongPassword#2026"),"Owner","One");
