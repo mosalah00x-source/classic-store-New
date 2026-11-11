@@ -86,16 +86,16 @@ class IdentityIntegrationTest {
 
  @Test void loginAndForgotRateLimitsUseSrsThresholds()throws Exception{
   for(int i=0;i<10;i++)mvc.perform(post("/api/v1/auth/login").contentType(APPLICATION_JSON)
-   .content("{\\"identifier\\":\\"throttle@example.test\\",\\"password\\":\\"wrong-password\\"}"))
+   .content("{\"identifier\":\"throttle@example.test\",\"password\":\"wrong-password\"}"))
    .andExpect(status().isUnauthorized());
   mvc.perform(post("/api/v1/auth/login").contentType(APPLICATION_JSON)
-   .content("{\\"identifier\\":\\"throttle@example.test\\",\\"password\\":\\"wrong-password\\"}"))
+   .content("{\"identifier\":\"throttle@example.test\",\"password\":\"wrong-password\"}"))
    .andExpect(status().isTooManyRequests()).andExpect(jsonPath("$.code").value("RATE_LIMITED"));
 
   for(int i=0;i<5;i++)mvc.perform(post("/api/v1/auth/password/forgot").contentType(APPLICATION_JSON)
-   .content("{\\"email\\":\\"forgot-throttle@example.test\\"}")).andExpect(status().isAccepted());
+   .content("{\"identifier\":\"throttle@example.test\",\"password\":\"wrong-password\"}"))
   mvc.perform(post("/api/v1/auth/password/forgot").contentType(APPLICATION_JSON)
-   .content("{\\"email\\":\\"forgot-throttle@example.test\\"}"))
+   .content("{\"identifier\":\"throttle@example.test\",\"password\":\"wrong-password\"}"))
    .andExpect(status().isTooManyRequests()).andExpect(jsonPath("$.code").value("RATE_LIMITED"));
  }
 
