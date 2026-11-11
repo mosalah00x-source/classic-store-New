@@ -222,10 +222,6 @@ paths:
   "/auth/register":
     post:
       operationId: postAuthRegister
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponse'
       tags: ["Identity"]
       summary: "POST /auth/register"
       description: "SRS section 9 operation 5. Auth: Public. Unspecified fields are not invented."
@@ -239,6 +235,10 @@ paths:
       responses:
         '201':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR, EMAIL_OR_PHONE_REQUIRED]
@@ -296,11 +296,11 @@ paths:
               $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
+          description: Successful response; detailed fields only where defined by SRS.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-          description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -353,11 +353,11 @@ paths:
         - refreshTokenAuth: []
       responses:
         '200':
+          description: Successful response; detailed fields only where defined by SRS.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
-          description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -489,11 +489,11 @@ paths:
               $ref: '#/components/schemas/ForgotPasswordRequest'
       responses:
         '202':
+          description: Accepted; identical response shape for existing and unknown accounts.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForgotPasswordResponse'
-          description: Accepted; identical response shape for existing and unknown accounts.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -571,11 +571,11 @@ paths:
       x-auth-requirement: "Customer (مشتقة)"
       responses:
         '200':
+          description: Successful response; detailed fields only where defined by SRS.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
-          description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -627,11 +627,11 @@ paths:
               $ref: '#/components/schemas/ProfilePatchRequest'
       responses:
         '200':
+          description: Successful response; detailed fields only where defined by SRS.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
-          description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -679,11 +679,11 @@ paths:
       x-open-question: [OPEN-11, OPEN-12]
       responses:
         '200':
+          description: Successful response; detailed fields only where defined by SRS.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddressList'
-          description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -721,10 +721,6 @@ paths:
                 $ref: '#/components/schemas/Error'
     post:
       operationId: postMeAddresses
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Address'
       tags: ["Account"]
       summary: "POST /me/addresses"
       description: "SRS section 9 operation 15. Auth: Customer. Unspecified fields are not invented."
@@ -741,6 +737,10 @@ paths:
       responses:
         '201':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -794,11 +794,11 @@ paths:
       x-open-question: [OPEN-11, OPEN-12]
       responses:
         '200':
+          description: Successful response; detailed fields only where defined by SRS.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Address'
-          description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -857,11 +857,11 @@ paths:
               $ref: '#/components/schemas/AddressRequest'
       responses:
         '200':
+          description: Successful response; detailed fields only where defined by SRS.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Address'
-          description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -3770,7 +3770,7 @@ components:
           format: email
         phone:
           type: string
-          pattern: '^\\+?[0-9]{7,24}$'
+          pattern: '^\+?[0-9]{7,24}$'
         password:
           type: string
           minLength: 10
@@ -3837,7 +3837,7 @@ components:
           maxLength: 100
         phone:
           type: string
-          pattern: '^\\+?[0-9]{7,24}$'
+          pattern: '^\+?[0-9]{7,24}$'
     AddressRequest:
       type: object
       additionalProperties: false
