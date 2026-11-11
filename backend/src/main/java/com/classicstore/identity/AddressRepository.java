@@ -1,0 +1,25 @@
+package com.classicstore.identity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+@Repository
+public class AddressRepository {
+ private final JdbcTemplate jdbc;
+ private static final RowMapper<AddressView> M=(r,n)->new AddressView(r.getObject("id",UUID.class).toString(),r.getString("recipient_name"),r.getString("phone"),r.getString("country_code"),(Long)r.getObject("governorate_id"),(Long)r.getObject("city_id"),r.getString("district"),r.getString("street"),r.getString("building"),r.getString("apartment"),r.getString("postal_code"),(Double)r.getObject("latitude"),(Double)r.getObject("longitude"),r.getBoolean("is_default"));
+ public record AddressView(String id,String recipientName,String phone,String countryCode,Long governorateId,Long cityId,String district,String street,String building,String apartment,String postalCode,Double latitude,Double longitude,boolean isDefault){}
+ public AddressRepository(JdbcTemplate jdbc){this.jdbc=jdbc;}
+ public List<AddressView> list(UUID user){return jdbc.query("select * from store.addresses where user_id=? order by is_default desc,created_at",M,user);}
+ public Optional<AddressView> get(UUID user,UUID id){return jdbc.query("select * from store.addresses where user_id=? and id=?",M,user,id).stream().findFirst();}
+ public AddressView create(UUID user,IdentityDtos.AddressRequest a){
+  if(a.isDefault())jdbc.update("update store.addresses set is_default=false where user_id=?",user);
+  return jdbc.queryForObject("insert into store.addresses(user_id,recipient_name,phone,country_code,governorate_id,city_id,district,street,building,apartment,postal_code,latitude,longitude,is_default) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?) returning *",M,user,a.recipientName(),a.phone(),a.countryCode(),a.governorateId(),a.cityId(),a.district(),a.street(),a.building(),a.apartment(),a.postalCode(),a.latitude(),a.longitude(),a.isDefault());
+ }
+ public Optional<AddressView> update(UUID user,UUID id,IdentityDtos.AddressRequest a){
+  if(a.isDefault())jdbc.update("update store.addresses set is_default=false where user_id=?",user);
+  return jdbc.query("update store.addresses set recipient_name=?,phone=?,country_code=?,governorate_id=?,city_id=?,district=?,street=?,building=?,apartment=?,postal_code=?,latitude=?,longitude=?,is_default=? where user_id=? and id=? returning *",M,a.recipientName(),a.phone(),a.countryCode(),a.governorateId(),a.cityId(),a.district(),a.street(),a.building(),a.apartment(),a.postalCode(),a.latitude(),a.longitude(),a.isDefault(),user,id).stream().findFirst();
+ }
+ public boolean delete(UUID user,UUID id){return jdbc.update("delete from store.addresses where user_id=? and id=?",user,id)==1;}
+}
