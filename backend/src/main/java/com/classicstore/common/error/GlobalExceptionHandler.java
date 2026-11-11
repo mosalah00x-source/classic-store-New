@@ -11,11 +11,8 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
- private static final Logger log=LoggerFactory.getLogger(GlobalExceptionHandler.class);
  private String traceId(HttpServletRequest request){Object value=request.getAttribute("traceId");return value==null?"":value.toString();}
  @ExceptionHandler(BusinessException.class)
  public ResponseEntity<ApiError> business(BusinessException ex,HttpServletRequest request){
@@ -41,7 +38,6 @@ public class GlobalExceptionHandler {
  }
  @ExceptionHandler(Exception.class)
  public ResponseEntity<ApiError> unexpected(Exception ex,HttpServletRequest request){
-  log.error("Unhandled API exception",ex);
   return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiError("INTERNAL_ERROR","حدث خطأ داخلي","An internal error occurred",traceId(request),Map.of()));
  }
 }
