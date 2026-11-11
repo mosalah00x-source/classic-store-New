@@ -38,7 +38,7 @@ public class IdentityController {
  @PostMapping("/auth/password/reset") ResponseEntity<Void> reset(@RequestHeader(value="Authorization",required=false) String authorization,@Valid @RequestBody IdentityDtos.ResetRequest r){if(authorization==null||!authorization.startsWith("Bearer "))throw invalidToken();service.reset(authorization.substring(7),r.newPassword());return ResponseEntity.ok().build();}
  @GetMapping("/me") IdentityDtos.UserResponse me(Authentication a){return view(service.requireUser(UUID.fromString(a.getName())));}
  @PatchMapping("/me") IdentityDtos.UserResponse patchMe(Authentication a,@Valid @RequestBody IdentityDtos.ProfilePatchRequest r){
-  UUID id=UUID.fromString(a.getName());users.updateProfile(id,r.firstName(),r.lastName(),r.phone());return view(service.requireUser(id));
+  UUID id=UUID.fromString(a.getName());return view(service.updateProfile(id,r));
  }
  @GetMapping("/me/addresses") List<AddressView> list(Authentication a){return addresses.list(UUID.fromString(a.getName()));}
  @Transactional @PostMapping("/me/addresses") ResponseEntity<AddressView> create(Authentication a,@Valid @RequestBody IdentityDtos.AddressRequest r){validateAddress(r);return ResponseEntity.status(201).body(addresses.create(UUID.fromString(a.getName()),r));}
