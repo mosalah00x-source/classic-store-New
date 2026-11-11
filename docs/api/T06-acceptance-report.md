@@ -83,7 +83,7 @@ Automated source-to-contract comparison: 69 expected rows; 69 operations; 69 uni
 
 ## Authentication response corrections
 
-- `POST /auth/password/forgot`: only `202`, `400`, and `429` are documented. The `202` response remains identical for existing and unknown accounts (DEC-15); no `401`, `403`, or `404` responses.
+- `POST /auth/password/forgot`: only `202`, `400`, and `429` are documented. The `202` response remains identical for existing and unknown accounts (DEC-15); no `401`, `403`, `404`, or `500` responses.
 - `POST /auth/logout`: only `204`, `401`, and `500` are documented; no `400`, `403`, or `404` responses.
 
 ## Toolchain
