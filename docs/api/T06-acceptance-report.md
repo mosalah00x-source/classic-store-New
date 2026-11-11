@@ -4,8 +4,14 @@
 - Scope: 69 operations; 23 error codes.
 - Status: Draft PR only; no merge.
 - Redocly CLI is pinned to `@redocly/cli@2.77.0`; CI prints the exact CLI version before linting.
-- Latest commit after the requested corrections: `a9766d5b332ff804a2d7672c1538c6186edb2c0f`.
-- Fresh CI evidence for this commit is pending; do not treat the previous run #16 as evidence for this commit.
+- Contract/OpenAPI verification target SHA: `0928c22e00e4ca86e166594540b40cfbe40d5144`.
+- Commit-scoped GitHub Actions lookup for that exact SHA returned workflow run #27 (`43012975189`), completed successfully. The run was returned by the commit-SHA-filtered workflow-runs endpoint.
+- Run URL: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189
+- Job evidence (all in run #27; each job URL is linked below):
+  - `api-lint`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918832
+  - `verify migrations`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918352
+  - `backend`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130497304882
+- This evidence is for the exact queried SHA above, not an earlier commit. The report/PR metadata follow-up itself creates a newer head commit; that newer SHA must receive its own fresh CI run before acceptance.
 
 ## Operation coverage
 
@@ -113,10 +119,13 @@ Confirmed absent from `x-open-question`: OPEN-08, OPEN-10, and all NEW-Q identif
 ## CI
 
 - Workflow: `backend-ci`.
-- `api-lint`: pending a fresh run on commit `a9766d5b332ff804a2d7672c1538c6186edb2c0f`.
-- `verify-migrations`: pending a fresh run on the same commit.
-- `backend`: pending a fresh run on the same commit.
-- Previous run #16 is historical evidence only and is not used as the acceptance result for the latest commit.
+- Verified contract SHA: `0928c22e00e4ca86e166594540b40cfbe40d5144`.
+- Run #27: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189
+- `api-lint`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918832
+- `verify migrations`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918352
+- `backend`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130497304882
+- The workflow-run lookup was filtered by the exact SHA above. A separate run-detail response exposing `head_sha` was not available in the connected GitHub actions interface.
+- Any subsequent commit (including this report/PR metadata correction) requires a fresh run before that newer head can be called green.
 - The workflow path filters include `docs/api/**` for push and pull_request events.
 - No required-check ruleset was changed.
 
