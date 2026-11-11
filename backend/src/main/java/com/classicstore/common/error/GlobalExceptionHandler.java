@@ -7,6 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,6 +26,10 @@ public class GlobalExceptionHandler {
   Map<String,Object> fields=new LinkedHashMap<>();
   for(FieldError error:ex.getBindingResult().getFieldErrors()) fields.put(error.getField(),error.getDefaultMessage());
   return ResponseEntity.badRequest().body(new ApiError("VALIDATION_ERROR","البيانات المدخلة غير صحيحة","Submitted data is invalid",traceId(request),Map.of("fieldErrors",fields)));
+ }
+ @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+ public ResponseEntity<ApiError> unsupportedMediaType(HttpMediaTypeNotSupportedException ex,HttpServletRequest request){
+  return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(new ApiError("UNSUPPORTED_MEDIA_TYPE","نوع المحتوى غير مدعوم","Unsupported media type",traceId(request),Map.of()));
  }
  @ExceptionHandler(HttpMessageNotReadableException.class)
  public ResponseEntity<ApiError> unreadable(HttpMessageNotReadableException ex,HttpServletRequest request){
