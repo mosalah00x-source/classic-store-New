@@ -1,4 +1,0 @@
-extends: recommended
-rules:
-  info-license: off
-  no-unused-components: off
