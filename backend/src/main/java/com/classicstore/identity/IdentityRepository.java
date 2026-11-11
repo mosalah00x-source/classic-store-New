@@ -20,6 +20,6 @@ public class IdentityRepository {
   return jdbc.update("update store.users set password_hash=?,updated_at=now() where id=? and password_hash=?",newHash,id,expectedHash)==1;
  }
  public void updateProfile(UUID id,String first,String last,String phone){
-  jdbc.update("update store.users set first_name=?,last_name=?,phone=?,updated_at=now() where id=?",first,last,phone,id);
+  jdbc.update("update store.users set first_name=coalesce(?,first_name),last_name=coalesce(?,last_name),phone=coalesce(?,phone),updated_at=now() where id=?",first,last,phone,id);
  }
 }
