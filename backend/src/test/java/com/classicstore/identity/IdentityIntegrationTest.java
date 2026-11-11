@@ -85,7 +85,7 @@ class IdentityIntegrationTest {
   String token=tokens.issue(user,"access");
   mvc.perform(get("/api/v1/me/addresses/"+address).header("Authorization","Bearer "+token)).andExpect(status().isNotFound());
   mvc.perform(put("/api/v1/me/addresses/"+address).header("Authorization","Bearer "+token)
-   .contentType(APPLICATION_JSON).content("{\\"recipientName\\":\\"Other\\",\\"phone\\":\\"201000000001\\",\\"countryCode\\":\\"EG\\",\\"street\\":\\"Changed\\",\\"isDefault\\":false}"))
+   .content("{\"recipientName\":\"Other\",\"phone\":\"201000000001\",\"countryCode\":\"EG\",\"street\":\"Changed\",\"isDefault\":false}"))
    .andExpect(status().isNotFound());
   mvc.perform(delete("/api/v1/me/addresses/"+address).header("Authorization","Bearer "+token)).andExpect(status().isNotFound());
   assertThat(jdbc.queryForObject("select count(*) from store.addresses where id=?",Integer.class,address)).isEqualTo(1);
