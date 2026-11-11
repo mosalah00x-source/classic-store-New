@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16:///classic_store
+    username: test
+    password: test
+  mail:
+    host: localhost
+    port: 3025
+security:
+  jwt:
+    secret-base64: dGVzdC1qd3Qtc2VjcmV0LWZvci1jbGFzc2ljLXN0b3JlLWF0LWxlYXN0LTMyLWJ5dGVzIQ==
+    access-ttl: PT15M
+    refresh-ttl: P7D
+  password-reset:
+    fingerprint-secret-base64: dGVzdC1wYXNzd29yZC1yZXNldC1maW5nZXJwcmludC1rZXktMzItYnl0ZXM=
+  mail:
+    from: no-reply@test.local
+    reset-url: https://test.local/reset
