@@ -49,6 +49,12 @@ The SRS does not define all wire-level identity DTOs. The following minimal shap
 - AT-19/20/21: old refresh validity after password change, stateless refresh, logout 204.
 - Register role injection: request rejects unknown role and persists CUSTOMER.
 
+## NFR-01 deployment controls
+- The application applies fixed-window limits per process: 10 login attempts per 15 minutes per remote-IP + normalized identifier; 5 forgot-password requests per hour per normalized email. Response is 429 `RATE_LIMITED`.
+- This in-memory limiter is defense-in-depth for a single instance only; it resets on restart and is not shared across replicas. A distributed API-gateway/WAF limiter using trusted client-IP forwarding is mandatory for multi-instance production.
+- CORS is deny-by-default and accepts only the comma-separated `CORS_ALLOWED_ORIGINS` allowlist. Credentials are disabled; Authorization, Content-Type, and X-Correlation-Id are allowed.
+- TLS termination and trusted proxy configuration remain deployment responsibilities; do not expose the application directly over plain HTTP in production.
+
 ## Governance
 - DEC-GOV-01: Product Owner also performed Tech Lead, QA, Operations, and Security approval. This is internal single-owner approval, not independent review. AR-03 accepted; no production release until an independent Security Review is recorded.
 - DEC-GOV-02: reset token MAC is bound to current password hash as described above.
