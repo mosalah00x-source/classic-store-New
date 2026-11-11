@@ -145,9 +145,19 @@ class IdentityIntegrationTest {
    .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("INVALID_TOKEN"));
  }
 
+ @Test void accessAndRefreshTokenLifetimesMatchSrs(){
+  UserRecord u=new UserRecord(UUID.randomUUID(),"ttl@example.test",null,"hash","TTL","User","CUSTOMER",true);
+  var access=tokens.parse(tokens.issue(u,"access"));
+  var refresh=tokens.parse(tokens.issue(u,"refresh"));
+  assertThat(access.getExpiration().getTime()-access.getIssuedAt().getTime()).isEqualTo(900000L);
+  assertThat(refresh.getExpiration().getTime()-refresh.getIssuedAt().getTime()).isEqualTo(604800000L);
+ }
+
  @Test void resetFingerprintAllowsReuseUntilPasswordHashChanges(){
   UserRecord u=new UserRecord(UUID.randomUUID(),"reset@example.test",null,"$2a$12$oldhash","Reset","User","CUSTOMER",true);
   String token=resetTokens.issue(u);
+  String decoded=new String(java.util.Base64.getUrlDecoder().decode(token),java.nio.charset.StandardCharsets.UTF_8);
+  assertThat(decoded).doesNotContain(u.passwordHash());
   assertThat(resetTokens.verify(token,u)).isTrue();
   assertThat(resetTokens.verify(token,u)).isTrue();
   UserRecord changed=new UserRecord(u.id(),u.email(),null,"$2a$12$newhash","Reset","User","CUSTOMER",true);
