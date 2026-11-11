@@ -3827,7 +3827,10 @@ components:
     ProfilePatchRequest:
       type: object
       additionalProperties: false
-      required: [firstName, lastName]
+      anyOf:
+        - required: [firstName]
+        - required: [lastName]
+        - required: [phone]
       properties:
         firstName:
           type: string
@@ -3837,7 +3840,7 @@ components:
           maxLength: 100
         phone:
           type: string
-          pattern: '^\+?[0-9]{7,24}$'
+          pattern: '^\\+?[0-9]{7,24}$'
     AddressRequest:
       type: object
       additionalProperties: false
