@@ -8,7 +8,7 @@ import java.util.UUID;
 @Repository
 public class AddressRepository {
  private final JdbcTemplate jdbc;
- private static final RowMapper<AddressView> M=(r,n)->new AddressView(r.getObject("id",UUID.class).toString(),r.getString("recipient_name"),r.getString("phone"),r.getString("country_code"),(Long)r.getObject("governorate_id"),(Long)r.getObject("city_id"),r.getString("district"),r.getString("street"),r.getString("building"),r.getString("apartment"),r.getString("postal_code"),(Double)r.getObject("latitude"),(Double)r.getObject("longitude"),r.getBoolean("is_default"));
+ private static final RowMapper<AddressView> M=(r,n)->new AddressView(r.getObject("id",UUID.class).toString(),r.getString("recipient_name"),r.getString("phone"),r.getString("country_code"),(Long)r.getObject("governorate_id"),(Long)r.getObject("city_id"),r.getString("district"),r.getString("street"),r.getString("building"),r.getString("apartment"),r.getString("postal_code"),r.getObject("latitude",Double.class),r.getObject("longitude",Double.class),r.getBoolean("is_default"));
  public record AddressView(String id,String recipientName,String phone,String countryCode,Long governorateId,Long cityId,String district,String street,String building,String apartment,String postalCode,Double latitude,Double longitude,boolean isDefault){}
  public AddressRepository(JdbcTemplate jdbc){this.jdbc=jdbc;}
  public List<AddressView> list(UUID user){return jdbc.query("select * from store.addresses where user_id=? order by is_default desc,created_at",M,user);}
