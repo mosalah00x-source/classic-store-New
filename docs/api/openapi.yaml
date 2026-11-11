@@ -23,7 +23,7 @@ tags:
   - name: "Administration"
 paths:
   "/products":
-    get:
+get    get:
       operationId: getProducts
       tags: ["Catalog"]
       summary: "GET /products"
@@ -68,7 +68,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/products/{slug}":
-    get:
+get    get:
       operationId: getProductsSlug
       tags: ["Catalog"]
       summary: "GET /products/{slug}"
@@ -119,7 +119,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/categories":
-    get:
+get    get:
       operationId: getCategories
       tags: ["Catalog"]
       summary: "GET /categories"
@@ -164,7 +164,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/brands":
-    get:
+get    get:
       operationId: getBrands
       tags: ["Catalog"]
       summary: "GET /brands"
@@ -209,7 +209,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/auth/register":
-    post:
+post    post:
       operationId: postAuthRegister
       tags: ["Identity"]
       summary: "POST /auth/register"
@@ -261,7 +261,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/auth/login":
-    post:
+post    post:
       operationId: postAuthLogin
       tags: ["Identity"]
       summary: "POST /auth/login"
@@ -313,7 +313,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/auth/refresh":
-    post:
+post    post:
       operationId: postAuthRefresh
       tags: ["Identity"]
       summary: "POST /auth/refresh"
@@ -359,7 +359,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/auth/logout":
-    post:
+post    post:
       operationId: postAuthLogout
       tags: ["Identity"]
       summary: "POST /auth/logout"
@@ -407,7 +407,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/auth/password/change":
-    post:
+post    post:
       operationId: postAuthPasswordChange
       tags: ["Identity"]
       summary: "POST /auth/password/change"
@@ -454,7 +454,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/auth/password/forgot":
-    post:
+post    post:
       operationId: postAuthPasswordForgot
       tags: ["Identity"]
       summary: "POST /auth/password/forgot"
@@ -507,7 +507,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/auth/password/reset":
-    post:
+post    post:
       operationId: postAuthPasswordReset
       tags: ["Identity"]
       summary: "POST /auth/password/reset"
@@ -553,7 +553,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/me":
-    get:
+get    get:
       operationId: getMe
       tags: ["Account"]
       summary: "GET /me"
@@ -599,8 +599,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/me":
-    patch:
+patch    patch:
       operationId: patchMe
       tags: ["Account"]
       summary: "PATCH /me"
@@ -647,7 +646,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/me/addresses":
-    get:
+get    get:
       operationId: getMeAddresses
       tags: ["Account"]
       summary: "GET /me/addresses"
@@ -694,8 +693,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/me/addresses":
-    post:
+post    post:
       operationId: postMeAddresses
       tags: ["Account"]
       summary: "POST /me/addresses"
@@ -743,7 +741,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/me/addresses/{id}":
-    get:
+get    get:
       operationId: getMeAddressesId
       tags: ["Account"]
       summary: "GET /me/addresses/{id}"
@@ -796,8 +794,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/me/addresses/{id}":
-    put:
+put    put:
       operationId: putMeAddressesId
       tags: ["Account"]
       summary: "PUT /me/addresses/{id}"
@@ -850,8 +847,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/me/addresses/{id}":
-    delete:
+delete    delete:
       operationId: deleteMeAddressesId
       tags: ["Account"]
       summary: "DELETE /me/addresses/{id}"
@@ -904,7 +900,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/me/orders":
-    get:
+get    get:
       operationId: getMeOrders
       tags: ["Account"]
       summary: "GET /me/orders"
@@ -951,7 +947,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/carts":
-    post:
+post    post:
       operationId: postCarts
       tags: ["Cart"]
       summary: "POST /carts"
@@ -996,7 +992,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/carts/{id}":
-    get:
+get    get:
       operationId: getCartsId
       tags: ["Cart"]
       summary: "GET /carts/{id}"
@@ -1049,7 +1045,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/carts/{id}/items/{sku}":
-    put:
+put    put:
       operationId: putCartsIdItemsSku
       tags: ["Cart"]
       summary: "PUT /carts/{id}/items/{sku}"
@@ -1106,8 +1102,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/carts/{id}/items/{sku}":
-    delete:
+delete    delete:
       operationId: deleteCartsIdItemsSku
       tags: ["Cart"]
       summary: "DELETE /carts/{id}/items/{sku}"
@@ -1165,7 +1160,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/checkout/quote":
-    post:
+post    post:
       operationId: postCheckoutQuote
       tags: ["Checkout & Orders"]
       summary: "POST /checkout/quote"
@@ -1226,7 +1221,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/checkout/orders":
-    post:
+post    post:
       operationId: postCheckoutOrders
       tags: ["Checkout & Orders"]
       summary: "POST /checkout/orders"
@@ -1303,7 +1298,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/orders/{id}":
-    get:
+get    get:
       operationId: getOrdersId
       tags: ["Checkout & Orders"]
       summary: "GET /orders/{id}"
@@ -1356,7 +1351,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/orders/{id}/cancel":
-    post:
+post    post:
       operationId: postOrdersIdCancel
       tags: ["Checkout & Orders"]
       summary: "POST /orders/{id}/cancel"
@@ -1423,7 +1418,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/orders/{id}/payments":
-    post:
+post    post:
       operationId: postOrdersIdPayments
       tags: ["Checkout & Orders"]
       summary: "POST /orders/{id}/payments"
@@ -1439,7 +1434,6 @@ paths:
           schema:
             type: string
             format: uuid
-      parameters:
         - name: id
           in: path
           required: true
@@ -1506,7 +1500,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/payments/{id}/webhooks/{provider}":
-    post:
+post    post:
       operationId: postPaymentsIdWebhooksProvider
       tags: ["Checkout & Orders"]
       summary: "POST /payments/{id}/webhooks/{provider}"
@@ -1572,7 +1566,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/guest/orders/{token}":
-    get:
+get    get:
       operationId: getGuestOrdersToken
       tags: ["Checkout & Orders"]
       summary: "GET /guest/orders/{token}"
@@ -1625,7 +1619,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/returns":
-    post:
+post    post:
       operationId: postReturns
       tags: ["Returns"]
       summary: "POST /returns"
@@ -1680,7 +1674,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/returns/{id}":
-    get:
+get    get:
       operationId: getReturnsId
       tags: ["Returns"]
       summary: "GET /returns/{id}"
@@ -1734,7 +1728,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/products":
-    get:
+get    get:
       operationId: getAdminProducts
       tags: ["Catalog Admin"]
       summary: "GET /admin/products"
@@ -1780,8 +1774,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/admin/products":
-    post:
+post    post:
       operationId: postAdminProducts
       tags: ["Catalog Admin"]
       summary: "POST /admin/products"
@@ -1828,7 +1821,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/products/{id}":
-    get:
+get    get:
       operationId: getAdminProductsId
       tags: ["Catalog Admin"]
       summary: "GET /admin/products/{id}"
@@ -1880,8 +1873,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/admin/products/{id}":
-    patch:
+patch    patch:
       operationId: patchAdminProductsId
       tags: ["Catalog Admin"]
       summary: "PATCH /admin/products/{id}"
@@ -1934,7 +1926,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/products/{id}/archive":
-    post:
+post    post:
       operationId: postAdminProductsIdArchive
       tags: ["Catalog Admin"]
       summary: "POST /admin/products/{id}/archive"
@@ -1987,7 +1979,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/products/{id}/variants":
-    post:
+post    post:
       operationId: postAdminProductsIdVariants
       tags: ["Catalog Admin"]
       summary: "POST /admin/products/{id}/variants"
@@ -2040,7 +2032,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/variants/{sku}":
-    patch:
+patch    patch:
       operationId: patchAdminVariantsSku
       tags: ["Catalog Admin"]
       summary: "PATCH /admin/variants/{sku}"
@@ -2093,7 +2085,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/categories":
-    post:
+post    post:
       operationId: postAdminCategories
       tags: ["Catalog Admin"]
       summary: "POST /admin/categories"
@@ -2140,7 +2132,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/coupons":
-    get:
+get    get:
       operationId: getAdminCoupons
       tags: ["Coupons & Shipping"]
       summary: "GET /admin/coupons"
@@ -2186,8 +2178,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/admin/coupons":
-    post:
+post    post:
       operationId: postAdminCoupons
       tags: ["Coupons & Shipping"]
       summary: "POST /admin/coupons"
@@ -2234,7 +2225,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/coupons/{id}":
-    patch:
+patch    patch:
       operationId: patchAdminCouponsId
       tags: ["Coupons & Shipping"]
       summary: "PATCH /admin/coupons/{id}"
@@ -2287,7 +2278,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/shipping-zones":
-    get:
+get    get:
       operationId: getAdminShippingZones
       tags: ["Coupons & Shipping"]
       summary: "GET /admin/shipping-zones"
@@ -2334,8 +2325,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/admin/shipping-zones":
-    post:
+post    post:
       operationId: postAdminShippingZones
       tags: ["Coupons & Shipping"]
       summary: "POST /admin/shipping-zones"
@@ -2383,7 +2373,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/shipping-zones/{id}/rates":
-    put:
+put    put:
       operationId: putAdminShippingZonesIdRates
       tags: ["Coupons & Shipping"]
       summary: "PUT /admin/shipping-zones/{id}/rates"
@@ -2437,7 +2427,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/warehouses":
-    get:
+get    get:
       operationId: getAdminWarehouses
       tags: ["Inventory"]
       summary: "GET /admin/warehouses"
@@ -2483,8 +2473,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/admin/warehouses":
-    post:
+post    post:
       operationId: postAdminWarehouses
       tags: ["Inventory"]
       summary: "POST /admin/warehouses"
@@ -2531,7 +2520,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/warehouses/{id}":
-    patch:
+patch    patch:
       operationId: patchAdminWarehousesId
       tags: ["Inventory"]
       summary: "PATCH /admin/warehouses/{id}"
@@ -2584,7 +2573,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/inventory":
-    get:
+get    get:
       operationId: getAdminInventory
       tags: ["Inventory"]
       summary: "GET /admin/inventory"
@@ -2631,7 +2620,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/inventory/adjustments":
-    post:
+post    post:
       operationId: postAdminInventoryAdjustments
       tags: ["Inventory"]
       summary: "POST /admin/inventory/adjustments"
@@ -2685,7 +2674,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/inventory/movements":
-    get:
+get    get:
       operationId: getAdminInventoryMovements
       tags: ["Inventory"]
       summary: "GET /admin/inventory/movements"
@@ -2732,7 +2721,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/orders":
-    get:
+get    get:
       operationId: getAdminOrders
       tags: ["Operations"]
       summary: "GET /admin/orders"
@@ -2779,7 +2768,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/orders/{id}/allocate":
-    post:
+post    post:
       operationId: postAdminOrdersIdAllocate
       tags: ["Operations"]
       summary: "POST /admin/orders/{id}/allocate"
@@ -2846,7 +2835,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/fulfillments/{id}/status":
-    patch:
+patch    patch:
       operationId: patchAdminFulfillmentsIdStatus
       tags: ["Operations"]
       summary: "PATCH /admin/fulfillments/{id}/status"
@@ -2914,7 +2903,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/returns":
-    get:
+get    get:
       operationId: getAdminReturns
       tags: ["Operations"]
       summary: "GET /admin/returns"
@@ -2962,7 +2951,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/returns/{id}/approve":
-    post:
+post    post:
       operationId: postAdminReturnsIdApprove
       tags: ["Operations"]
       summary: "POST /admin/returns/{id}/approve"
@@ -3030,7 +3019,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/returns/{id}/reject":
-    post:
+post    post:
       operationId: postAdminReturnsIdReject
       tags: ["Operations"]
       summary: "POST /admin/returns/{id}/reject"
@@ -3098,7 +3087,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/returns/{id}/receive":
-    post:
+post    post:
       operationId: postAdminReturnsIdReceive
       tags: ["Operations"]
       summary: "POST /admin/returns/{id}/receive"
@@ -3166,7 +3155,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/refunds":
-    post:
+post    post:
       operationId: postAdminRefunds
       tags: ["Operations"]
       summary: "POST /admin/refunds"
@@ -3227,7 +3216,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/users":
-    get:
+get    get:
       operationId: getAdminUsers
       tags: ["Administration"]
       summary: "GET /admin/users"
@@ -3273,8 +3262,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/admin/users":
-    post:
+post    post:
       operationId: postAdminUsers
       tags: ["Administration"]
       summary: "POST /admin/users"
@@ -3321,7 +3309,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/users/{id}/role":
-    patch:
+patch    patch:
       operationId: patchAdminUsersIdRole
       tags: ["Administration"]
       summary: "PATCH /admin/users/{id}/role"
@@ -3375,7 +3363,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/users/{id}/status":
-    patch:
+patch    patch:
       operationId: patchAdminUsersIdStatus
       tags: ["Administration"]
       summary: "PATCH /admin/users/{id}/status"
@@ -3428,7 +3416,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/reports/sales":
-    get:
+get    get:
       operationId: getAdminReportsSales
       tags: ["Administration"]
       summary: "GET /admin/reports/sales"
@@ -3475,7 +3463,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/reports/inventory":
-    get:
+get    get:
       operationId: getAdminReportsInventory
       tags: ["Administration"]
       summary: "GET /admin/reports/inventory"
@@ -3522,7 +3510,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/audit-logs":
-    get:
+get    get:
       operationId: getAdminAuditLogs
       tags: ["Administration"]
       summary: "GET /admin/audit-logs"
@@ -3569,7 +3557,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/brands":
-    post:
+post    post:
       operationId: postAdminBrands
       tags: ["Administration"]
       summary: "POST /admin/brands"
@@ -3616,7 +3604,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/admin/orders/{id}/status-history":
-    get:
+get    get:
       operationId: getAdminOrdersIdStatusHistory
       tags: ["Administration"]
       summary: "GET /admin/orders/{id}/status-history"
@@ -3764,306 +3752,6 @@ components:
         provider:
           type: string
       description: Detailed provider fields are unresolved under OPEN-01.
-      description: "بيانات الإدخال غير صحيحة"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: VALIDATION_ERROR
-              messageAr:
-                const: "بيانات الإدخال غير صحيحة"
-              messageEn:
-                const: "Invalid input data"
-      description: "مطلوب بريد إلكتروني أو رقم هاتف"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: EMAIL_OR_PHONE_REQUIRED
-              messageAr:
-                const: "مطلوب بريد إلكتروني أو رقم هاتف"
-              messageEn:
-                const: "Email or phone is required"
-      description: "يجب تسجيل الدخول"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: UNAUTHENTICATED
-              messageAr:
-                const: "يجب تسجيل الدخول"
-              messageEn:
-                const: "Authentication required"
-      description: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: INVALID_CREDENTIALS
-              messageAr:
-                const: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-              messageEn:
-                const: "Invalid email or password"
-      description: "رمز الدخول غير صالح أو منتهٍ"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: INVALID_TOKEN
-              messageAr:
-                const: "رمز الدخول غير صالح أو منتهٍ"
-              messageEn:
-                const: "Invalid or expired token"
-      description: "ليس لديك صلاحية لهذا الإجراء"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: FORBIDDEN
-              messageAr:
-                const: "ليس لديك صلاحية لهذا الإجراء"
-              messageEn:
-                const: "You do not have permission"
-      description: "المورد غير موجود"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: NOT_FOUND
-              messageAr:
-                const: "المورد غير موجود"
-              messageEn:
-                const: "Resource not found"
-      description: "البريد الإلكتروني مسجل مسبقًا"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: EMAIL_ALREADY_REGISTERED
-              messageAr:
-                const: "البريد الإلكتروني مسجل مسبقًا"
-              messageEn:
-                const: "Email is already registered"
-      description: "رقم الهاتف مسجل مسبقًا"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: PHONE_ALREADY_REGISTERED
-              messageAr:
-                const: "رقم الهاتف مسجل مسبقًا"
-              messageEn:
-                const: "Phone is already registered"
-      description: "تعارض مع الحالة الحالية"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: CONFLICT
-              messageAr:
-                const: "تعارض مع الحالة الحالية"
-              messageEn:
-                const: "Conflicts with current state"
-      description: "مفتاح الطلب مستخدم مع بيانات مختلفة"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: IDEMPOTENCY_KEY_REUSED
-              messageAr:
-                const: "مفتاح الطلب مستخدم مع بيانات مختلفة"
-              messageEn:
-                const: "Idempotency key reused with a different request"
-      description: "الإجراء يخالف قاعدة عمل"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: BUSINESS_RULE_VIOLATION
-              messageAr:
-                const: "الإجراء يخالف قاعدة عمل"
-              messageEn:
-                const: "Business rule violation"
-      description: "لا يوجد مخزن متاح يغطي الطلب"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: NO_ELIGIBLE_WAREHOUSE
-              messageAr:
-                const: "لا يوجد مخزن متاح يغطي الطلب"
-              messageEn:
-                const: "No eligible warehouse can fulfill the order"
-      description: "الكمية المطلوبة غير متاحة"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: OUT_OF_STOCK
-              messageAr:
-                const: "الكمية المطلوبة غير متاحة"
-              messageEn:
-                const: "Requested quantity is out of stock"
-      description: "يرجى تحديد موقع العنوان بدقة"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: ADDRESS_LOCATION_REQUIRED
-              messageAr:
-                const: "يرجى تحديد موقع العنوان بدقة"
-              messageEn:
-                const: "Please provide a precise address location"
-      description: "الكوبون غير صالح أو منتهٍ"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: COUPON_INVALID
-              messageAr:
-                const: "الكوبون غير صالح أو منتهٍ"
-              messageEn:
-                const: "Coupon is invalid or expired"
-      description: "الدفع عند الاستلام غير متاح لهذا الطلب"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: COD_NOT_ALLOWED
-              messageAr:
-                const: "الدفع عند الاستلام غير متاح لهذا الطلب"
-              messageEn:
-                const: "Cash on delivery is not available for this order"
-      description: "لا يمكن دفع هذا الطلب في حالته الحالية"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: ORDER_NOT_PAYABLE
-              messageAr:
-                const: "لا يمكن دفع هذا الطلب في حالته الحالية"
-              messageEn:
-                const: "Order cannot be paid in its current state"
-      description: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: ORDER_NOT_CANCELLABLE
-              messageAr:
-                const: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
-              messageEn:
-                const: "Order cannot be cancelled in its current state"
-      description: "المنتج غير مؤهل للإرجاع"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: RETURN_NOT_ELIGIBLE
-              messageAr:
-                const: "المنتج غير مؤهل للإرجاع"
-              messageEn:
-                const: "Item is not eligible for return"
-      description: "مبلغ الاسترداد يتجاوز المدفوع"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: REFUND_EXCEEDS_PAID
-              messageAr:
-                const: "مبلغ الاسترداد يتجاوز المدفوع"
-              messageEn:
-                const: "Refund amount exceeds paid amount"
-      description: "محاولات كثيرة، حاول لاحقًا"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: RATE_LIMITED
-              messageAr:
-                const: "محاولات كثيرة، حاول لاحقًا"
-              messageEn:
-                const: "Too many requests, try again later"
-      description: "حدث خطأ غير متوقع"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/Error'
-            properties:
-              code:
-                const: INTERNAL_ERROR
-              messageAr:
-                const: "حدث خطأ غير متوقع"
-              messageEn:
-                const: "An unexpected error occurred"
-
   responses:
     VALIDATION_ERROR:
       description: "بيانات الإدخال غير صحيحة"
