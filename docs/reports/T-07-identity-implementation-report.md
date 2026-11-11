@@ -29,7 +29,7 @@ Excluded: GET /me/orders.
 
 ## CI evidence
 
-<badge>All green</badge> Tested commit: `bc298c27a0d79f4cb70994547f4a80d097781e6b`.
+**All checks green.** Tested commit: `bc298c27a0d79f4cb70994547f4a80d097781e6b`.
 
 - Workflow run: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43056518538
 - `backend`: success — job 130647867963
