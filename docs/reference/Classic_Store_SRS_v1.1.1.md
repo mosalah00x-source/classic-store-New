@@ -616,10 +616,10 @@ NFR-03 وNFR-04 وNFR-05 **متابعة أداء وتشغيل، وليست أس�
 | الدور | الاسم | التوقيع | التاريخ |
 |---|---|---|---|
 | Product Owner | معتمد | اعتماد صريح بالمحادثة | 11 نوفمبر 2026 |
-| Tech Lead | | | |
-| QA Lead | | | |
-| Operations | | | |
-| Security | | | |
+| Tech Lead | Tech Lead| Tech Lead| 11 نوفمبر 2026|
+| QA Lead | QA Lead| QA Lead| 11 نوفمبر 2026|
+| Operations | Operations| Operations| 11 نوفمبر 2026|
+| Security | Security| Security| 11 نوفمبر 2026|
 
 **تصحيح تحريري (v1.1.1) قبل T-06:** مطابقة `paymentMethod` مع enum الفعلي في V1. كانت المسودة تذكر `ONLINE` وهي غير موجودة في enum. الحقول الآن: `COD` و`CARD` و`WALLET`. القيمة `OTHER` موجودة في DB لكنها غير معروضة في API v1.
 
