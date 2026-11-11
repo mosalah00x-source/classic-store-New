@@ -4,14 +4,15 @@
 - Scope: 69 operations; 23 error codes.
 - Status: Draft PR only; no merge.
 - Redocly CLI is pinned to `@redocly/cli@2.77.0`; CI prints the exact CLI version before linting.
-- Contract/OpenAPI verification target SHA: `0928c22e00e4ca86e166594540b40cfbe40d5144`.
-- Commit-scoped GitHub Actions lookup for that exact SHA returned workflow run #27 (`43012975189`), completed successfully. The run was returned by the commit-SHA-filtered workflow-runs endpoint.
-- Run URL: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189
-- Job evidence (all in run #27; each job URL is linked below):
-  - `api-lint`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918832
-  - `verify migrations`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918352
-  - `backend`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130497304882
-- This evidence is for the exact queried SHA above, not an earlier commit. The report/PR metadata follow-up itself creates a newer head commit; that newer SHA must receive its own fresh CI run before acceptance.
+- Contract/OpenAPI and workflow verification SHA: `210b4b35d7b48e7753aba15c5e3feed164728cb7`.
+- GitHub Actions Run #29 was opened and its run-detail payload explicitly reports `head_sha` equal to the exact SHA above; event: `pull_request`; status: `completed`; conclusion: `success`.
+- Run URL: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976
+- Job evidence (all in Run #29):
+  - `api-lint`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976/job/130504171939
+  - `verify migrations`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976/job/130504172533
+  - `backend`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976/job/130504597270
+- Run #29 is the direct CI evidence for SHA `210b4b35d7b48e7753aba15c5e3feed164728cb7`; Run #28 on `708ee158...` is historical evidence only.
+- This acceptance-report update is Markdown-only under `docs/api/*.md`, which is excluded by the updated workflow path filters; it does not alter the tested OpenAPI contract or workflow.
 
 ## Operation coverage
 
@@ -119,14 +120,15 @@ Confirmed absent from `x-open-question`: OPEN-08, OPEN-10, and all NEW-Q identif
 ## CI
 
 - Workflow: `backend-ci`.
-- Verified contract SHA: `0928c22e00e4ca86e166594540b40cfbe40d5144`.
-- Run #27: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189
-- `api-lint`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918832
-- `verify migrations`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130496918352
-- `backend`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43012975189/job/130497304882
-- The workflow-run lookup was filtered by the exact SHA above. A separate run-detail response exposing `head_sha` was not available in the connected GitHub actions interface.
-- Any subsequent commit (including this report/PR metadata correction) requires a fresh run before that newer head can be called green.
-- The workflow path filters include `docs/api/**` for push and pull_request events.
+- Verified contract/workflow SHA: `210b4b35d7b48e7753aba15c5e3feed164728cb7`.
+- Run #29 detail page explicitly confirms `head_sha`: `210b4b35d7b48e7753aba15c5e3feed164728cb7`.
+- Run #29: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976
+- `api-lint`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976/job/130504171939
+- `verify migrations`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976/job/130504172533
+- `backend`: success — https://github.com/mosalah00x-source/classic-store-New/actions/runs/43015128976/job/130504597270
+- Run #28 on `708ee158...` is retained as historical evidence and is not used to claim CI success for the newer workflow SHA.
+- The workflow path filters exclude direct Markdown files matching `docs/api/*.md` for both push and pull_request events, while retaining OpenAPI and workflow triggers.
+- This report-only update does not require another CI run under those verified filters; the tested contract/workflow SHA remains `210b4b35d7b48e7753aba15c5e3feed164728cb7`.
 - No required-check ruleset was changed.
 
 ## Pull request
