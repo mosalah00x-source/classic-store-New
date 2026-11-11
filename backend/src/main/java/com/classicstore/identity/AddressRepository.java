@@ -27,7 +27,7 @@ public class AddressRepository {
  }
  public boolean delete(UUID user,UUID id){return jdbc.update("delete from store.addresses where user_id=? and id=?",user,id)==1;}
 
- public boolean countryEnabled(String code){return !jdbc.query("select 1 from store.countries where code=? and is_enabled=true",(r,n)->1,code).isEmpty();}
- public boolean governorateBelongs(Long id,String country){return id==null||!jdbc.query("select 1 from store.governorates where id=? and country_code=?",(r,n)->1,id,country).isEmpty();}
+ public boolean countryEnabled(String code){return !jdbc.query("select 1 from store.countries where code=cast(? as char(2)) and is_enabled=true",(r,n)->1,code).isEmpty();}
+ public boolean governorateBelongs(Long id,String country){return id==null||!jdbc.query("select 1 from store.governorates where id=? and country_code=cast(? as char(2))",(r,n)->1,id,country).isEmpty();}
  public boolean cityBelongs(Long id,Long governorate){return id==null||governorate!=null&&!jdbc.query("select 1 from store.cities where id=? and governorate_id=?",(r,n)->1,id,governorate).isEmpty();}
 }
