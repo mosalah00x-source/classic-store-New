@@ -33,17 +33,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/products/{slug}":
     get:
       operationId: getProductsSlug
@@ -61,17 +84,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/categories":
     get:
       operationId: getCategories
@@ -83,17 +129,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/brands":
     get:
       operationId: getBrands
@@ -105,17 +174,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/auth/register":
     post:
       operationId: postAuthRegister
@@ -127,23 +219,47 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR, EMAIL_OR_PHONE_REQUIRED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
-        '400':
-          $ref: '#/components/responses/EMAIL_OR_PHONE_REQUIRED'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/EMAIL_ALREADY_REGISTERED'
-        '409':
-          $ref: '#/components/responses/PHONE_ALREADY_REGISTERED'
+          description: HTTP 409 response.
+          x-error-codes: [EMAIL_ALREADY_REGISTERED, PHONE_ALREADY_REGISTERED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/auth/login":
     post:
       operationId: postAuthLogin
@@ -155,21 +271,47 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN, INVALID_CREDENTIALS]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
-        '401':
-          $ref: '#/components/responses/INVALID_CREDENTIALS'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '429':
-          $ref: '#/components/responses/RATE_LIMITED'
+          description: HTTP 429 response.
+          x-error-codes: [RATE_LIMITED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/auth/refresh":
     post:
       operationId: postAuthRefresh
@@ -182,17 +324,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/auth/logout":
     post:
       operationId: postAuthLogout
@@ -207,17 +372,40 @@ paths:
         '204':
           description: Logout completed on client; no token revocation claim.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/auth/password/change":
     post:
       operationId: postAuthPasswordChange
@@ -231,19 +419,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN, INVALID_CREDENTIALS]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
-        '401':
-          $ref: '#/components/responses/INVALID_CREDENTIALS'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/auth/password/forgot":
     post:
       operationId: postAuthPasswordForgot
@@ -256,19 +465,47 @@ paths:
         '202':
           description: Accepted; identical response shape for existing and unknown accounts.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '429':
-          $ref: '#/components/responses/RATE_LIMITED'
+          description: HTTP 429 response.
+          x-error-codes: [RATE_LIMITED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/auth/password/reset":
     post:
       operationId: postAuthPasswordReset
@@ -281,17 +518,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me":
     get:
       operationId: getMe
@@ -305,17 +565,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me":
     patch:
       operationId: patchMe
@@ -329,17 +612,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me/addresses":
     get:
       operationId: getMeAddresses
@@ -354,17 +660,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me/addresses":
     post:
       operationId: postMeAddresses
@@ -379,17 +708,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me/addresses/{id}":
     get:
       operationId: getMeAddressesId
@@ -410,17 +762,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me/addresses/{id}":
     put:
       operationId: putMeAddressesId
@@ -441,17 +816,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me/addresses/{id}":
     delete:
       operationId: deleteMeAddressesId
@@ -471,17 +869,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/me/orders":
     get:
       operationId: getMeOrders
@@ -495,17 +916,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/carts":
     post:
       operationId: postCarts
@@ -517,17 +961,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/carts/{id}":
     get:
       operationId: getCartsId
@@ -547,17 +1014,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/carts/{id}/items/{sku}":
     put:
       operationId: putCartsIdItemsSku
@@ -582,17 +1072,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/carts/{id}/items/{sku}":
     delete:
       operationId: deleteCartsIdItemsSku
@@ -617,17 +1130,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/checkout/quote":
     post:
       operationId: postCheckoutQuote
@@ -648,25 +1184,47 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/COUPON_INVALID'
-        '422':
-          $ref: '#/components/responses/ADDRESS_LOCATION_REQUIRED'
-        '422':
-          $ref: '#/components/responses/NO_ELIGIBLE_WAREHOUSE'
-        '422':
-          $ref: '#/components/responses/OUT_OF_STOCK'
+          description: HTTP 422 response.
+          x-error-codes: [COUPON_INVALID, ADDRESS_LOCATION_REQUIRED, NO_ELIGIBLE_WAREHOUSE, OUT_OF_STOCK]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/checkout/orders":
     post:
       operationId: postCheckoutOrders
@@ -696,29 +1254,54 @@ paths:
         '201':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/NO_ELIGIBLE_WAREHOUSE'
-        '422':
-          $ref: '#/components/responses/OUT_OF_STOCK'
-        '422':
-          $ref: '#/components/responses/COD_NOT_ALLOWED'
+          description: HTTP 422 response.
+          x-error-codes: [NO_ELIGIBLE_WAREHOUSE, OUT_OF_STOCK, COD_NOT_ALLOWED, COUPON_INVALID, ADDRESS_LOCATION_REQUIRED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/IDEMPOTENCY_KEY_REUSED'
-        '422':
-          $ref: '#/components/responses/COUPON_INVALID'
-        '422':
-          $ref: '#/components/responses/ADDRESS_LOCATION_REQUIRED'
+          description: HTTP 409 response.
+          x-error-codes: [IDEMPOTENCY_KEY_REUSED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/orders/{id}":
     get:
       operationId: getOrdersId
@@ -738,17 +1321,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/orders/{id}/cancel":
     post:
       operationId: postOrdersIdCancel
@@ -768,21 +1374,54 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/ORDER_NOT_CANCELLABLE'
+          description: HTTP 422 response.
+          x-error-codes: [ORDER_NOT_CANCELLABLE]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/orders/{id}/payments":
     post:
       operationId: postOrdersIdPayments
@@ -818,23 +1457,54 @@ paths:
         '201':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/ORDER_NOT_PAYABLE'
-        '422':
-          $ref: '#/components/responses/COD_NOT_ALLOWED'
+          description: HTTP 422 response.
+          x-error-codes: [ORDER_NOT_PAYABLE, COD_NOT_ALLOWED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/IDEMPOTENCY_KEY_REUSED'
+          description: HTTP 409 response.
+          x-error-codes: [IDEMPOTENCY_KEY_REUSED]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/payments/{id}/webhooks/{provider}":
     post:
       operationId: postPaymentsIdWebhooksProvider
@@ -860,19 +1530,47 @@ paths:
         '202':
           description: Webhook accepted.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/guest/orders/{token}":
     get:
       operationId: getGuestOrdersToken
@@ -892,17 +1590,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/returns":
     post:
       operationId: postReturns
@@ -917,19 +1638,47 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+          description: HTTP 422 response.
+          x-error-codes: [RETURN_NOT_ELIGIBLE]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/returns/{id}":
     get:
       operationId: getReturnsId
@@ -950,17 +1699,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/products":
     get:
       operationId: getAdminProducts
@@ -974,17 +1746,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/products":
     post:
       operationId: postAdminProducts
@@ -998,17 +1793,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/products/{id}":
     get:
       operationId: getAdminProductsId
@@ -1028,17 +1846,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/products/{id}":
     patch:
       operationId: patchAdminProductsId
@@ -1058,17 +1899,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/products/{id}/archive":
     post:
       operationId: postAdminProductsIdArchive
@@ -1088,17 +1952,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/products/{id}/variants":
     post:
       operationId: postAdminProductsIdVariants
@@ -1118,17 +2005,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/variants/{sku}":
     patch:
       operationId: patchAdminVariantsSku
@@ -1148,17 +2058,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/categories":
     post:
       operationId: postAdminCategories
@@ -1172,17 +2105,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/coupons":
     get:
       operationId: getAdminCoupons
@@ -1196,17 +2152,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/coupons":
     post:
       operationId: postAdminCoupons
@@ -1220,17 +2199,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/coupons/{id}":
     patch:
       operationId: patchAdminCouponsId
@@ -1250,17 +2252,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/shipping-zones":
     get:
       operationId: getAdminShippingZones
@@ -1275,17 +2300,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/shipping-zones":
     post:
       operationId: postAdminShippingZones
@@ -1300,17 +2348,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/shipping-zones/{id}/rates":
     put:
       operationId: putAdminShippingZonesIdRates
@@ -1331,17 +2402,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/warehouses":
     get:
       operationId: getAdminWarehouses
@@ -1355,17 +2449,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/warehouses":
     post:
       operationId: postAdminWarehouses
@@ -1379,17 +2496,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/warehouses/{id}":
     patch:
       operationId: patchAdminWarehousesId
@@ -1409,17 +2549,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/inventory":
     get:
       operationId: getAdminInventory
@@ -1433,17 +2596,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/inventory/adjustments":
     post:
       operationId: postAdminInventoryAdjustments
@@ -1457,21 +2643,47 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/BUSINESS_RULE_VIOLATION'
-        '422':
-          $ref: '#/components/responses/OUT_OF_STOCK'
+          description: HTTP 422 response.
+          x-error-codes: [BUSINESS_RULE_VIOLATION, OUT_OF_STOCK]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/inventory/movements":
     get:
       operationId: getAdminInventoryMovements
@@ -1485,17 +2697,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/orders":
     get:
       operationId: getAdminOrders
@@ -1509,17 +2744,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/orders/{id}/allocate":
     post:
       operationId: postAdminOrdersIdAllocate
@@ -1539,23 +2797,54 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/NO_ELIGIBLE_WAREHOUSE'
-        '422':
-          $ref: '#/components/responses/OUT_OF_STOCK'
+          description: HTTP 422 response.
+          x-error-codes: [NO_ELIGIBLE_WAREHOUSE, OUT_OF_STOCK]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/fulfillments/{id}/status":
     patch:
       operationId: patchAdminFulfillmentsIdStatus
@@ -1576,21 +2865,54 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/BUSINESS_RULE_VIOLATION'
+          description: HTTP 422 response.
+          x-error-codes: [BUSINESS_RULE_VIOLATION]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/returns":
     get:
       operationId: getAdminReturns
@@ -1605,17 +2927,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/returns/{id}/approve":
     post:
       operationId: postAdminReturnsIdApprove
@@ -1636,21 +2981,54 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+          description: HTTP 422 response.
+          x-error-codes: [RETURN_NOT_ELIGIBLE]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/returns/{id}/reject":
     post:
       operationId: postAdminReturnsIdReject
@@ -1671,21 +3049,54 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+          description: HTTP 422 response.
+          x-error-codes: [RETURN_NOT_ELIGIBLE]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/returns/{id}/receive":
     post:
       operationId: postAdminReturnsIdReceive
@@ -1706,21 +3117,54 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+          description: HTTP 422 response.
+          x-error-codes: [RETURN_NOT_ELIGIBLE]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/refunds":
     post:
       operationId: postAdminRefunds
@@ -1734,21 +3178,54 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          $ref: '#/components/responses/REFUND_EXCEEDS_PAID'
+          description: HTTP 422 response.
+          x-error-codes: [REFUND_EXCEEDS_PAID]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
-          $ref: '#/components/responses/CONFLICT'
+          description: HTTP 409 response.
+          x-error-codes: [CONFLICT]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/users":
     get:
       operationId: getAdminUsers
@@ -1762,17 +3239,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/users":
     post:
       operationId: postAdminUsers
@@ -1786,17 +3286,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/users/{id}/role":
     patch:
       operationId: patchAdminUsersIdRole
@@ -1817,17 +3340,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/users/{id}/status":
     patch:
       operationId: patchAdminUsersIdStatus
@@ -1847,17 +3393,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/reports/sales":
     get:
       operationId: getAdminReportsSales
@@ -1871,17 +3440,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/reports/inventory":
     get:
       operationId: getAdminReportsInventory
@@ -1895,17 +3487,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/audit-logs":
     get:
       operationId: getAdminAuditLogs
@@ -1919,17 +3534,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/brands":
     post:
       operationId: postAdminBrands
@@ -1943,17 +3581,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   "/admin/orders/{id}/status-history":
     get:
       operationId: getAdminOrdersIdStatusHistory
@@ -1973,17 +3634,40 @@ paths:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
-          $ref: '#/components/responses/VALIDATION_ERROR'
+          description: HTTP 400 response.
+          x-error-codes: [VALIDATION_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UNAUTHENTICATED'
-        '401':
-          $ref: '#/components/responses/INVALID_TOKEN'
+          description: HTTP 401 response.
+          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          $ref: '#/components/responses/FORBIDDEN'
+          description: HTTP 403 response.
+          x-error-codes: [FORBIDDEN]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NOT_FOUND'
+          description: HTTP 404 response.
+          x-error-codes: [NOT_FOUND]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
-          $ref: '#/components/responses/INTERNAL_ERROR'
+          description: HTTP 500 response.
+          x-error-codes: [INTERNAL_ERROR]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   securitySchemes:
     bearerAuth:
@@ -2080,6 +3764,306 @@ components:
         provider:
           type: string
       description: Detailed provider fields are unresolved under OPEN-01.
+      description: "بيانات الإدخال غير صحيحة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: VALIDATION_ERROR
+              messageAr:
+                const: "بيانات الإدخال غير صحيحة"
+              messageEn:
+                const: "Invalid input data"
+      description: "مطلوب بريد إلكتروني أو رقم هاتف"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: EMAIL_OR_PHONE_REQUIRED
+              messageAr:
+                const: "مطلوب بريد إلكتروني أو رقم هاتف"
+              messageEn:
+                const: "Email or phone is required"
+      description: "يجب تسجيل الدخول"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: UNAUTHENTICATED
+              messageAr:
+                const: "يجب تسجيل الدخول"
+              messageEn:
+                const: "Authentication required"
+      description: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: INVALID_CREDENTIALS
+              messageAr:
+                const: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+              messageEn:
+                const: "Invalid email or password"
+      description: "رمز الدخول غير صالح أو منتهٍ"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: INVALID_TOKEN
+              messageAr:
+                const: "رمز الدخول غير صالح أو منتهٍ"
+              messageEn:
+                const: "Invalid or expired token"
+      description: "ليس لديك صلاحية لهذا الإجراء"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: FORBIDDEN
+              messageAr:
+                const: "ليس لديك صلاحية لهذا الإجراء"
+              messageEn:
+                const: "You do not have permission"
+      description: "المورد غير موجود"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: NOT_FOUND
+              messageAr:
+                const: "المورد غير موجود"
+              messageEn:
+                const: "Resource not found"
+      description: "البريد الإلكتروني مسجل مسبقًا"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: EMAIL_ALREADY_REGISTERED
+              messageAr:
+                const: "البريد الإلكتروني مسجل مسبقًا"
+              messageEn:
+                const: "Email is already registered"
+      description: "رقم الهاتف مسجل مسبقًا"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: PHONE_ALREADY_REGISTERED
+              messageAr:
+                const: "رقم الهاتف مسجل مسبقًا"
+              messageEn:
+                const: "Phone is already registered"
+      description: "تعارض مع الحالة الحالية"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: CONFLICT
+              messageAr:
+                const: "تعارض مع الحالة الحالية"
+              messageEn:
+                const: "Conflicts with current state"
+      description: "مفتاح الطلب مستخدم مع بيانات مختلفة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: IDEMPOTENCY_KEY_REUSED
+              messageAr:
+                const: "مفتاح الطلب مستخدم مع بيانات مختلفة"
+              messageEn:
+                const: "Idempotency key reused with a different request"
+      description: "الإجراء يخالف قاعدة عمل"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: BUSINESS_RULE_VIOLATION
+              messageAr:
+                const: "الإجراء يخالف قاعدة عمل"
+              messageEn:
+                const: "Business rule violation"
+      description: "لا يوجد مخزن متاح يغطي الطلب"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: NO_ELIGIBLE_WAREHOUSE
+              messageAr:
+                const: "لا يوجد مخزن متاح يغطي الطلب"
+              messageEn:
+                const: "No eligible warehouse can fulfill the order"
+      description: "الكمية المطلوبة غير متاحة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: OUT_OF_STOCK
+              messageAr:
+                const: "الكمية المطلوبة غير متاحة"
+              messageEn:
+                const: "Requested quantity is out of stock"
+      description: "يرجى تحديد موقع العنوان بدقة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: ADDRESS_LOCATION_REQUIRED
+              messageAr:
+                const: "يرجى تحديد موقع العنوان بدقة"
+              messageEn:
+                const: "Please provide a precise address location"
+      description: "الكوبون غير صالح أو منتهٍ"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: COUPON_INVALID
+              messageAr:
+                const: "الكوبون غير صالح أو منتهٍ"
+              messageEn:
+                const: "Coupon is invalid or expired"
+      description: "الدفع عند الاستلام غير متاح لهذا الطلب"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: COD_NOT_ALLOWED
+              messageAr:
+                const: "الدفع عند الاستلام غير متاح لهذا الطلب"
+              messageEn:
+                const: "Cash on delivery is not available for this order"
+      description: "لا يمكن دفع هذا الطلب في حالته الحالية"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: ORDER_NOT_PAYABLE
+              messageAr:
+                const: "لا يمكن دفع هذا الطلب في حالته الحالية"
+              messageEn:
+                const: "Order cannot be paid in its current state"
+      description: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: ORDER_NOT_CANCELLABLE
+              messageAr:
+                const: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
+              messageEn:
+                const: "Order cannot be cancelled in its current state"
+      description: "المنتج غير مؤهل للإرجاع"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: RETURN_NOT_ELIGIBLE
+              messageAr:
+                const: "المنتج غير مؤهل للإرجاع"
+              messageEn:
+                const: "Item is not eligible for return"
+      description: "مبلغ الاسترداد يتجاوز المدفوع"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: REFUND_EXCEEDS_PAID
+              messageAr:
+                const: "مبلغ الاسترداد يتجاوز المدفوع"
+              messageEn:
+                const: "Refund amount exceeds paid amount"
+      description: "محاولات كثيرة، حاول لاحقًا"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: RATE_LIMITED
+              messageAr:
+                const: "محاولات كثيرة، حاول لاحقًا"
+              messageEn:
+                const: "Too many requests, try again later"
+      description: "حدث خطأ غير متوقع"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: INTERNAL_ERROR
+              messageAr:
+                const: "حدث خطأ غير متوقع"
+              messageEn:
+                const: "An unexpected error occurred"
+
   responses:
     VALIDATION_ERROR:
       description: "بيانات الإدخال غير صحيحة"
@@ -2095,7 +4079,6 @@ components:
                 const: "بيانات الإدخال غير صحيحة"
               messageEn:
                 const: "Invalid input data"
-  responses:
     EMAIL_OR_PHONE_REQUIRED:
       description: "مطلوب بريد إلكتروني أو رقم هاتف"
       content:
@@ -2110,7 +4093,6 @@ components:
                 const: "مطلوب بريد إلكتروني أو رقم هاتف"
               messageEn:
                 const: "Email or phone is required"
-  responses:
     UNAUTHENTICATED:
       description: "يجب تسجيل الدخول"
       content:
@@ -2125,7 +4107,6 @@ components:
                 const: "يجب تسجيل الدخول"
               messageEn:
                 const: "Authentication required"
-  responses:
     INVALID_CREDENTIALS:
       description: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
       content:
@@ -2140,7 +4121,6 @@ components:
                 const: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
               messageEn:
                 const: "Invalid email or password"
-  responses:
     INVALID_TOKEN:
       description: "رمز الدخول غير صالح أو منتهٍ"
       content:
@@ -2155,7 +4135,6 @@ components:
                 const: "رمز الدخول غير صالح أو منتهٍ"
               messageEn:
                 const: "Invalid or expired token"
-  responses:
     FORBIDDEN:
       description: "ليس لديك صلاحية لهذا الإجراء"
       content:
@@ -2170,7 +4149,6 @@ components:
                 const: "ليس لديك صلاحية لهذا الإجراء"
               messageEn:
                 const: "You do not have permission"
-  responses:
     NOT_FOUND:
       description: "المورد غير موجود"
       content:
@@ -2185,7 +4163,6 @@ components:
                 const: "المورد غير موجود"
               messageEn:
                 const: "Resource not found"
-  responses:
     EMAIL_ALREADY_REGISTERED:
       description: "البريد الإلكتروني مسجل مسبقًا"
       content:
@@ -2200,7 +4177,6 @@ components:
                 const: "البريد الإلكتروني مسجل مسبقًا"
               messageEn:
                 const: "Email is already registered"
-  responses:
     PHONE_ALREADY_REGISTERED:
       description: "رقم الهاتف مسجل مسبقًا"
       content:
@@ -2215,7 +4191,6 @@ components:
                 const: "رقم الهاتف مسجل مسبقًا"
               messageEn:
                 const: "Phone is already registered"
-  responses:
     CONFLICT:
       description: "تعارض مع الحالة الحالية"
       content:
@@ -2230,7 +4205,6 @@ components:
                 const: "تعارض مع الحالة الحالية"
               messageEn:
                 const: "Conflicts with current state"
-  responses:
     IDEMPOTENCY_KEY_REUSED:
       description: "مفتاح الطلب مستخدم مع بيانات مختلفة"
       content:
@@ -2245,7 +4219,6 @@ components:
                 const: "مفتاح الطلب مستخدم مع بيانات مختلفة"
               messageEn:
                 const: "Idempotency key reused with a different request"
-  responses:
     BUSINESS_RULE_VIOLATION:
       description: "الإجراء يخالف قاعدة عمل"
       content:
@@ -2260,7 +4233,6 @@ components:
                 const: "الإجراء يخالف قاعدة عمل"
               messageEn:
                 const: "Business rule violation"
-  responses:
     NO_ELIGIBLE_WAREHOUSE:
       description: "لا يوجد مخزن متاح يغطي الطلب"
       content:
@@ -2275,7 +4247,6 @@ components:
                 const: "لا يوجد مخزن متاح يغطي الطلب"
               messageEn:
                 const: "No eligible warehouse can fulfill the order"
-  responses:
     OUT_OF_STOCK:
       description: "الكمية المطلوبة غير متاحة"
       content:
@@ -2290,7 +4261,6 @@ components:
                 const: "الكمية المطلوبة غير متاحة"
               messageEn:
                 const: "Requested quantity is out of stock"
-  responses:
     ADDRESS_LOCATION_REQUIRED:
       description: "يرجى تحديد موقع العنوان بدقة"
       content:
@@ -2305,7 +4275,6 @@ components:
                 const: "يرجى تحديد موقع العنوان بدقة"
               messageEn:
                 const: "Please provide a precise address location"
-  responses:
     COUPON_INVALID:
       description: "الكوبون غير صالح أو منتهٍ"
       content:
@@ -2320,7 +4289,6 @@ components:
                 const: "الكوبون غير صالح أو منتهٍ"
               messageEn:
                 const: "Coupon is invalid or expired"
-  responses:
     COD_NOT_ALLOWED:
       description: "الدفع عند الاستلام غير متاح لهذا الطلب"
       content:
@@ -2335,7 +4303,6 @@ components:
                 const: "الدفع عند الاستلام غير متاح لهذا الطلب"
               messageEn:
                 const: "Cash on delivery is not available for this order"
-  responses:
     ORDER_NOT_PAYABLE:
       description: "لا يمكن دفع هذا الطلب في حالته الحالية"
       content:
@@ -2350,7 +4317,6 @@ components:
                 const: "لا يمكن دفع هذا الطلب في حالته الحالية"
               messageEn:
                 const: "Order cannot be paid in its current state"
-  responses:
     ORDER_NOT_CANCELLABLE:
       description: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
       content:
@@ -2365,7 +4331,6 @@ components:
                 const: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
               messageEn:
                 const: "Order cannot be cancelled in its current state"
-  responses:
     RETURN_NOT_ELIGIBLE:
       description: "المنتج غير مؤهل للإرجاع"
       content:
@@ -2380,7 +4345,6 @@ components:
                 const: "المنتج غير مؤهل للإرجاع"
               messageEn:
                 const: "Item is not eligible for return"
-  responses:
     REFUND_EXCEEDS_PAID:
       description: "مبلغ الاسترداد يتجاوز المدفوع"
       content:
@@ -2395,7 +4359,6 @@ components:
                 const: "مبلغ الاسترداد يتجاوز المدفوع"
               messageEn:
                 const: "Refund amount exceeds paid amount"
-  responses:
     RATE_LIMITED:
       description: "محاولات كثيرة، حاول لاحقًا"
       content:
@@ -2410,7 +4373,6 @@ components:
                 const: "محاولات كثيرة، حاول لاحقًا"
               messageEn:
                 const: "Too many requests, try again later"
-  responses:
     INTERNAL_ERROR:
       description: "حدث خطأ غير متوقع"
       content:
