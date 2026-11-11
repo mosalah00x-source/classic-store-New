@@ -18,7 +18,8 @@ public class PasswordResetTokenService {
  String issue(UserRecord u,Instant expiresAt){
   long exp=expiresAt.getEpochSecond();
   String payload=u.id()+"."+exp;
-  return Base64.getUrlEncoder().withoutPadding().encodeToString((payload+"."+mac(payload+"."+u.passwordHash())).getBytes(StandardCharsets.UTF_8));
+  try{return Base64.getUrlEncoder().withoutPadding().encodeToString((payload+"."+mac(payload+"."+u.passwordHash())).getBytes(StandardCharsets.UTF_8));}
+  catch(Exception e){throw new IllegalStateException("Unable to create password reset fingerprint",e);}
  }
  public boolean verify(String token,UserRecord u){
   try{
