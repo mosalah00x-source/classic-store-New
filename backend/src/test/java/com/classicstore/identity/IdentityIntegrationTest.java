@@ -84,8 +84,21 @@ class IdentityIntegrationTest {
   UserRecord user=new UserRecord(other,null,null,null,"Other","Two","CUSTOMER",true);
   String token=tokens.issue(user,"access");
   mvc.perform(get("/api/v1/me/addresses/"+address).header("Authorization","Bearer "+token)).andExpect(status().isNotFound());
+  mvc.perform(put("/api/v1/me/addresses/"+address).header("Authorization","Bearer "+token)
+   .contentType(APPLICATION_JSON).content("{\\"recipientName\\":\\"Other\\",\\"phone\\":\\"201000000001\\",\\"countryCode\\":\\"EG\\",\\"street\\":\\"Changed\\",\\"isDefault\\":false}"))
+   .andExpect(status().isNotFound());
   mvc.perform(delete("/api/v1/me/addresses/"+address).header("Authorization","Bearer "+token)).andExpect(status().isNotFound());
   assertThat(jdbc.queryForObject("select count(*) from store.addresses where id=?",Integer.class,address)).isEqualTo(1);
+ }
+
+ @Test void nonCustomerRoleCannotAccessCustomerAccountEndpoints()throws Exception{
+  String token=tokens.issue(new UserRecord(UUID.randomUUID(),null,null,null,"Warehouse","User","WAREHOUSE",true),"access");
+  mvc.perform(get("/api/v1/me").header("Authorization","Bearer "+token)).andExpect(status().isForbidden());
+ }
+
+ @Test void malformedBearerTokenReturnsInvalidToken()throws Exception{
+  mvc.perform(get("/api/v1/me").header("Authorization","Bearer not-a-valid-jwt"))
+   .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("INVALID_TOKEN"));
  }
 
  @Test void resetFingerprintAllowsReuseUntilPasswordHashChanges(){
