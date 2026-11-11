@@ -36,7 +36,7 @@ public class IdentityService {
   UUID id;
   try{
    String decoded=new String(java.util.Base64.getUrlDecoder().decode(token),java.nio.charset.StandardCharsets.UTF_8);
-   id=UUID.fromString(decoded.split("\\\\.",3)[0]);
+   id=UUID.fromString(decoded.split("\\.",3)[0]);
   }catch(Exception e){throw err("INVALID_TOKEN",401);}
   UserRecord u=users.byId(id).orElseThrow(()->err("INVALID_TOKEN",401));
   if(!resets.verify(token,u))throw err("INVALID_TOKEN",401);
