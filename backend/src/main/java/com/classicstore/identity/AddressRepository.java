@@ -2,6 +2,7 @@ package com.classicstore.identity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,11 +14,11 @@ public class AddressRepository {
  public AddressRepository(JdbcTemplate jdbc){this.jdbc=jdbc;}
  public List<AddressView> list(UUID user){return jdbc.query("select * from store.addresses where user_id=? order by is_default desc,created_at",M,user);}
  public Optional<AddressView> get(UUID user,UUID id){return jdbc.query("select * from store.addresses where user_id=? and id=?",M,user,id).stream().findFirst();}
- public AddressView create(UUID user,IdentityDtos.AddressRequest a){
+ @Transactional public AddressView create(UUID user,IdentityDtos.AddressRequest a){
   if(a.isDefault())jdbc.update("update store.addresses set is_default=false where user_id=?",user);
   return jdbc.queryForObject("insert into store.addresses(user_id,recipient_name,phone,country_code,governorate_id,city_id,district,street,building,apartment,postal_code,latitude,longitude,is_default) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?) returning *",M,user,a.recipientName(),a.phone(),a.countryCode(),a.governorateId(),a.cityId(),a.district(),a.street(),a.building(),a.apartment(),a.postalCode(),a.latitude(),a.longitude(),a.isDefault());
  }
- public Optional<AddressView> update(UUID user,UUID id,IdentityDtos.AddressRequest a){
+ @Transactional public Optional<AddressView> update(UUID user,UUID id,IdentityDtos.AddressRequest a){
   if(get(user,id).isEmpty())return Optional.empty();
   if(a.isDefault())jdbc.update("update store.addresses set is_default=false where user_id=?",user);
   jdbc.update("update store.addresses set recipient_name=?,phone=?,country_code=?,governorate_id=?,city_id=?,district=?,street=?,building=?,apartment=?,postal_code=?,latitude=?,longitude=?,is_default=? where user_id=? and id=?",
