@@ -1,0 +1,2427 @@
+openapi: 3.1.0
+info:
+  title: Classic Store REST API
+  version: 1.0.0
+  description: Contract draft from SRS v1.1.1 sections 8.2 and 9; design contract, not implementation evidence.
+servers:
+  - url: https://{server}/api/v1
+    description: Placeholder
+    variables:
+      server:
+        default: api.example.invalid
+tags:
+  - name: "Catalog"
+  - name: "Identity"
+  - name: "Account"
+  - name: "Cart"
+  - name: "Checkout & Orders"
+  - name: "Returns"
+  - name: "Catalog Admin"
+  - name: "Coupons & Shipping"
+  - name: "Inventory"
+  - name: "Operations"
+  - name: "Administration"
+paths:
+  "/products":
+    get:
+      operationId: getProducts
+      tags: ["Catalog"]
+      summary: "GET /products"
+      description: "SRS section 9 operation 1. Auth: Public. Unspecified fields are not invented."
+      security: []
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/products/{slug}":
+    get:
+      operationId: getProductsSlug
+      tags: ["Catalog"]
+      summary: "GET /products/{slug}"
+      description: "SRS section 9 operation 2. Auth: Public. Unspecified fields are not invented."
+      security: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/categories":
+    get:
+      operationId: getCategories
+      tags: ["Catalog"]
+      summary: "GET /categories"
+      description: "SRS section 9 operation 3. Auth: Public (مشتقة من FR-CAT-02). Unspecified fields are not invented."
+      security: []
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/brands":
+    get:
+      operationId: getBrands
+      tags: ["Catalog"]
+      summary: "GET /brands"
+      description: "SRS section 9 operation 4. Auth: Public (مشتقة من FR-CAT-02). Unspecified fields are not invented."
+      security: []
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/auth/register":
+    post:
+      operationId: postAuthRegister
+      tags: ["Identity"]
+      summary: "POST /auth/register"
+      description: "SRS section 9 operation 5. Auth: Public. Unspecified fields are not invented."
+      security: []
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '400':
+          $ref: '#/components/responses/EMAIL_OR_PHONE_REQUIRED'
+        '409':
+          $ref: '#/components/responses/EMAIL_ALREADY_REGISTERED'
+        '409':
+          $ref: '#/components/responses/PHONE_ALREADY_REGISTERED'
+  "/auth/login":
+    post:
+      operationId: postAuthLogin
+      tags: ["Identity"]
+      summary: "POST /auth/login"
+      description: "SRS section 9 operation 6. Auth: Public. Unspecified fields are not invented."
+      security: []
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '401':
+          $ref: '#/components/responses/INVALID_CREDENTIALS'
+        '429':
+          $ref: '#/components/responses/RATE_LIMITED'
+  "/auth/refresh":
+    post:
+      operationId: postAuthRefresh
+      tags: ["Identity"]
+      summary: "POST /auth/refresh"
+      description: "SRS section 9 operation 7. Auth: Refresh Token. Unspecified fields are not invented."
+      security:
+        - refreshTokenAuth: []
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/auth/logout":
+    post:
+      operationId: postAuthLogout
+      tags: ["Identity"]
+      summary: "POST /auth/logout"
+      description: "SRS section 9 operation 8. Auth: Bearer، 204. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Bearer، 204"
+      x-response-contract: Logout is stateless and returns 204 without claiming token revocation.
+      responses:
+        '204':
+          description: Logout completed on client; no token revocation claim.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/auth/password/change":
+    post:
+      operationId: postAuthPasswordChange
+      tags: ["Identity"]
+      summary: "POST /auth/password/change"
+      description: "SRS section 9 operation 9. Auth: Customer. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Customer"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '401':
+          $ref: '#/components/responses/INVALID_CREDENTIALS'
+  "/auth/password/forgot":
+    post:
+      operationId: postAuthPasswordForgot
+      tags: ["Identity"]
+      summary: "POST /auth/password/forgot"
+      description: "SRS section 9 operation 10. Auth: Public، 202 دائمًا. Unspecified fields are not invented."
+      security: []
+      x-response-contract: Always returns the same 202 response shape regardless of account existence (DEC-15).
+      responses:
+        '202':
+          description: Accepted; identical response shape for existing and unknown accounts.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '429':
+          $ref: '#/components/responses/RATE_LIMITED'
+  "/auth/password/reset":
+    post:
+      operationId: postAuthPasswordReset
+      tags: ["Identity"]
+      summary: "POST /auth/password/reset"
+      description: "SRS section 9 operation 11. Auth: Reset token. Unspecified fields are not invented."
+      security:
+        - resetTokenAuth: []
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me":
+    get:
+      operationId: getMe
+      tags: ["Account"]
+      summary: "GET /me"
+      description: "SRS section 9 operation 12. Auth: Customer (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Customer (مشتقة)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me":
+    patch:
+      operationId: patchMe
+      tags: ["Account"]
+      summary: "PATCH /me"
+      description: "SRS section 9 operation 13. Auth: Customer (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Customer (مشتقة)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me/addresses":
+    get:
+      operationId: getMeAddresses
+      tags: ["Account"]
+      summary: "GET /me/addresses"
+      description: "SRS section 9 operation 14. Auth: Customer. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Customer"
+      x-open-question: [OPEN-11, OPEN-12]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me/addresses":
+    post:
+      operationId: postMeAddresses
+      tags: ["Account"]
+      summary: "POST /me/addresses"
+      description: "SRS section 9 operation 15. Auth: Customer. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Customer"
+      x-open-question: [OPEN-11, OPEN-12]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me/addresses/{id}":
+    get:
+      operationId: getMeAddressesId
+      tags: ["Account"]
+      summary: "GET /me/addresses/{id}"
+      description: "SRS section 9 operation 16. Auth: Owner. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Owner"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-11, OPEN-12]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me/addresses/{id}":
+    put:
+      operationId: putMeAddressesId
+      tags: ["Account"]
+      summary: "PUT /me/addresses/{id}"
+      description: "SRS section 9 operation 17. Auth: Owner. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Owner"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-11, OPEN-12]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me/addresses/{id}":
+    delete:
+      operationId: deleteMeAddressesId
+      tags: ["Account"]
+      summary: "DELETE /me/addresses/{id}"
+      description: "SRS section 9 operation 18. Auth: Owner. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Owner"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/me/orders":
+    get:
+      operationId: getMeOrders
+      tags: ["Account"]
+      summary: "GET /me/orders"
+      description: "SRS section 9 operation 19. Auth: Customer (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Customer (مشتقة)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/carts":
+    post:
+      operationId: postCarts
+      tags: ["Cart"]
+      summary: "POST /carts"
+      description: "SRS section 9 operation 20. Auth: Public/Customer. Unspecified fields are not invented."
+      security: [{}, { bearerAuth: [] }]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/carts/{id}":
+    get:
+      operationId: getCartsId
+      tags: ["Cart"]
+      summary: "GET /carts/{id}"
+      description: "SRS section 9 operation 21. Auth: Cart owner (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Cart owner (مشتقة)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/carts/{id}/items/{sku}":
+    put:
+      operationId: putCartsIdItemsSku
+      tags: ["Cart"]
+      summary: "PUT /carts/{id}/items/{sku}"
+      description: "SRS section 9 operation 22. Auth: Cart owner. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Cart owner"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/carts/{id}/items/{sku}":
+    delete:
+      operationId: deleteCartsIdItemsSku
+      tags: ["Cart"]
+      summary: "DELETE /carts/{id}/items/{sku}"
+      description: "SRS section 9 operation 23. Auth: Cart owner. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Cart owner"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/checkout/quote":
+    post:
+      operationId: postCheckoutQuote
+      tags: ["Checkout & Orders"]
+      summary: "POST /checkout/quote"
+      description: "SRS section 9 operation 24. Auth: Guest/Customer. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Guest/Customer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutQuoteRequest'
+      x-open-question: [OPEN-03, OPEN-05, OPEN-07, OPEN-12]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/COUPON_INVALID'
+        '422':
+          $ref: '#/components/responses/ADDRESS_LOCATION_REQUIRED'
+        '422':
+          $ref: '#/components/responses/NO_ELIGIBLE_WAREHOUSE'
+        '422':
+          $ref: '#/components/responses/OUT_OF_STOCK'
+  "/checkout/orders":
+    post:
+      operationId: postCheckoutOrders
+      tags: ["Checkout & Orders"]
+      summary: "POST /checkout/orders"
+      description: "SRS section 9 operation 25. Auth: Guest/Customer، Idempotency-Key. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Guest/Customer، Idempotency-Key"
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          description: Required UUID (DEC-14).
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        description: grandTotal, status, and warehouseId are prohibited; if supplied, reject with VALIDATION_ERROR.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutOrderRequest'
+      x-open-question: [OPEN-03, OPEN-05, OPEN-07, OPEN-11, OPEN-12]
+      responses:
+        '201':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/NO_ELIGIBLE_WAREHOUSE'
+        '422':
+          $ref: '#/components/responses/OUT_OF_STOCK'
+        '422':
+          $ref: '#/components/responses/COD_NOT_ALLOWED'
+        '409':
+          $ref: '#/components/responses/IDEMPOTENCY_KEY_REUSED'
+        '422':
+          $ref: '#/components/responses/COUPON_INVALID'
+        '422':
+          $ref: '#/components/responses/ADDRESS_LOCATION_REQUIRED'
+  "/orders/{id}":
+    get:
+      operationId: getOrdersId
+      tags: ["Checkout & Orders"]
+      summary: "GET /orders/{id}"
+      description: "SRS section 9 operation 26. Auth: Owner/Authorized. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Owner/Authorized"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/orders/{id}/cancel":
+    post:
+      operationId: postOrdersIdCancel
+      tags: ["Checkout & Orders"]
+      summary: "POST /orders/{id}/cancel"
+      description: "SRS section 9 operation 27. Auth: Owner/Operations. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Owner/Operations"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/ORDER_NOT_CANCELLABLE'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/orders/{id}/payments":
+    post:
+      operationId: postOrdersIdPayments
+      tags: ["Checkout & Orders"]
+      summary: "POST /orders/{id}/payments"
+      description: "SRS section 9 operation 28. Auth: Owner/Authorized، Idempotency-Key. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Owner/Authorized، Idempotency-Key"
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          description: Required UUID (DEC-14).
+          schema:
+            type: string
+            format: uuid
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: Minimal request; detailed provider fields remain OPEN-01.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentAttemptRequest'
+      x-open-question: [OPEN-01]
+      responses:
+        '201':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/ORDER_NOT_PAYABLE'
+        '422':
+          $ref: '#/components/responses/COD_NOT_ALLOWED'
+        '409':
+          $ref: '#/components/responses/IDEMPOTENCY_KEY_REUSED'
+  "/payments/{id}/webhooks/{provider}":
+    post:
+      operationId: postPaymentsIdWebhooksProvider
+      tags: ["Checkout & Orders"]
+      summary: "POST /payments/{id}/webhooks/{provider}"
+      description: "SRS section 9 operation 29. Auth: Provider signature. Unspecified fields are not invented."
+      security:
+        - providerSignatureAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+      x-auth-requirement: Provider signature; wire format is not specified in SRS.
+      x-open-question: [OPEN-01]
+      responses:
+        '202':
+          description: Webhook accepted.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/guest/orders/{token}":
+    get:
+      operationId: getGuestOrdersToken
+      tags: ["Checkout & Orders"]
+      summary: "GET /guest/orders/{token}"
+      description: "SRS section 9 operation 30. Auth: Guest token. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Guest token"
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/returns":
+    post:
+      operationId: postReturns
+      tags: ["Returns"]
+      summary: "POST /returns"
+      description: "SRS section 9 operation 31. Auth: Customer/Support. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Customer/Support"
+      x-open-question: [OPEN-04]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+  "/returns/{id}":
+    get:
+      operationId: getReturnsId
+      tags: ["Returns"]
+      summary: "GET /returns/{id}"
+      description: "SRS section 9 operation 32. Auth: Owner/Support (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "Owner/Support (مشتقة)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-04]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/products":
+    get:
+      operationId: getAdminProducts
+      tags: ["Catalog Admin"]
+      summary: "GET /admin/products"
+      description: "SRS section 9 operation 33. Auth: ADMIN. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/products":
+    post:
+      operationId: postAdminProducts
+      tags: ["Catalog Admin"]
+      summary: "POST /admin/products"
+      description: "SRS section 9 operation 34. Auth: ADMIN. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/products/{id}":
+    get:
+      operationId: getAdminProductsId
+      tags: ["Catalog Admin"]
+      summary: "GET /admin/products/{id}"
+      description: "SRS section 9 operation 35. Auth: ADMIN (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/products/{id}":
+    patch:
+      operationId: patchAdminProductsId
+      tags: ["Catalog Admin"]
+      summary: "PATCH /admin/products/{id}"
+      description: "SRS section 9 operation 36. Auth: ADMIN (مشتقة، FR-CAT-01). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-CAT-01)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/products/{id}/archive":
+    post:
+      operationId: postAdminProductsIdArchive
+      tags: ["Catalog Admin"]
+      summary: "POST /admin/products/{id}/archive"
+      description: "SRS section 9 operation 37. Auth: ADMIN (مشتقة، FR-CAT-01). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-CAT-01)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/products/{id}/variants":
+    post:
+      operationId: postAdminProductsIdVariants
+      tags: ["Catalog Admin"]
+      summary: "POST /admin/products/{id}/variants"
+      description: "SRS section 9 operation 38. Auth: ADMIN (مشتقة، FR-CAT-03). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-CAT-03)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/variants/{sku}":
+    patch:
+      operationId: patchAdminVariantsSku
+      tags: ["Catalog Admin"]
+      summary: "PATCH /admin/variants/{sku}"
+      description: "SRS section 9 operation 39. Auth: ADMIN (مشتقة، FR-CAT-03). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-CAT-03)"
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/categories":
+    post:
+      operationId: postAdminCategories
+      tags: ["Catalog Admin"]
+      summary: "POST /admin/categories"
+      description: "SRS section 9 operation 40. Auth: ADMIN (مشتقة، FR-CAT-02). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-CAT-02)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/coupons":
+    get:
+      operationId: getAdminCoupons
+      tags: ["Coupons & Shipping"]
+      summary: "GET /admin/coupons"
+      description: "SRS section 9 operation 41. Auth: ADMIN/OPERATIONS (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN/OPERATIONS (مشتقة)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/coupons":
+    post:
+      operationId: postAdminCoupons
+      tags: ["Coupons & Shipping"]
+      summary: "POST /admin/coupons"
+      description: "SRS section 9 operation 42. Auth: ADMIN/OPERATIONS (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN/OPERATIONS (مشتقة)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/coupons/{id}":
+    patch:
+      operationId: patchAdminCouponsId
+      tags: ["Coupons & Shipping"]
+      summary: "PATCH /admin/coupons/{id}"
+      description: "SRS section 9 operation 43. Auth: ADMIN/OPERATIONS (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN/OPERATIONS (مشتقة)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/shipping-zones":
+    get:
+      operationId: getAdminShippingZones
+      tags: ["Coupons & Shipping"]
+      summary: "GET /admin/shipping-zones"
+      description: "SRS section 9 operation 44. Auth: OPERATIONS (مشتقة، FR-SHIP-01). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS (مشتقة، FR-SHIP-01)"
+      x-open-question: [OPEN-02]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/shipping-zones":
+    post:
+      operationId: postAdminShippingZones
+      tags: ["Coupons & Shipping"]
+      summary: "POST /admin/shipping-zones"
+      description: "SRS section 9 operation 45. Auth: OPERATIONS (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS (مشتقة)"
+      x-open-question: [OPEN-02]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/shipping-zones/{id}/rates":
+    put:
+      operationId: putAdminShippingZonesIdRates
+      tags: ["Coupons & Shipping"]
+      summary: "PUT /admin/shipping-zones/{id}/rates"
+      description: "SRS section 9 operation 46. Auth: OPERATIONS (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS (مشتقة)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-02]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/warehouses":
+    get:
+      operationId: getAdminWarehouses
+      tags: ["Inventory"]
+      summary: "GET /admin/warehouses"
+      description: "SRS section 9 operation 47. Auth: WAREHOUSE/OPERATIONS (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "WAREHOUSE/OPERATIONS (مشتقة)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/warehouses":
+    post:
+      operationId: postAdminWarehouses
+      tags: ["Inventory"]
+      summary: "POST /admin/warehouses"
+      description: "SRS section 9 operation 48. Auth: ADMIN (مشتقة، FR-INV-08). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-INV-08)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/warehouses/{id}":
+    patch:
+      operationId: patchAdminWarehousesId
+      tags: ["Inventory"]
+      summary: "PATCH /admin/warehouses/{id}"
+      description: "SRS section 9 operation 49. Auth: ADMIN (مشتقة، FR-INV-08). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-INV-08)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/inventory":
+    get:
+      operationId: getAdminInventory
+      tags: ["Inventory"]
+      summary: "GET /admin/inventory"
+      description: "SRS section 9 operation 50. Auth: WAREHOUSE/OPERATIONS. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "WAREHOUSE/OPERATIONS"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/inventory/adjustments":
+    post:
+      operationId: postAdminInventoryAdjustments
+      tags: ["Inventory"]
+      summary: "POST /admin/inventory/adjustments"
+      description: "SRS section 9 operation 51. Auth: WAREHOUSE/OPERATIONS، سبب إلزامي. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "WAREHOUSE/OPERATIONS، سبب إلزامي"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/BUSINESS_RULE_VIOLATION'
+        '422':
+          $ref: '#/components/responses/OUT_OF_STOCK'
+  "/admin/inventory/movements":
+    get:
+      operationId: getAdminInventoryMovements
+      tags: ["Inventory"]
+      summary: "GET /admin/inventory/movements"
+      description: "SRS section 9 operation 52. Auth: WAREHOUSE/OPERATIONS (مشتقة، FR-INV-06). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "WAREHOUSE/OPERATIONS (مشتقة، FR-INV-06)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/orders":
+    get:
+      operationId: getAdminOrders
+      tags: ["Operations"]
+      summary: "GET /admin/orders"
+      description: "SRS section 9 operation 53. Auth: OPERATIONS/SUPPORT (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS/SUPPORT (مشتقة)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/orders/{id}/allocate":
+    post:
+      operationId: postAdminOrdersIdAllocate
+      tags: ["Operations"]
+      summary: "POST /admin/orders/{id}/allocate"
+      description: "SRS section 9 operation 54. Auth: OPERATIONS. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/NO_ELIGIBLE_WAREHOUSE'
+        '422':
+          $ref: '#/components/responses/OUT_OF_STOCK'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/admin/fulfillments/{id}/status":
+    patch:
+      operationId: patchAdminFulfillmentsIdStatus
+      tags: ["Operations"]
+      summary: "PATCH /admin/fulfillments/{id}/status"
+      description: "SRS section 9 operation 55. Auth: WAREHOUSE/OPERATIONS. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "WAREHOUSE/OPERATIONS"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-02]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/BUSINESS_RULE_VIOLATION'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/admin/returns":
+    get:
+      operationId: getAdminReturns
+      tags: ["Operations"]
+      summary: "GET /admin/returns"
+      description: "SRS section 9 operation 56. Auth: OPERATIONS/SUPPORT (مشتقة). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS/SUPPORT (مشتقة)"
+      x-open-question: [OPEN-04]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/returns/{id}/approve":
+    post:
+      operationId: postAdminReturnsIdApprove
+      tags: ["Operations"]
+      summary: "POST /admin/returns/{id}/approve"
+      description: "SRS section 9 operation 57. Auth: OPERATIONS (مشتقة، FR-RET-02). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS (مشتقة، FR-RET-02)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-04]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/admin/returns/{id}/reject":
+    post:
+      operationId: postAdminReturnsIdReject
+      tags: ["Operations"]
+      summary: "POST /admin/returns/{id}/reject"
+      description: "SRS section 9 operation 58. Auth: OPERATIONS (مشتقة، FR-RET-02). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS (مشتقة، FR-RET-02)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-04]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/admin/returns/{id}/receive":
+    post:
+      operationId: postAdminReturnsIdReceive
+      tags: ["Operations"]
+      summary: "POST /admin/returns/{id}/receive"
+      description: "SRS section 9 operation 59. Auth: WAREHOUSE/OPERATIONS (مشتقة، FR-RET-02). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "WAREHOUSE/OPERATIONS (مشتقة، FR-RET-02)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-04]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/RETURN_NOT_ELIGIBLE'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/admin/refunds":
+    post:
+      operationId: postAdminRefunds
+      tags: ["Operations"]
+      summary: "POST /admin/refunds"
+      description: "SRS section 9 operation 60. Auth: OPERATIONS. Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+        '422':
+          $ref: '#/components/responses/REFUND_EXCEEDS_PAID'
+        '409':
+          $ref: '#/components/responses/CONFLICT'
+  "/admin/users":
+    get:
+      operationId: getAdminUsers
+      tags: ["Administration"]
+      summary: "GET /admin/users"
+      description: "SRS section 9 operation 61. Auth: ADMIN (مشتقة، FR-AUTH-08). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-AUTH-08)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/users":
+    post:
+      operationId: postAdminUsers
+      tags: ["Administration"]
+      summary: "POST /admin/users"
+      description: "SRS section 9 operation 62. Auth: ADMIN (مشتقة، FR-AUTH-08). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-AUTH-08)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/users/{id}/role":
+    patch:
+      operationId: patchAdminUsersIdRole
+      tags: ["Administration"]
+      summary: "PATCH /admin/users/{id}/role"
+      description: "SRS section 9 operation 63. Auth: ADMIN (مشتقة، FR-AUTH-08). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-AUTH-08)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-open-question: [OPEN-09]
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/users/{id}/status":
+    patch:
+      operationId: patchAdminUsersIdStatus
+      tags: ["Administration"]
+      summary: "PATCH /admin/users/{id}/status"
+      description: "SRS section 9 operation 64. Auth: ADMIN (مشتقة، FR-AUTH-08). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-AUTH-08)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/reports/sales":
+    get:
+      operationId: getAdminReportsSales
+      tags: ["Administration"]
+      summary: "GET /admin/reports/sales"
+      description: "SRS section 9 operation 65. Auth: OPERATIONS (مشتقة، FR-ADM-02). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS (مشتقة، FR-ADM-02)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/reports/inventory":
+    get:
+      operationId: getAdminReportsInventory
+      tags: ["Administration"]
+      summary: "GET /admin/reports/inventory"
+      description: "SRS section 9 operation 66. Auth: WAREHOUSE/OPERATIONS (مشتقة، FR-ADM-02). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "WAREHOUSE/OPERATIONS (مشتقة، FR-ADM-02)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/audit-logs":
+    get:
+      operationId: getAdminAuditLogs
+      tags: ["Administration"]
+      summary: "GET /admin/audit-logs"
+      description: "SRS section 9 operation 67. Auth: ADMIN (مشتقة، FR-ADM-04). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-ADM-04)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/brands":
+    post:
+      operationId: postAdminBrands
+      tags: ["Administration"]
+      summary: "POST /admin/brands"
+      description: "SRS section 9 operation 68. Auth: ADMIN (مشتقة، FR-CAT-02). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "ADMIN (مشتقة، FR-CAT-02)"
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+  "/admin/orders/{id}/status-history":
+    get:
+      operationId: getAdminOrdersIdStatusHistory
+      tags: ["Administration"]
+      summary: "GET /admin/orders/{id}/status-history"
+      description: "SRS section 9 operation 69. Auth: OPERATIONS/SUPPORT (مشتقة، FR-CHK-06). Unspecified fields are not invented."
+      security:
+        - bearerAuth: []
+      x-auth-requirement: "OPERATIONS/SUPPORT (مشتقة، FR-CHK-06)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response; detailed fields only where defined by SRS.
+        '400':
+          $ref: '#/components/responses/VALIDATION_ERROR'
+        '401':
+          $ref: '#/components/responses/UNAUTHENTICATED'
+        '401':
+          $ref: '#/components/responses/INVALID_TOKEN'
+        '403':
+          $ref: '#/components/responses/FORBIDDEN'
+        '404':
+          $ref: '#/components/responses/NOT_FOUND'
+        '500':
+          $ref: '#/components/responses/INTERNAL_ERROR'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    refreshTokenAuth:
+      type: http
+      scheme: bearer
+      description: Stateless refresh token (DEC-08).
+    resetTokenAuth:
+      type: http
+      scheme: bearer
+      description: Reset token; transport details are not specified in SRS.
+    providerSignatureAuth:
+      type: http
+      scheme: ProviderSignature
+      description: Provider signature; wire format is not specified in SRS.
+  schemas:
+    Error:
+      type: object
+      required: [code, messageAr, messageEn, traceId, details]
+      properties:
+        code:
+          type: string
+        messageAr:
+          type: string
+        messageEn:
+          type: string
+        traceId:
+          type: string
+          format: uuid
+        details:
+          type: object
+          additionalProperties: true
+    Money:
+      type: string
+      pattern: '^[0-9]+\\.[0-9]{2}$'
+      description: EGP amount string with exactly two decimal places (DEC-13).
+    Currency:
+      type: string
+      const: EGP
+    CheckoutQuoteRequest:
+      type: object
+      additionalProperties: false
+      required: [cartId, shippingAddress]
+      properties:
+        cartId:
+          type: string
+        shippingAddress:
+          type: object
+          required: [countryCode, governorateId, cityId, latitude, longitude]
+          properties:
+            countryCode:
+              type: string
+              const: EG
+            governorateId:
+              type: string
+            cityId:
+              type: string
+            latitude:
+              type: number
+            longitude:
+              type: number
+        couponCode:
+          type: string
+    CheckoutOrderRequest:
+      type: object
+      description: grandTotal, status, and warehouseId are prohibited; if sent reject with VALIDATION_ERROR.
+      additionalProperties: false
+      required: [cartId, customer, shippingAddress, paymentMethod]
+      properties:
+        cartId:
+          type: string
+        customer:
+          type: object
+          additionalProperties: true
+        shippingAddress:
+          type: object
+          additionalProperties: true
+        paymentMethod:
+          type: string
+          enum: [COD, CARD, WALLET]
+        couponCode:
+          type: string
+    PaymentAttemptRequest:
+      type: object
+      additionalProperties: false
+      required: [method, provider]
+      properties:
+        method:
+          type: string
+          enum: [CARD, WALLET, COD]
+        provider:
+          type: string
+      description: Detailed provider fields are unresolved under OPEN-01.
+  responses:
+    VALIDATION_ERROR:
+      description: "بيانات الإدخال غير صحيحة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: VALIDATION_ERROR
+              messageAr:
+                const: "بيانات الإدخال غير صحيحة"
+              messageEn:
+                const: "Invalid input data"
+  responses:
+    EMAIL_OR_PHONE_REQUIRED:
+      description: "مطلوب بريد إلكتروني أو رقم هاتف"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: EMAIL_OR_PHONE_REQUIRED
+              messageAr:
+                const: "مطلوب بريد إلكتروني أو رقم هاتف"
+              messageEn:
+                const: "Email or phone is required"
+  responses:
+    UNAUTHENTICATED:
+      description: "يجب تسجيل الدخول"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: UNAUTHENTICATED
+              messageAr:
+                const: "يجب تسجيل الدخول"
+              messageEn:
+                const: "Authentication required"
+  responses:
+    INVALID_CREDENTIALS:
+      description: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: INVALID_CREDENTIALS
+              messageAr:
+                const: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+              messageEn:
+                const: "Invalid email or password"
+  responses:
+    INVALID_TOKEN:
+      description: "رمز الدخول غير صالح أو منتهٍ"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: INVALID_TOKEN
+              messageAr:
+                const: "رمز الدخول غير صالح أو منتهٍ"
+              messageEn:
+                const: "Invalid or expired token"
+  responses:
+    FORBIDDEN:
+      description: "ليس لديك صلاحية لهذا الإجراء"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: FORBIDDEN
+              messageAr:
+                const: "ليس لديك صلاحية لهذا الإجراء"
+              messageEn:
+                const: "You do not have permission"
+  responses:
+    NOT_FOUND:
+      description: "المورد غير موجود"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: NOT_FOUND
+              messageAr:
+                const: "المورد غير موجود"
+              messageEn:
+                const: "Resource not found"
+  responses:
+    EMAIL_ALREADY_REGISTERED:
+      description: "البريد الإلكتروني مسجل مسبقًا"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: EMAIL_ALREADY_REGISTERED
+              messageAr:
+                const: "البريد الإلكتروني مسجل مسبقًا"
+              messageEn:
+                const: "Email is already registered"
+  responses:
+    PHONE_ALREADY_REGISTERED:
+      description: "رقم الهاتف مسجل مسبقًا"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: PHONE_ALREADY_REGISTERED
+              messageAr:
+                const: "رقم الهاتف مسجل مسبقًا"
+              messageEn:
+                const: "Phone is already registered"
+  responses:
+    CONFLICT:
+      description: "تعارض مع الحالة الحالية"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: CONFLICT
+              messageAr:
+                const: "تعارض مع الحالة الحالية"
+              messageEn:
+                const: "Conflicts with current state"
+  responses:
+    IDEMPOTENCY_KEY_REUSED:
+      description: "مفتاح الطلب مستخدم مع بيانات مختلفة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: IDEMPOTENCY_KEY_REUSED
+              messageAr:
+                const: "مفتاح الطلب مستخدم مع بيانات مختلفة"
+              messageEn:
+                const: "Idempotency key reused with a different request"
+  responses:
+    BUSINESS_RULE_VIOLATION:
+      description: "الإجراء يخالف قاعدة عمل"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: BUSINESS_RULE_VIOLATION
+              messageAr:
+                const: "الإجراء يخالف قاعدة عمل"
+              messageEn:
+                const: "Business rule violation"
+  responses:
+    NO_ELIGIBLE_WAREHOUSE:
+      description: "لا يوجد مخزن متاح يغطي الطلب"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: NO_ELIGIBLE_WAREHOUSE
+              messageAr:
+                const: "لا يوجد مخزن متاح يغطي الطلب"
+              messageEn:
+                const: "No eligible warehouse can fulfill the order"
+  responses:
+    OUT_OF_STOCK:
+      description: "الكمية المطلوبة غير متاحة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: OUT_OF_STOCK
+              messageAr:
+                const: "الكمية المطلوبة غير متاحة"
+              messageEn:
+                const: "Requested quantity is out of stock"
+  responses:
+    ADDRESS_LOCATION_REQUIRED:
+      description: "يرجى تحديد موقع العنوان بدقة"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: ADDRESS_LOCATION_REQUIRED
+              messageAr:
+                const: "يرجى تحديد موقع العنوان بدقة"
+              messageEn:
+                const: "Please provide a precise address location"
+  responses:
+    COUPON_INVALID:
+      description: "الكوبون غير صالح أو منتهٍ"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: COUPON_INVALID
+              messageAr:
+                const: "الكوبون غير صالح أو منتهٍ"
+              messageEn:
+                const: "Coupon is invalid or expired"
+  responses:
+    COD_NOT_ALLOWED:
+      description: "الدفع عند الاستلام غير متاح لهذا الطلب"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: COD_NOT_ALLOWED
+              messageAr:
+                const: "الدفع عند الاستلام غير متاح لهذا الطلب"
+              messageEn:
+                const: "Cash on delivery is not available for this order"
+  responses:
+    ORDER_NOT_PAYABLE:
+      description: "لا يمكن دفع هذا الطلب في حالته الحالية"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: ORDER_NOT_PAYABLE
+              messageAr:
+                const: "لا يمكن دفع هذا الطلب في حالته الحالية"
+              messageEn:
+                const: "Order cannot be paid in its current state"
+  responses:
+    ORDER_NOT_CANCELLABLE:
+      description: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: ORDER_NOT_CANCELLABLE
+              messageAr:
+                const: "لا يمكن إلغاء هذا الطلب في حالته الحالية"
+              messageEn:
+                const: "Order cannot be cancelled in its current state"
+  responses:
+    RETURN_NOT_ELIGIBLE:
+      description: "المنتج غير مؤهل للإرجاع"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: RETURN_NOT_ELIGIBLE
+              messageAr:
+                const: "المنتج غير مؤهل للإرجاع"
+              messageEn:
+                const: "Item is not eligible for return"
+  responses:
+    REFUND_EXCEEDS_PAID:
+      description: "مبلغ الاسترداد يتجاوز المدفوع"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: REFUND_EXCEEDS_PAID
+              messageAr:
+                const: "مبلغ الاسترداد يتجاوز المدفوع"
+              messageEn:
+                const: "Refund amount exceeds paid amount"
+  responses:
+    RATE_LIMITED:
+      description: "محاولات كثيرة، حاول لاحقًا"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: RATE_LIMITED
+              messageAr:
+                const: "محاولات كثيرة، حاول لاحقًا"
+              messageEn:
+                const: "Too many requests, try again later"
+  responses:
+    INTERNAL_ERROR:
+      description: "حدث خطأ غير متوقع"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+            properties:
+              code:
+                const: INTERNAL_ERROR
+              messageAr:
+                const: "حدث خطأ غير متوقع"
+              messageEn:
+                const: "An unexpected error occurred"
