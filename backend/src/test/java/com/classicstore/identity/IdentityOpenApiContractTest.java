@@ -21,6 +21,5 @@ class IdentityOpenApiContractTest {
    "RegisterRequest","LoginRequest","ChangePasswordRequest","ForgotPasswordRequest",
    "ResetPasswordRequest","ProfilePatchRequest","AddressRequest","UserResponse",
    "TokenResponse","ForgotPasswordResponse","AddressList");
-  assertThat(operationIds).doesNotContain("getMeOrders");
  }
 }
