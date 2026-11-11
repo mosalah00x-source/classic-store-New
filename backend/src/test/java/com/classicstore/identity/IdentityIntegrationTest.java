@@ -99,6 +99,27 @@ class IdentityIntegrationTest {
    .andExpect(status().isTooManyRequests()).andExpect(jsonPath("$.code").value("RATE_LIMITED"));
  }
 
+ @Test void customerCanCreateReadUpdateAndDeleteOwnAddress()throws Exception{
+  JsonNode pair=json.readTree(registerAndLogin("address-crud@example.test"));
+  String token=pair.get("accessToken").asText();
+  String body="{\"recipientName\":\"Test Recipient\",\"phone\":\"201000000000\",\"countryCode\":\"EG\",\"street\":\"First Street\",\"isDefault\":true}";
+  String created=mvc.perform(post("/api/v1/me/addresses").header("Authorization","Bearer "+token)
+   .contentType(APPLICATION_JSON).content(body)).andExpect(status().isCreated())
+   .andExpect(jsonPath("$.street").value("First Street")).andReturn().getResponse().getContentAsString();
+  String id=json.readTree(created).get("id").asText();
+  mvc.perform(get("/api/v1/me/addresses").header("Authorization","Bearer "+token))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(1));
+  mvc.perform(get("/api/v1/me/addresses/"+id).header("Authorization","Bearer "+token))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.isDefault").value(true));
+  mvc.perform(put("/api/v1/me/addresses/"+id).header("Authorization","Bearer "+token)
+   .contentType(APPLICATION_JSON).content("{\"recipientName\":\"Test Recipient\",\"phone\":\"201000000000\",\"countryCode\":\"EG\",\"street\":\"Updated Street\",\"isDefault\":true}"))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.street").value("Updated Street"));
+  mvc.perform(delete("/api/v1/me/addresses/"+id).header("Authorization","Bearer "+token))
+   .andExpect(status().isNoContent());
+  mvc.perform(get("/api/v1/me/addresses/"+id).header("Authorization","Bearer "+token))
+   .andExpect(status().isNotFound());
+ }
+
  @Test void foreignAddressIsNotReadableWritableOrDeletable()throws Exception{
   UUID owner=UUID.randomUUID(),other=UUID.randomUUID(),address=UUID.randomUUID();
   jdbc.update("insert into store.users(id,email,password_hash,first_name,last_name) values (?,?,?,?,?)",owner,"owner-"+owner+"@example.test",encoder.encode("StrongPassword#2026"),"Owner","One");
