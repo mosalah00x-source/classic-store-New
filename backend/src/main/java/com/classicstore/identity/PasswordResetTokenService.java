@@ -14,8 +14,9 @@ public class PasswordResetTokenService {
   try{key=Base64.getDecoder().decode(p.passwordReset().fingerprintSecretBase64());if(key.length<32)throw new IllegalArgumentException();}
   catch(Exception e){throw new IllegalStateException("security.password-reset.fingerprint-secret-base64 must be Base64-encoded and at least 32 bytes",e);}
  }
- public String issue(UserRecord u){
-  long exp=Instant.now().plusSeconds(900).getEpochSecond();
+ public String issue(UserRecord u){return issue(u,Instant.now().plusSeconds(900));}
+ String issue(UserRecord u,Instant expiresAt){
+  long exp=expiresAt.getEpochSecond();
   String payload=u.id()+"."+exp;
   return Base64.getUrlEncoder().withoutPadding().encodeToString((payload+"."+mac(payload+"."+u.passwordHash())).getBytes(StandardCharsets.UTF_8));
  }
