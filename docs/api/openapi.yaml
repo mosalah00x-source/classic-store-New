@@ -912,7 +912,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        '204':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
