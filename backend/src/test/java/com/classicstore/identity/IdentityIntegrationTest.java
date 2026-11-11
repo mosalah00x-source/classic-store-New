@@ -61,7 +61,7 @@ class IdentityIntegrationTest {
  @Test void profilePatchLeavesOmittedFieldsUnchanged()throws Exception{
   JsonNode pair=json.readTree(registerAndLogin("profile-patch@example.test"));
   mvc.perform(patch("/api/v1/me").header("Authorization","Bearer "+pair.get("accessToken").asText())
-   .contentType(APPLICATION_JSON).content("{\\"firstName\\":\\"Updated\\"}"))
+   .content("{\"firstName\":\"Updated\"}"))
    .andExpect(status().isOk()).andExpect(jsonPath("$.firstName").value("Updated"))
    .andExpect(jsonPath("$.lastName").value("User"));
  }
