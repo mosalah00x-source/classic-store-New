@@ -1,5 +1,4 @@
 package com.classicstore.config;
-
 import com.classicstore.common.error.ApiError;
 import com.classicstore.common.tracing.CorrelationIdFilter;
 import com.classicstore.identity.security.JwtAuthenticationFilter;
@@ -30,7 +29,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
  @Bean PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(12); }
-
  @Bean SecurityFilterChain securityFilterChain(HttpSecurity http,ObjectMapper mapper,
    CorrelationIdFilter correlationIdFilter,JwtAuthenticationFilter jwtFilter,CorsConfigurationSource corsConfigurationSource)throws Exception {
   AuthenticationEntryPoint entry=(request,response,ex)->{
@@ -47,6 +45,7 @@ public class SecurityConfig {
     .requestMatchers("/actuator/health").permitAll()
     .requestMatchers("/api/v1/auth/register","/api/v1/auth/login","/api/v1/auth/refresh",
       "/api/v1/auth/password/forgot","/api/v1/auth/password/reset").permitAll()
+    .requestMatchers("/api/v1/products", "/api/v1/products/**", "/api/v1/categories").permitAll()
     .requestMatchers("/api/v1/me","/api/v1/me/**","/api/v1/auth/password/change").hasRole("CUSTOMER")
     .requestMatchers("/api/v1/auth/logout").authenticated()
     .anyRequest().authenticated())
@@ -54,16 +53,14 @@ public class SecurityConfig {
    .addFilterBefore(correlationIdFilter,UsernamePasswordAuthenticationFilter.class)
    .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class).build();
  }
- @Bean CorsConfigurationSource corsConfigurationSource(@Value("${security.cors.allowed-origins:}") String allowedOrigins){
+ @Bean CorsConfigurationSource corsConfigurationSource(@Value("\${security.cors.allowed-origins:}") String allowedOrigins){
   CorsConfiguration config=new CorsConfiguration();
   config.setAllowedOrigins(Arrays.stream(allowedOrigins.split(",")).map(String::trim).filter(v->!v.isEmpty()).toList());
   config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
   config.setAllowedHeaders(List.of("Authorization","Content-Type","X-Correlation-Id"));
-  config.setExposedHeaders(List.of("X-Correlation-Id"));
-  config.setAllowCredentials(false);
+  config.setExposedHeaders(List.of("X-Correlation-Id")); config.setAllowCredentials(false);
   UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
-  source.registerCorsConfiguration("/api/**",config);
-  return source;
+  source.registerCorsConfiguration("/api/**",config); return source;
  }
  @Bean FilterRegistrationBean<CorrelationIdFilter> correlationIdFilterRegistration(CorrelationIdFilter filter){
   FilterRegistrationBean<CorrelationIdFilter> r=new FilterRegistrationBean<>(filter);r.setEnabled(false);return r;
