@@ -121,12 +121,13 @@ class CatalogIntegrationTest {
 
     @Test
     void sortModesAndZeroBasedPaginationAreApplied() throws Exception {
-        UUID oldest = product("أقدم", "Oldest", "old-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2026-01-01T00:00:00Z"));
-        UUID middle = product("أوسط", "Middle", "middle-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2026-02-01T00:00:00Z"));
-        UUID newest = product("أحدث", "Newest", "new-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2026-03-01T00:00:00Z"));
-        variant(oldest, "OLD-" + UUID.randomUUID(), "100.00", true, "{}");
-        variant(middle, "MID-" + UUID.randomUUID(), "300.00", true, "{}");
-        variant(newest, "NEW-" + UUID.randomUUID(), "200.00", true, "{}");
+        String marker = "sort-marker-" + UUID.randomUUID();
+        UUID oldest = product("أقدم", marker + " Oldest", "old-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2099-01-01T00:00:00Z"));
+        UUID middle = product("أوسط", marker + " Middle", "middle-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2099-02-01T00:00:00Z"));
+        UUID newest = product("أحدث", marker + " Newest", "new-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2099-03-01T00:00:00Z"));
+        variant(oldest, "OLD-" + marker, "100.00", true, "{}");
+        variant(middle, "MID-" + marker, "300.00", true, "{}");
+        variant(newest, "NEW-" + marker, "200.00", true, "{}");
         String oldSlug = slug(oldest), middleSlug = slug(middle), newSlug = slug(newest);
 
         mvc.perform(get("/api/v1/products").param("sort", "priceAsc"))
@@ -136,7 +137,7 @@ class CatalogIntegrationTest {
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(middleSlug));
         mvc.perform(get("/api/v1/products").param("sort", "newest"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(newSlug));
-        mvc.perform(get("/api/v1/products").param("page", "1").param("size", "1").param("sort", "priceAsc"))
+        mvc.perform(get("/api/v1/products").param("q", marker).param("page", "1").param("size", "1").param("sort", "priceAsc"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.page").value(1))
             .andExpect(jsonPath("$.size").value(1)).andExpect(jsonPath("$.totalElements").value(org.hamcrest.Matchers.greaterThanOrEqualTo(3)))
             .andExpect(jsonPath("$.totalPages").value(org.hamcrest.Matchers.greaterThanOrEqualTo(3)))
@@ -218,7 +219,7 @@ class CatalogIntegrationTest {
     private void assertOnlyTarget(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request) throws Exception {
         String body = mvc.perform(request).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         JsonNode content = json.readTree(body).get("content");
-        assertThat(content).hasSize(1);
+        assertThat(content.size()).isEqualTo(1);
     }
 
     private void assertContainsOnly(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request,
@@ -230,8 +231,9 @@ class CatalogIntegrationTest {
     }
 
     private Set<String> fieldNames(JsonNode node) {
-        return StreamSupport.stream(((Iterable<String>) () -> node.fieldNames()).spliterator(), false)
-            .collect(java.util.stream.Collectors.toSet());
+        Set<String> names = new java.util.HashSet<>();
+        node.fieldNames().forEachRemaining(names::add);
+        return names;
     }
 
     private UUID category(String slug, boolean active) {
