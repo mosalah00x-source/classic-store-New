@@ -66,9 +66,9 @@ class CatalogRepository {
         MapSqlParameterSource params = filterParameters(filters)
             .addValue("size", filters.size()).addValue("offset", filters.offset());
         String orderBy = switch (filters.sort()) {
-            case "newest" -> "p.created_at DESC";
-            case "priceAsc" -> "price.price_from ASC NULLS LAST";
-            case "priceDesc" -> "price.price_from DESC NULLS LAST";
+            case "newest" -> "p.created_at DESC, p.id ASC";
+            case "priceAsc" -> "price.price_from ASC NULLS LAST, p.id ASC";
+            case "priceDesc" -> "price.price_from DESC NULLS LAST, p.id ASC";
             default -> throw new IllegalArgumentException("Unsupported catalog sort");
         };
         String sql = PRODUCT_SELECT + " WHERE p.status = 'ACTIVE' " + filterClause(filters)

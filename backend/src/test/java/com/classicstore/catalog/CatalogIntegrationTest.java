@@ -220,6 +220,119 @@ class CatalogIntegrationTest {
             "id", "sku", "titleAr", "attributes", "price", "currency");
     }
 
+    @Test
+    void newestUsesIdAscendingForCreatedAtTiesAcrossRepeatedCalls() throws Exception {
+        String marker = "newest-tie-" + UUID.randomUUID();
+        Instant createdAt = Instant.parse("2026-10-01T12:00:00Z");
+        for (int i = 0; i < 4; i++) {
+            UUID id = product("ترتيب أحدث", marker + " product " + i,
+                "newest-tie-" + UUID.randomUUID(), "ACTIVE", null, createdAt);
+            variant(id, "NEWEST-TIE-" + UUID.randomUUID(), "40.00", true, "{}");
+        }
+
+        List<String> expected = expectedIds(marker, "p.created_at DESC, p.id ASC");
+        List<String> firstCall = listIds(marker, "newest", 0, 20);
+        assertThat(firstCall).containsExactlyElementsOf(expected);
+        for (int attempt = 0; attempt < 3; attempt++) {
+            assertThat(listIds(marker, "newest", 0, 20)).containsExactlyElementsOf(firstCall);
+        }
+    }
+
+    @Test
+    void equalPricesUseIdAscendingForBothPriceSortModes() throws Exception {
+        String marker = "price-tie-" + UUID.randomUUID();
+        for (int i = 0; i < 4; i++) {
+            UUID id = product("تعادل سعر", marker + " product " + i,
+                "price-tie-" + UUID.randomUUID(), "ACTIVE", null,
+                Instant.parse("2026-10-02T12:00:00Z").plusSeconds(i));
+            variant(id, "PRICE-TIE-" + UUID.randomUUID(), "75.00", true, "{}");
+        }
+
+        List<String> expectedAsc = expectedIds(marker, "price.price_from ASC NULLS LAST, p.id ASC");
+        List<String> expectedDesc = expectedIds(marker, "price.price_from DESC NULLS LAST, p.id ASC");
+        assertThat(listIds(marker, "priceAsc", 0, 20)).containsExactlyElementsOf(expectedAsc);
+        assertThat(listIds(marker, "priceDesc", 0, 20)).containsExactlyElementsOf(expectedDesc);
+        assertThat(expectedAsc).containsExactlyElementsOf(expectedDesc);
+    }
+
+    @Test
+    void walkingAllPagesReturnsEveryProductExactlyOnceForEachSortMode() throws Exception {
+        String marker = "page-walk-" + UUID.randomUUID();
+        Instant baseTime = Instant.parse("2026-10-03T12:00:00Z");
+        String[] prices = {"50.00", "20.00", "50.00", null, "20.00"};
+        for (int i = 0; i < prices.length; i++) {
+            UUID id = product("ترقيم صفحات", marker + " product " + i,
+                "page-walk-" + UUID.randomUUID(), "ACTIVE", null, baseTime.plusSeconds(i % 2));
+            if (prices[i] != null) {
+                variant(id, "PAGE-WALK-" + UUID.randomUUID(), prices[i], true, "{}");
+            }
+        }
+
+        for (String sort : List.of("newest", "priceAsc", "priceDesc")) {
+            String orderBy = switch (sort) {
+                case "newest" -> "p.created_at DESC, p.id ASC";
+                case "priceAsc" -> "price.price_from ASC NULLS LAST, p.id ASC";
+                case "priceDesc" -> "price.price_from DESC NULLS LAST, p.id ASC";
+                default -> throw new IllegalArgumentException("Unexpected test sort");
+            };
+            List<String> expected = expectedIds(marker, orderBy);
+            List<String> walked = new ArrayList<>();
+            for (int page = 0; page < 3; page++) {
+                walked.addAll(listIds(marker, sort, page, 2));
+            }
+            assertThat(walked).hasSize(5);
+            assertThat(new java.util.HashSet<>(walked)).hasSize(5);
+            assertThat(walked).containsExactlyElementsOf(expected);
+        }
+    }
+
+    @Test
+    void productsWithoutActiveVariantPriceAreLastInBothPriceSortModes() throws Exception {
+        String marker = "null-price-" + UUID.randomUUID();
+        UUID low = product("سعر منخفض", marker + " low", "null-price-" + UUID.randomUUID(),
+            "ACTIVE", null, Instant.parse("2026-10-04T12:00:00Z"));
+        UUID high = product("سعر مرتفع", marker + " high", "null-price-" + UUID.randomUUID(),
+            "ACTIVE", null, Instant.parse("2026-10-04T12:00:00Z"));
+        UUID nullA = product("بلا سعر أ", marker + " null a", "null-price-" + UUID.randomUUID(),
+            "ACTIVE", null, Instant.parse("2026-10-04T12:00:00Z"));
+        UUID nullB = product("بلا سعر ب", marker + " null b", "null-price-" + UUID.randomUUID(),
+            "ACTIVE", null, Instant.parse("2026-10-04T12:00:00Z"));
+        variant(low, "NULL-PRICE-LOW-" + UUID.randomUUID(), "10.00", true, "{}");
+        variant(high, "NULL-PRICE-HIGH-" + UUID.randomUUID(), "90.00", true, "{}");
+
+        List<String> nullIds = List.of(nullA.toString(), nullB.toString()).stream().sorted().toList();
+        for (String sort : List.of("priceAsc", "priceDesc")) {
+            List<String> actual = listIds(marker, sort, 0, 20);
+            assertThat(actual).hasSize(4);
+            assertThat(actual.subList(2, 4)).containsExactlyElementsOf(nullIds);
+        }
+    }
+
+    private List<String> listIds(String marker, String sort, int page, int size) throws Exception {
+        String body = mvc.perform(get("/api/v1/products").param("q", marker)
+                .param("sort", sort).param("page", Integer.toString(page))
+                .param("size", Integer.toString(size)))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        List<String> ids = new ArrayList<>();
+        json.readTree(body).get("content").forEach(node -> ids.add(node.get("id").asText()));
+        return ids;
+    }
+
+    private List<String> expectedIds(String marker, String orderBy) {
+        String sql = """
+            SELECT p.id::text
+              FROM store.products p
+              CROSS JOIN LATERAL (
+                  SELECT MIN(v.price) AS price_from
+                    FROM store.product_variants v
+                   WHERE v.product_id = p.id AND v.is_active = true
+              ) price
+             WHERE p.status = 'ACTIVE' AND p.name_en ILIKE ?
+             ORDER BY
+            """ + orderBy;
+        return jdbc.queryForList(sql, String.class, "%" + marker + "%");
+    }
+
     private void assertOnlyTarget(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request, UUID expected) throws Exception {
         String body = mvc.perform(request).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         JsonNode content = json.readTree(body).get("content");
