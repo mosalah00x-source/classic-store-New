@@ -12,7 +12,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const t = await getTranslations('HomePage');
   return (
     <main className="page-shell">
-      <header className="topbar"><span className="brand-mark">CS</span><span className="brand-name">Classic Store</span><LocaleSwitcher /></header>
+      <header className="topbar"><span className="brand-mark">CS</span><span className="brand-name">Classic Store</span><LocaleSwitcher /><nav className="auth-nav"><a href={`/${locale}/login`}>{locale === 'ar' ? 'دخول' : 'Sign in'}</a><a href={`/${locale}/register`}>{locale === 'ar' ? 'إنشاء حساب' : 'Register'}</a></nav></header>
       <section className="hero">
         <p className="eyebrow">CLASSIC STORE · FOUNDATION</p>
         <h1>{t('title')}</h1><p className="hero-copy">{t('subtitle')}</p>
