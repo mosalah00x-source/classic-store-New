@@ -95,14 +95,14 @@ class CatalogIntegrationTest {
         variant(third, "THIRD-SKU-" + UUID.randomUUID(), "75.00", true, "{}");
         associate(third, categoryB);
 
-        assertOnlyTarget(get("/api/v1/products").param("q", "needle"));
+        assertOnlyTarget(get("/api/v1/products").param("q", "needle"), target);
         assertContainsOnly(get("/api/v1/products").param("categoryId", categoryA.toString()), target, other);
         assertContainsOnly(get("/api/v1/products").param("brandId", brandA.toString()), target, third);
         assertContainsOnly(get("/api/v1/products").param("minPrice", "100.00"), target, other);
         assertContainsOnly(get("/api/v1/products").param("maxPrice", "150.00"), target, third);
         assertOnlyTarget(get("/api/v1/products").param("categoryId", categoryA.toString())
             .param("brandId", brandA.toString()).param("minPrice", "100.00")
-            .param("maxPrice", "150.00").param("q", "needle"));
+            .param("maxPrice", "150.00").param("q", "needle"), target);
     }
 
     @Test
@@ -115,7 +115,7 @@ class CatalogIntegrationTest {
         mvc.perform(get("/api/v1/products").param("q", "50%_"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(1))
             .andExpect(jsonPath("$.content[0].id").value(matching.toString()));
-        mvc.perform(get("/api/v1/products").param("q", "COTTON"))
+        mvc.perform(get("/api/v1/products").param("q", "COTTON 50%"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].id").value(matching.toString()));
     }
 
@@ -130,12 +130,12 @@ class CatalogIntegrationTest {
         variant(newest, "NEW-" + marker, "200.00", true, "{}");
         String oldSlug = slug(oldest), middleSlug = slug(middle), newSlug = slug(newest);
 
-        mvc.perform(get("/api/v1/products").param("sort", "priceAsc"))
+        mvc.perform(get("/api/v1/products").param("q", marker).param("sort", "priceAsc"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(oldSlug))
             .andExpect(jsonPath("$.content[1].slug").value(newSlug)).andExpect(jsonPath("$.content[2].slug").value(middleSlug));
-        mvc.perform(get("/api/v1/products").param("sort", "priceDesc"))
+        mvc.perform(get("/api/v1/products").param("q", marker).param("sort", "priceDesc"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(middleSlug));
-        mvc.perform(get("/api/v1/products").param("sort", "newest"))
+        mvc.perform(get("/api/v1/products").param("q", marker).param("sort", "newest"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(newSlug));
         mvc.perform(get("/api/v1/products").param("q", marker).param("page", "1").param("size", "1").param("sort", "priceAsc"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.page").value(1))
@@ -216,10 +216,11 @@ class CatalogIntegrationTest {
             "id", "sku", "titleAr", "attributes", "price", "currency");
     }
 
-    private void assertOnlyTarget(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request) throws Exception {
+    private void assertOnlyTarget(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request, UUID expected) throws Exception {
         String body = mvc.perform(request).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         JsonNode content = json.readTree(body).get("content");
         assertThat(content.size()).isEqualTo(1);
+        assertThat(content.get(0).get("id").asText()).isEqualTo(expected.toString());
     }
 
     private void assertContainsOnly(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request,
