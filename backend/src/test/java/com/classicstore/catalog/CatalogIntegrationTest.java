@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -306,6 +307,62 @@ class CatalogIntegrationTest {
             assertThat(actual).hasSize(4);
             assertThat(actual.subList(2, 4)).containsExactlyElementsOf(nullIds);
         }
+    }
+
+
+    @Test
+    void publicBrandsAreOrderedByNameThenId() throws Exception {
+        brandWithState("Zulu " + UUID.randomUUID(), true);
+        brandWithState("Alpha " + UUID.randomUUID(), true);
+        brandWithState("Same " + UUID.randomUUID(), true);
+        brandWithState("Same " + UUID.randomUUID(), true);
+
+        List<String> expected = jdbc.queryForList(
+            "SELECT id::text FROM store.brands WHERE is_active = true ORDER BY name ASC, id ASC", String.class);
+        String body = mvc.perform(get("/api/v1/brands"))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        List<String> actual = new ArrayList<>();
+        json.readTree(body).forEach(item -> actual.add(item.get("id").asText()));
+        assertThat(actual).containsExactlyElementsOf(expected);
+    }
+
+    @Test
+    void publicBrandsExcludeInactiveRows() throws Exception {
+        UUID hiddenId = brandWithState("Hidden " + UUID.randomUUID(), false);
+        String body = mvc.perform(get("/api/v1/brands"))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        List<String> ids = new ArrayList<>();
+        json.readTree(body).forEach(item -> ids.add(item.get("id").asText()));
+        assertThat(ids).doesNotContain(hiddenId.toString());
+    }
+
+    @Test
+    @Transactional
+    void publicBrandsReturnEmptyArrayWhenTableIsEmpty() throws Exception {
+        jdbc.execute("TRUNCATE TABLE store.products CASCADE");
+        jdbc.execute("TRUNCATE TABLE store.brands CASCADE");
+        mvc.perform(get("/api/v1/brands"))
+            .andExpect(status().isOk()).andExpect(content().json("[]"));
+    }
+
+    @Test
+    void publicBrandResponseFieldsMatchContract() throws Exception {
+        UUID id = brandWithState("Contract " + UUID.randomUUID(), true);
+        String body = mvc.perform(get("/api/v1/brands"))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JsonNode found = null;
+        for (JsonNode item : json.readTree(body)) {
+            if (id.toString().equals(item.get("id").asText())) found = item;
+        }
+        assertThat(found).isNotNull();
+        assertThat(fieldNames(found)).containsExactlyInAnyOrder("id", "name", "slug");
+        assertThat(found.get("name").asText()).startsWith("Contract ");
+    }
+
+    private UUID brandWithState(String name, boolean active) {
+        return jdbc.queryForObject(
+            "INSERT INTO store.brands(name, slug, is_active) VALUES (?, ?, ?) RETURNING id",
+            UUID.class, name, "brand-" + UUID.randomUUID(), active);
     }
 
     private List<String> listIds(String marker, String sort, int page, int size) throws Exception {

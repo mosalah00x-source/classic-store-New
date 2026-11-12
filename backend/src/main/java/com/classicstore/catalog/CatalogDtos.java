@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public final class CatalogDtos {
     private CatalogDtos() {}
-    public record Brand(String name) {}
+    public record Brand(UUID id, String name, String slug) {}
     public record ProductImage(UUID id, UUID variantId, String imageUrl, String altAr, int sortOrder) {}
     public record Category(UUID id, UUID parentId, String nameAr, String nameEn, String slug, int sortOrder) {}
     public record ProductVariant(UUID id, String sku, String titleAr, Map<String, Object> attributes, String price, String currency) {}

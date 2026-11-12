@@ -225,41 +225,22 @@ paths:
       operationId: getBrands
       tags: ["Catalog"]
       summary: "GET /brands"
-      description: "SRS section 9 operation 4. Auth: Public (مشتقة من FR-CAT-02). Unspecified fields are not invented."
+      description: >-
+        Returns a flat, unpaginated list of active brands. Results are ordered
+        deterministically by name ascending and then id ascending. V2 stores
+        brand names without localized variants.
       security: []
       responses:
         '200':
-          description: Successful response; detailed fields only where defined by SRS.
-        '400':
-          description: HTTP 400 response.
-          x-error-codes: [VALIDATION_ERROR]
+          description: Flat list of active brands; no pagination.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: HTTP 401 response.
-          x-error-codes: [UNAUTHENTICATED, INVALID_TOKEN]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: HTTP 403 response.
-          x-error-codes: [FORBIDDEN]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: HTTP 404 response.
-          x-error-codes: [NOT_FOUND]
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brand'
         '500':
-          description: HTTP 500 response.
+          description: Unexpected server error.
           x-error-codes: [INTERNAL_ERROR]
           content:
             application/json:
@@ -4147,11 +4128,16 @@ components:
       description: Flat category record. parentId is used by clients to build the hierarchy.
     Brand:
       type: object
-      required: [name]
+      required: [id, name, slug]
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
-      description: Name only; V2 does not store localized brand names.
+        slug:
+          type: string
+      description: Brand identifier, name, and slug; V2 does not store localized brand names.
     CheckoutQuoteResponse:
       type: object
       required: [subtotal, discount, shipping, tax, grandTotal, currency]

@@ -12,14 +12,14 @@ class CatalogMapper {
     ProductSummary toSummary(CatalogRepository.ProductRow row, List<Category> categories) {
         return new ProductSummary(row.id(), row.slug(), row.nameAr(), row.nameEn(),
             money(row.priceFrom()), "EGP", row.primaryImage(),
-            row.brandName() == null ? null : new Brand(row.brandName()), categories);
+            row.brandName() == null ? null : new Brand(row.brandId(), row.brandName(), row.brandSlug()), categories);
     }
 
     ProductDetail toDetail(CatalogRepository.ProductRow row, List<Category> categories,
                            List<ProductVariant> variants, List<ProductImage> images) {
         return new ProductDetail(row.id(), row.slug(), row.nameAr(), row.nameEn(),
             row.descriptionAr(), row.descriptionEn(),
-            row.brandName() == null ? null : new Brand(row.brandName()),
+            row.brandName() == null ? null : new Brand(row.brandId(), row.brandName(), row.brandSlug()),
             categories, variants, images);
     }
 

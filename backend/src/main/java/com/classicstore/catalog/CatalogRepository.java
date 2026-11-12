@@ -22,7 +22,7 @@ import static com.classicstore.catalog.CatalogDtos.*;
 class CatalogRepository {
     private static final String PRODUCT_SELECT = """
         SELECT p.id, p.slug, p.name_ar, p.name_en, p.description_ar, p.description_en,
-               price.price_from, b.name AS brand_name,
+               price.price_from, b.id AS brand_id, b.name AS brand_name, b.slug AS brand_slug,
                image.id AS primary_image_id, image.variant_id AS primary_image_variant_id,
                image.image_url AS primary_image_url, image.alt_ar AS primary_image_alt_ar,
                image.sort_order AS primary_image_sort_order
@@ -51,7 +51,7 @@ class CatalogRepository {
         return new ProductRow(rs.getObject("id", UUID.class), rs.getString("slug"),
             rs.getString("name_ar"), rs.getString("name_en"), rs.getString("description_ar"),
             rs.getString("description_en"), rs.getBigDecimal("price_from"),
-            rs.getString("brand_name"), image);
+            rs.getObject("brand_id", UUID.class), rs.getString("brand_name"), rs.getString("brand_slug"), image);
     };
 
     private final NamedParameterJdbcTemplate jdbc;
@@ -96,6 +96,16 @@ class CatalogRepository {
             + " WHERE p.status = 'ACTIVE' AND p.slug = :slug LIMIT 1",
             Map.of("slug", slug), PRODUCT_MAPPER);
         return rows.stream().findFirst();
+    }
+
+    List<Brand> findActiveBrands() {
+        return jdbc.query("""
+            SELECT id, name, slug
+              FROM store.brands
+             WHERE is_active = true
+             ORDER BY name ASC, id ASC
+            """, (rs, n) -> new Brand(rs.getObject("id", UUID.class),
+                rs.getString("name"), rs.getString("slug")));
     }
 
     List<Category> findActiveCategories() {
@@ -201,6 +211,6 @@ class CatalogRepository {
     }
 
     record ProductRow(UUID id, String slug, String nameAr, String nameEn, String descriptionAr,
-                      String descriptionEn, BigDecimal priceFrom, String brandName,
-                      ProductImage primaryImage) {}
+                      String descriptionEn, BigDecimal priceFrom, UUID brandId, String brandName,
+                      String brandSlug, ProductImage primaryImage) {}
 }

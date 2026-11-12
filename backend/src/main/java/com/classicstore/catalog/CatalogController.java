@@ -25,4 +25,6 @@ class CatalogController {
     ProductDetail product(@PathVariable String slug) { return service.getProduct(slug); }
     @GetMapping("/categories")
     List<Category> categories() { return service.getCategories(); }
+    @GetMapping("/brands")
+    List<Brand> brands() { return service.getBrands(); }
 }

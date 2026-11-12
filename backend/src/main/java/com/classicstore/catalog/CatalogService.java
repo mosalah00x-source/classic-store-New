@@ -43,6 +43,9 @@ class CatalogService {
     @Transactional(readOnly = true)
     List<Category> getCategories() { return repository.findActiveCategories(); }
 
+    @Transactional(readOnly = true)
+    List<Brand> getBrands() { return repository.findActiveBrands(); }
+
     private static Filters filters(String q, String categoryId, String brandId, String minPrice,
                                    String maxPrice, String sort, String page, String size) {
         String pattern = null;
