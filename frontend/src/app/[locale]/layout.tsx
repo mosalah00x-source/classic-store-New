@@ -5,6 +5,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { Cairo, Inter } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import { getDirection } from '@/i18n/direction';
+import { AuthProvider } from '@/auth/AuthProvider';
 import '../globals.css';
 
 const cairo = Cairo({ subsets: ['arabic', 'latin'], variable: '--font-arabic', display: 'swap' });
@@ -21,7 +22,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const messages = await getMessages();
   return (
     <html lang={locale} dir={getDirection(locale)} className={`${cairo.variable} ${inter.variable}`}>
-      <body><NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider></body>
+      <body><NextIntlClientProvider messages={messages}><AuthProvider>{children}</AuthProvider></NextIntlClientProvider></body>
     </html>
   );
 }
