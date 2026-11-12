@@ -181,7 +181,7 @@ class IdentityIntegrationTest {
   UserRecord before=userByEmail(email);
   String resetToken=resetTokens.issue(before);
   mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+resetToken)
-   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","ResetPassword#2026\"))))
+   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","ResetPassword#2026"))))
    .andExpect(status().isOk());
   String updatedHash=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
   assertThat(updatedHash).isNotEqualTo(before.passwordHash());
@@ -195,11 +195,11 @@ class IdentityIntegrationTest {
   UserRecord before=userByEmail(email);
   String resetToken=resetTokens.issue(before);
   mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+resetToken)
-   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","FirstResetPassword#2026\"))))
+   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","FirstResetPassword#2026"))))
    .andExpect(status().isOk());
   String hashAfterSuccess=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
   mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+resetToken)
-   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","ReplayResetPassword#2026\"))))
+   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","ReplayResetPassword#2026"))))
    .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("INVALID_TOKEN"));
   String hashAfterReplay=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
   assertThat(hashAfterReplay).isEqualTo(hashAfterSuccess);
@@ -212,7 +212,7 @@ class IdentityIntegrationTest {
   UserRecord before=userByEmail(email);
   String expiredToken=resetTokens.issue(before,Instant.now().minusSeconds(1));
   mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+expiredToken)
-   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","ExpiredResetPassword#2026\"))))
+   .contentType(APPLICATION_JSON).content(json.writeValueAsString(java.util.Map.of("newPassword","ExpiredResetPassword#2026"))))
    .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("INVALID_TOKEN"));
   String unchangedHash=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
   assertThat(unchangedHash).isEqualTo(before.passwordHash());
