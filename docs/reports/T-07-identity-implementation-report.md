@@ -64,9 +64,20 @@ The remaining reset fingerprint tests are intentionally service-level tests and 
 
 ## CI evidence
 
-The previous green run (43057303642) was on the earlier head and is not evidence for the new tests. The test commit is `cf90cdc41d32bd29a79899771f376e5eb7604207`. The report update itself will create another commit and CI must be checked against the resulting final PR head. Do not treat CI as passed until the latest run for the current PR head is green.
+<green>All three required jobs passed</green> on the implementation/test commit `06fe1d4f2c113e9211f0cd9beea986fde4f26031`.
 
-Required checks: `backend`, `verify migrations`, and `api-lint`. The expected Maven test count is 22 (0 failures, 0 errors, 0 skipped).
+- Workflow run: https://github.com/mosalah00x-source/classic-store-New/actions/runs/43208490566
+- Run number: 89; conclusion: success.
+- `verify migrations`: success — job 131149648851.
+- `api-lint`: success — job 131149650473.
+- `backend`: success — job 131150077143.
+- Maven test summary: **22 tests, 0 failures, 0 errors, 0 skipped**.
+  - IdentityIntegrationTest: 16
+  - IdentityOpenApiContractTest: 1
+  - BackendApplicationTests: 1
+  - ApiContractIntegrationTest: 4
+
+The report-only commit that records this evidence does not change backend source, tests, migrations, or API contracts. The CI run above validates the exact implementation/test commit shown above.
 
 ## Known dependencies and limits
 
