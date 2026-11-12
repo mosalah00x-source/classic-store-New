@@ -54,7 +54,6 @@ paths:
           schema:
             type: string
             minLength: 1
-            maxLength: 200
         - name: categoryId
           in: query
           required: false
@@ -4052,6 +4051,7 @@ components:
             - type: "null"
         categories:
           type: array
+          description: Active category records directly associated with the product.
           items:
             $ref: '#/components/schemas/Category'
       description: Public summary. Product category association is many-to-many, therefore categories is an array.
@@ -4078,6 +4078,7 @@ components:
             - type: "null"
         categories:
           type: array
+          description: Active category records directly associated with the product.
           items:
             $ref: '#/components/schemas/Category'
         variants:
@@ -4121,7 +4122,6 @@ components:
           format: uuid
         imageUrl:
           type: string
-          format: uri
         altAr:
           type: [string, "null"]
         sortOrder:
