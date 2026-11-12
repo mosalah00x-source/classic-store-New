@@ -161,11 +161,11 @@ class CatalogRepository {
         StringBuilder sql = new StringBuilder();
         if (f.qPattern() != null) {
             sql.append("""
-                AND (p.name_ar ILIKE :qPattern ESCAPE '\\\\'
-                     OR COALESCE(p.name_en, '') ILIKE :qPattern ESCAPE '\\\\'
+                AND (p.name_ar ILIKE :qPattern ESCAPE '\\'
+                     OR COALESCE(p.name_en, '') ILIKE :qPattern ESCAPE '\\'
                      OR EXISTS (SELECT 1 FROM store.product_variants qv
                          WHERE qv.product_id = p.id AND qv.is_active = true
-                           AND qv.sku ILIKE :qPattern ESCAPE '\\\\'))
+                           AND qv.sku ILIKE :qPattern ESCAPE '\\'))
                 """);
         }
         if (f.categoryId() != null) {
