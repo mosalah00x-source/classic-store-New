@@ -84,22 +84,23 @@ class CatalogIntegrationTest {
         UUID categoryB = category("category-b-" + UUID.randomUUID(), true);
         UUID brandA = brand("Brand A " + UUID.randomUUID());
         UUID brandB = brand("Brand B " + UUID.randomUUID());
-        UUID target = product("قميص مميز", "Needle shirt", "needle-" + UUID.randomUUID(), "ACTIVE", brandA, Instant.now());
-        variant(target, "NEEDLE-SKU-" + UUID.randomUUID(), "125.00", true, "{}");
+        String marker = "filter-marker-" + UUID.randomUUID();
+        UUID target = product("قميص مميز", "Needle shirt " + marker, "needle-" + UUID.randomUUID(), "ACTIVE", brandA, Instant.now());
+        variant(target, "NEEDLE-SKU-" + marker, "125.00", true, "{}");
         associate(target, categoryA);
         associate(target, categoryB);
-        UUID other = product("قميص آخر", "Other shirt", "other-" + UUID.randomUUID(), "ACTIVE", brandB, Instant.now());
-        variant(other, "OTHER-SKU-" + UUID.randomUUID(), "250.00", true, "{}");
+        UUID other = product("قميص آخر", "Other shirt " + marker, "other-" + UUID.randomUUID(), "ACTIVE", brandB, Instant.now());
+        variant(other, "OTHER-SKU-" + marker, "250.00", true, "{}");
         associate(other, categoryA);
-        UUID third = product("منتج ثالث", "Third item", "third-" + UUID.randomUUID(), "ACTIVE", brandA, Instant.now());
-        variant(third, "THIRD-SKU-" + UUID.randomUUID(), "75.00", true, "{}");
+        UUID third = product("منتج ثالث", "Third item " + marker, "third-" + UUID.randomUUID(), "ACTIVE", brandA, Instant.now());
+        variant(third, "THIRD-SKU-" + marker, "75.00", true, "{}");
         associate(third, categoryB);
 
         assertOnlyTarget(get("/api/v1/products").param("q", "needle"), target);
         assertContainsOnly(get("/api/v1/products").param("categoryId", categoryA.toString()), target, other);
         assertContainsOnly(get("/api/v1/products").param("brandId", brandA.toString()), target, third);
-        assertContainsOnly(get("/api/v1/products").param("minPrice", "100.00"), target, other);
-        assertContainsOnly(get("/api/v1/products").param("maxPrice", "150.00"), target, third);
+        assertContainsOnly(get("/api/v1/products").param("q", marker).param("minPrice", "100.00"), target, other);
+        assertContainsOnly(get("/api/v1/products").param("q", marker).param("maxPrice", "150.00"), target, third);
         assertOnlyTarget(get("/api/v1/products").param("categoryId", categoryA.toString())
             .param("brandId", brandA.toString()).param("minPrice", "100.00")
             .param("maxPrice", "150.00").param("q", "needle"), target);
@@ -139,8 +140,8 @@ class CatalogIntegrationTest {
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(newSlug));
         mvc.perform(get("/api/v1/products").param("q", marker).param("page", "1").param("size", "1").param("sort", "priceAsc"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.page").value(1))
-            .andExpect(jsonPath("$.size").value(1)).andExpect(jsonPath("$.totalElements").value(org.hamcrest.Matchers.greaterThanOrEqualTo(3)))
-            .andExpect(jsonPath("$.totalPages").value(org.hamcrest.Matchers.greaterThanOrEqualTo(3)))
+            .andExpect(jsonPath("$.size").value(1)).andExpect(jsonPath("$.totalElements").value(3))
+            .andExpect(jsonPath("$.totalPages").value(3))
             .andExpect(jsonPath("$.content.length()").value(1));
     }
 
