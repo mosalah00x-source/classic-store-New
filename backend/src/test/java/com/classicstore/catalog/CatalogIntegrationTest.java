@@ -1,0 +1,277 @@
+package com.classicstore.catalog;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.StreamSupport;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class CatalogIntegrationTest {
+    @Autowired MockMvc mvc;
+    @Autowired JdbcTemplate jdbc;
+    @Autowired ObjectMapper json;
+
+    @Test
+    void publicListAndDetailExposeOnlyActiveProducts() throws Exception {
+        UUID active = product("منتج منشور", "Published product", "published-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        product("مسودة", "Draft", "draft-" + UUID.randomUUID(), "DRAFT", null, Instant.now());
+        product("مؤرشف", "Archived", "archived-" + UUID.randomUUID(), "ARCHIVED", null, Instant.now());
+        String slug = jdbc.queryForObject("select slug from store.products where id=?", String.class, active);
+
+        mvc.perform(get("/api/v1/products").param("size", "100"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content[?(@.id == '" + active + "')]").isArray())
+            .andExpect(jsonPath("$.content[?(@.slug == '" + slug + "')]").isArray());
+
+        mvc.perform(get("/api/v1/products/" + slug))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.id").value(active.toString()));
+        String draftSlug = "draft-missing-" + UUID.randomUUID();
+        UUID draft = product("مسودة أخرى", "Another draft", draftSlug, "DRAFT", null, Instant.now());
+        mvc.perform(get("/api/v1/products/" + draftSlug))
+            .andExpect(status().isNotFound()).andExpect(jsonPath("$.code").value("NOT_FOUND"))
+            .andExpect(jsonPath("$.messageEn").isNotEmpty()).andExpect(jsonPath("$.details").isMap());
+        assertThat(draft).isNotNull();
+    }
+
+    @Test
+    void activeVariantsAloneDeterminePriceAndDetail() throws Exception {
+        UUID withVariants = product("حذاء", "Shoe", "shoe-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        variant(withVariants, "SHOE-ACTIVE-" + UUID.randomUUID(), "950.00", true, "{}");
+        variant(withVariants, "SHOE-INACTIVE-" + UUID.randomUUID(), "10.00", false, "{\"size\":\"old\"}");
+
+        UUID noActiveVariant = product("منتج بلا متغير نشط", "No active variant", "no-variant-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        variant(noActiveVariant, "INACTIVE-" + UUID.randomUUID(), "25.00", false, "{}");
+        String slug = jdbc.queryForObject("select slug from store.products where id=?", String.class, withVariants);
+        String noVariantSlug = jdbc.queryForObject("select slug from store.products where id=?", String.class, noActiveVariant);
+
+        mvc.perform(get("/api/v1/products/" + slug))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.variants.length()").value(1))
+            .andExpect(jsonPath("$.variants[0].price").value("950.00"))
+            .andExpect(jsonPath("$.variants[0].currency").value("EGP"))
+            .andExpect(jsonPath("$.variants[0].sku").value(org.hamcrest.Matchers.startsWith("SHOE-ACTIVE-")));
+
+        mvc.perform(get("/api/v1/products").param("q", "Shoe"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].priceFrom").value("950.00"));
+        mvc.perform(get("/api/v1/products/" + noVariantSlug))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.variants").isEmpty());
+        mvc.perform(get("/api/v1/products").param("q", "No active variant"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].priceFrom").value(org.hamcrest.Matchers.nullValue()));
+    }
+
+    @Test
+    void filtersWorkIndividuallyAndTogether() throws Exception {
+        UUID categoryA = category("category-a-" + UUID.randomUUID(), true);
+        UUID categoryB = category("category-b-" + UUID.randomUUID(), true);
+        UUID brandA = brand("Brand A " + UUID.randomUUID());
+        UUID brandB = brand("Brand B " + UUID.randomUUID());
+        UUID target = product("قميص مميز", "Needle shirt", "needle-" + UUID.randomUUID(), "ACTIVE", brandA, Instant.now());
+        variant(target, "NEEDLE-SKU-" + UUID.randomUUID(), "125.00", true, "{}");
+        associate(target, categoryA);
+        associate(target, categoryB);
+        UUID other = product("قميص آخر", "Other shirt", "other-" + UUID.randomUUID(), "ACTIVE", brandB, Instant.now());
+        variant(other, "OTHER-SKU-" + UUID.randomUUID(), "250.00", true, "{}");
+        associate(other, categoryA);
+        UUID third = product("منتج ثالث", "Third item", "third-" + UUID.randomUUID(), "ACTIVE", brandA, Instant.now());
+        variant(third, "THIRD-SKU-" + UUID.randomUUID(), "75.00", true, "{}");
+        associate(third, categoryB);
+
+        assertOnlyTarget(get("/api/v1/products").param("q", "needle"));
+        assertContainsOnly(get("/api/v1/products").param("categoryId", categoryA.toString()), target, other);
+        assertContainsOnly(get("/api/v1/products").param("brandId", brandA.toString()), target, third);
+        assertContainsOnly(get("/api/v1/products").param("minPrice", "100.00"), target, other);
+        assertContainsOnly(get("/api/v1/products").param("maxPrice", "150.00"), target, third);
+        assertOnlyTarget(get("/api/v1/products").param("categoryId", categoryA.toString())
+            .param("brandId", brandA.toString()).param("minPrice", "100.00")
+            .param("maxPrice", "150.00").param("q", "needle"));
+    }
+
+    @Test
+    void qIsCaseInsensitiveSubstringAndEscapesSqlWildcards() throws Exception {
+        UUID matching = product("قماش", "Cotton 50%_special", "cotton-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        variant(matching, "SKU_50%_X_" + UUID.randomUUID(), "20.00", true, "{}");
+        UUID decoy = product("قماش آخر", "Other cotton", "decoy-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        variant(decoy, "SKU_50AA_X_" + UUID.randomUUID(), "21.00", true, "{}");
+
+        mvc.perform(get("/api/v1/products").param("q", "50%_"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(1))
+            .andExpect(jsonPath("$.content[0].id").value(matching.toString()));
+        mvc.perform(get("/api/v1/products").param("q", "COTTON"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].id").value(matching.toString()));
+    }
+
+    @Test
+    void sortModesAndZeroBasedPaginationAreApplied() throws Exception {
+        UUID oldest = product("أقدم", "Oldest", "old-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2026-01-01T00:00:00Z"));
+        UUID middle = product("أوسط", "Middle", "middle-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2026-02-01T00:00:00Z"));
+        UUID newest = product("أحدث", "Newest", "new-" + UUID.randomUUID(), "ACTIVE", null, Instant.parse("2026-03-01T00:00:00Z"));
+        variant(oldest, "OLD-" + UUID.randomUUID(), "100.00", true, "{}");
+        variant(middle, "MID-" + UUID.randomUUID(), "300.00", true, "{}");
+        variant(newest, "NEW-" + UUID.randomUUID(), "200.00", true, "{}");
+        String oldSlug = slug(oldest), middleSlug = slug(middle), newSlug = slug(newest);
+
+        mvc.perform(get("/api/v1/products").param("sort", "priceAsc"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(oldSlug))
+            .andExpect(jsonPath("$.content[1].slug").value(newSlug)).andExpect(jsonPath("$.content[2].slug").value(middleSlug));
+        mvc.perform(get("/api/v1/products").param("sort", "priceDesc"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(middleSlug));
+        mvc.perform(get("/api/v1/products").param("sort", "newest"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].slug").value(newSlug));
+        mvc.perform(get("/api/v1/products").param("page", "1").param("size", "1").param("sort", "priceAsc"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.page").value(1))
+            .andExpect(jsonPath("$.size").value(1)).andExpect(jsonPath("$.totalElements").value(org.hamcrest.Matchers.greaterThanOrEqualTo(3)))
+            .andExpect(jsonPath("$.totalPages").value(org.hamcrest.Matchers.greaterThanOrEqualTo(3)))
+            .andExpect(jsonPath("$.content.length()").value(1));
+    }
+
+    @Test
+    void categoriesArraysAndPrimaryImageTieBreakMatchContract() throws Exception {
+        UUID activeA = category("active-a-" + UUID.randomUUID(), true);
+        UUID activeB = category("active-b-" + UUID.randomUUID(), true);
+        UUID inactive = category("inactive-" + UUID.randomUUID(), false);
+        UUID product = product("منتج صور", "Image product", "image-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        variant(product, "IMAGE-" + UUID.randomUUID(), "99.00", true, "{}");
+        associate(product, activeA); associate(product, activeB); associate(product, inactive);
+        UUID lowImageId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID highImageId = UUID.fromString("00000000-0000-0000-0000-000000000002");
+        image(product, highImageId, null, "https://cdn.example.test/high.jpg", 1);
+        image(product, lowImageId, null, "https://cdn.example.test/low.jpg", 1);
+        String slug = slug(product);
+
+        mvc.perform(get("/api/v1/products").param("q", "Image product"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].categories.length()").value(2))
+            .andExpect(jsonPath("$.content[0].primaryImage.id").value(lowImageId.toString()))
+            .andExpect(jsonPath("$.content[0].primaryImage.imageUrl").value("https://cdn.example.test/low.jpg"));
+        mvc.perform(get("/api/v1/products/" + slug))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.categories.length()").value(2))
+            .andExpect(jsonPath("$.images.length()").value(2))
+            .andExpect(jsonPath("$.images[0].id").value(lowImageId.toString()));
+        mvc.perform(get("/api/v1/categories"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$[?(@.id == '" + inactive + "')]").isEmpty())
+            .andExpect(jsonPath("$[?(@.id == '" + activeA + "')]").isArray());
+    }
+
+    @Test
+    void invalidFiltersAndUnknownSlugReturnStandardErrorShapes() throws Exception {
+        mvc.perform(get("/api/v1/products").param("size", "101"))
+            .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+            .andExpect(jsonPath("$.details.field").value("size"));
+        mvc.perform(get("/api/v1/products").param("page", "-1"))
+            .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+        mvc.perform(get("/api/v1/products").param("minPrice", "200.00").param("maxPrice", "100.00"))
+            .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+        mvc.perform(get("/api/v1/products").param("minPrice", "-1.00"))
+            .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+        mvc.perform(get("/api/v1/products").param("categoryId", "not-a-uuid"))
+            .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+        mvc.perform(get("/api/v1/products").param("sort", "random"))
+            .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+        mvc.perform(get("/api/v1/products/not-found-" + UUID.randomUUID()))
+            .andExpect(status().isNotFound()).andExpect(jsonPath("$.code").value("NOT_FOUND"))
+            .andExpect(jsonPath("$.messageAr").isNotEmpty()).andExpect(jsonPath("$.messageEn").isNotEmpty())
+            .andExpect(jsonPath("$.traceId").isNotEmpty()).andExpect(jsonPath("$.details").isMap());
+    }
+
+    @Test
+    void responsePropertiesUseOpenApiNames() throws Exception {
+        UUID id = product("اسم", "Name", "contract-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        variant(id, "CONTRACT-" + UUID.randomUUID(), "950.00", true, "{\"color\":\"red\"}");
+        String slug = slug(id);
+        String listBody = mvc.perform(get("/api/v1/products").param("q", "contract-"))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JsonNode page = json.readTree(listBody);
+        JsonNode summary = page.get("content").get(0);
+        assertThat(fieldNames(summary)).containsExactlyInAnyOrder("id", "slug", "nameAr", "nameEn",
+            "priceFrom", "currency", "primaryImage", "brand", "categories");
+        assertThat(summary.get("priceFrom").asText()).isEqualTo("950.00");
+        assertThat(page.has("totalElements")).isTrue();
+        assertThat(page.has("totalPages")).isTrue();
+
+        String detailBody = mvc.perform(get("/api/v1/products/" + slug))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JsonNode detail = json.readTree(detailBody);
+        assertThat(fieldNames(detail)).containsExactlyInAnyOrder("id", "slug", "nameAr", "nameEn",
+            "descriptionAr", "descriptionEn", "brand", "categories", "variants", "images");
+        assertThat(fieldNames(detail.get("variants").get(0))).containsExactlyInAnyOrder(
+            "id", "sku", "titleAr", "attributes", "price", "currency");
+    }
+
+    private void assertOnlyTarget(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request) throws Exception {
+        String body = mvc.perform(request).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JsonNode content = json.readTree(body).get("content");
+        assertThat(content).hasSize(1);
+    }
+
+    private void assertContainsOnly(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request,
+                                    UUID... expected) throws Exception {
+        String body = mvc.perform(request).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        List<String> actual = new ArrayList<>();
+        json.readTree(body).get("content").forEach(node -> actual.add(node.get("id").asText()));
+        assertThat(actual).containsExactlyInAnyOrder(java.util.Arrays.stream(expected).map(UUID::toString).toArray(String[]::new));
+    }
+
+    private Set<String> fieldNames(JsonNode node) {
+        return StreamSupport.stream(((Iterable<String>) () -> node.fieldNames()).spliterator(), false)
+            .collect(java.util.stream.Collectors.toSet());
+    }
+
+    private UUID category(String slug, boolean active) {
+        return jdbc.queryForObject("""
+            INSERT INTO store.categories(name_ar,name_en,slug,is_active)
+            VALUES ('تصنيف','Category',?,?) RETURNING id
+            """, UUID.class, slug, active);
+    }
+
+    private UUID brand(String name) {
+        return jdbc.queryForObject("INSERT INTO store.brands(name,slug) VALUES (?,?) RETURNING id",
+            UUID.class, name, "brand-" + UUID.randomUUID());
+    }
+
+    private UUID product(String nameAr, String nameEn, String slug, String status, UUID brandId, Instant createdAt) {
+        return jdbc.queryForObject("""
+            INSERT INTO store.products(brand_id,name_ar,name_en,slug,status,created_at)
+            VALUES (?,?,?,?,?::store.product_status,?) RETURNING id
+            """, UUID.class, brandId, nameAr, nameEn, slug, status, java.sql.Timestamp.from(createdAt));
+    }
+
+    private UUID variant(UUID productId, String sku, String price, boolean active, String attributes) {
+        return jdbc.queryForObject("""
+            INSERT INTO store.product_variants(product_id,sku,price,is_active,attributes)
+            VALUES (?,?,?, ?, ?::jsonb) RETURNING id
+            """, UUID.class, productId, sku, new BigDecimal(price), active, attributes);
+    }
+
+    private void associate(UUID productId, UUID categoryId) {
+        jdbc.update("INSERT INTO store.product_categories(product_id,category_id) VALUES (?,?)", productId, categoryId);
+    }
+
+    private void image(UUID productId, UUID imageId, UUID variantId, String url, int sortOrder) {
+        jdbc.update("""
+            INSERT INTO store.product_images(id,product_id,variant_id,image_url,alt_ar,sort_order)
+            VALUES (?,?,?,?,?,?)
+            """, imageId, productId, variantId, url, "صورة", sortOrder);
+    }
+
+    private String slug(UUID productId) {
+        return jdbc.queryForObject("SELECT slug FROM store.products WHERE id=?", String.class, productId);
+    }
+}
