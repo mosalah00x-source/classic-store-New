@@ -108,16 +108,21 @@ class CatalogIntegrationTest {
 
     @Test
     void qIsCaseInsensitiveSubstringAndEscapesSqlWildcards() throws Exception {
-        UUID matching = product("قماش", "Cotton 50%_special", "cotton-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        UUID matching = product("قماش مميز", "Cotton special", "cotton-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
         variant(matching, "SKU_50%_X_" + UUID.randomUUID(), "20.00", true, "{}");
-        UUID decoy = product("قماش آخر", "Other cotton", "decoy-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
+        UUID decoy = product("قطن آخر", "Other cotton", "decoy-" + UUID.randomUUID(), "ACTIVE", null, Instant.now());
         variant(decoy, "SKU_50AA_X_" + UUID.randomUUID(), "21.00", true, "{}");
 
         mvc.perform(get("/api/v1/products").param("q", "50%_"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(1))
             .andExpect(jsonPath("$.content[0].id").value(matching.toString()));
-        mvc.perform(get("/api/v1/products").param("q", "COTTON 50%"))
+        mvc.perform(get("/api/v1/products").param("q", "COTTON S"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].id").value(matching.toString()));
+        mvc.perform(get("/api/v1/products").param("q", "مميز"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].id").value(matching.toString()));
+        variant(decoy, "HIDDEN-SEARCH-" + UUID.randomUUID(), "22.00", false, "{}");
+        mvc.perform(get("/api/v1/products").param("q", "HIDDEN-SEARCH"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content").isEmpty());
     }
 
     @Test
