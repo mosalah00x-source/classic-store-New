@@ -38,6 +38,12 @@ class IdentityIntegrationTest {
   return body;
  }
 
+ private UserRecord userByEmail(String email){
+  return jdbc.queryForObject("select * from store.users where email=?",(r,n)->new UserRecord(
+   r.getObject("id",UUID.class),r.getString("email"),r.getString("phone"),r.getString("password_hash"),
+   r.getString("first_name"),r.getString("last_name"),r.getString("role"),r.getBoolean("is_active")),email);
+ }
+
  @Test void registerNeverAcceptsClientSuppliedRole()throws Exception{
   mvc.perform(post("/api/v1/auth/register").contentType(APPLICATION_JSON)
    .content("{\"email\":\"role-injection@example.test\",\"password\":\"StrongPassword#2026\",\"firstName\":\"A\",\"lastName\":\"B\",\"role\":\"ADMIN\"}"))
@@ -169,4 +175,48 @@ class IdentityIntegrationTest {
   String expired=resetTokens.issue(u,Instant.now().minusSeconds(1));
   assertThat(resetTokens.verify(expired,u)).isFalse();
  }
+ @Test void passwordResetEndpointChangesPasswordSuccessfully()throws Exception{
+  String email="reset-success@example.test";
+  registerAndLogin(email);
+  UserRecord before=userByEmail(email);
+  String resetToken=resetTokens.issue(before);
+  mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+resetToken)
+   .contentType(APPLICATION_JSON).content("{\\"newPassword\\":\\"ResetPassword#2026\\"}"))
+   .andExpect(status().isOk());
+  String updatedHash=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
+  assertThat(updatedHash).isNotEqualTo(before.passwordHash());
+  assertThat(encoder.matches("ResetPassword#2026",updatedHash)).isTrue();
+  assertThat(encoder.matches("StrongPassword#2026",updatedHash)).isFalse();
+ }
+
+ @Test void passwordResetEndpointRejectsReplayAfterSuccessfulReset()throws Exception{
+  String email="reset-replay@example.test";
+  registerAndLogin(email);
+  UserRecord before=userByEmail(email);
+  String resetToken=resetTokens.issue(before);
+  mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+resetToken)
+   .contentType(APPLICATION_JSON).content("{\\"newPassword\\":\\"FirstResetPassword#2026\\"}"))
+   .andExpect(status().isOk());
+  String hashAfterSuccess=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
+  mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+resetToken)
+   .contentType(APPLICATION_JSON).content("{\\"newPassword\\":\\"ReplayResetPassword#2026\\"}"))
+   .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("INVALID_TOKEN"));
+  String hashAfterReplay=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
+  assertThat(hashAfterReplay).isEqualTo(hashAfterSuccess);
+  assertThat(encoder.matches("FirstResetPassword#2026",hashAfterReplay)).isTrue();
+ }
+
+ @Test void passwordResetEndpointRejectsExpiredTokenOverHttp()throws Exception{
+  String email="reset-expired-http@example.test";
+  registerAndLogin(email);
+  UserRecord before=userByEmail(email);
+  String expiredToken=resetTokens.issue(before,Instant.now().minusSeconds(1));
+  mvc.perform(post("/api/v1/auth/password/reset").header("Authorization","Bearer "+expiredToken)
+   .contentType(APPLICATION_JSON).content("{\\"newPassword\\":\\"ExpiredResetPassword#2026\\"}"))
+   .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("INVALID_TOKEN"));
+  String unchangedHash=jdbc.queryForObject("select password_hash from store.users where id=?",String.class,before.id());
+  assertThat(unchangedHash).isEqualTo(before.passwordHash());
+  assertThat(encoder.matches("StrongPassword#2026",unchangedHash)).isTrue();
+ }
+
 }
