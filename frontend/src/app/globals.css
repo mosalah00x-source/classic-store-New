@@ -1,3 +1,41 @@
+ :root {
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f6f8;
+  --color-text: #172033;
+  --color-text-muted: #667085;
+  --color-primary: #2457a6;
+  --color-primary-soft: #eaf1fc;
+  --color-danger: #b42318;
+  --color-danger-soft: #fff1f0;
+  --color-success: #067647;
+  --color-success-soft: #ecfdf3;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
+  --font-body: var(--font-arabic), var(--font-latin), sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--color-surface-muted); color: var(--color-text); font-family: var(--font-body); }
+a { color: inherit; }
+.page-shell { width: min(1120px, calc(100% - 40px)); margin-inline: auto; padding-block: var(--space-6) var(--space-12); }
+.topbar { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-3); }
+.brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: var(--color-primary); color: white; font-weight: 800; }
+.brand-name { font-weight: 750; }
+.locale-switcher { margin-inline-start: auto; color: var(--color-primary); text-decoration: none; border: 1px solid #d0d5dd; border-radius: 999px; padding: 9px 16px; font-size: .9rem; }
+.hero { padding-block: var(--space-16) var(--space-12); max-width: 760px; }
+.eyebrow { color: var(--color-primary); font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; margin-block: var(--space-3); }
+.hero-copy { color: var(--color-text-muted); font-size: 1.1rem; line-height: 1.9; }
+.states-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.state-card { background: var(--color-surface); border: 1px solid #e4e7ec; border-radius: 18px; padding: var(--space-6); min-height: 180px; }
+.state-icon { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: var(--color-primary-soft); color: var(--color-primary); font-weight: 800; }
+.state-card h2 { font-size: 1.05rem; margin-block: var(--space-4) var(--space-2); }
+.state-card p { color: var(--color-text-muted); margin: 0; line-height: 1.7; }
+.state-error .state-icon { background: var(--color-danger-soft); color: var(--color-danger); }
+.state-success .state-icon { background: var(--color-success-soft); color: var(--color-success); }
+footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--space-4); font-size: .85rem; }
+@media (max-width: 640px) { .states-grid { grid-template-columns: 1fr; } .hero { padding-block: var(--space-12) var(--space-8); } }
+
 .auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 32px 20px; }
 .auth-card { width: min(100%, 480px); background: var(--color-surface); border: 1px solid #e4e7ec; border-radius: 22px; padding: clamp(24px, 5vw, 40px); box-shadow: 0 18px 55px rgba(16, 24, 40, .08); }
 .auth-brand { display: inline-block; color: var(--color-primary); font-weight: 800; text-decoration: none; margin-bottom: 28px; }
