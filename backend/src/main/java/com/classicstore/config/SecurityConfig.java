@@ -46,6 +46,7 @@ public class SecurityConfig {
     .requestMatchers("/api/v1/auth/register","/api/v1/auth/login","/api/v1/auth/refresh",
       "/api/v1/auth/password/forgot","/api/v1/auth/password/reset").permitAll()
     .requestMatchers("/api/v1/products", "/api/v1/products/**", "/api/v1/categories").permitAll()
+    .requestMatchers("GET", "/api/v1/brands").permitAll()
     .requestMatchers("/api/v1/me","/api/v1/me/**","/api/v1/auth/password/change").hasRole("CUSTOMER")
     .requestMatchers("/api/v1/auth/logout").authenticated()
     .anyRequest().authenticated())
