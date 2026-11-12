@@ -35,3 +35,21 @@ h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; margin-block: var(--
 .state-success .state-icon { background: var(--color-success-soft); color: var(--color-success); }
 footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--space-4); font-size: .85rem; }
 @media (max-width: 640px) { .states-grid { grid-template-columns: 1fr; } .hero { padding-block: var(--space-12) var(--space-8); } }
+
+.auth-nav { margin-inline-start: auto; display: flex; gap: 12px; align-items: center; }
+.auth-nav a, .auth-links a { color: var(--color-primary); text-decoration: none; font-weight: 650; font-size: .92rem; }
+.auth-nav a { border: 1px solid #d0d5dd; border-radius: 999px; padding: 8px 13px; }
+.auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.auth-card { width: min(480px, 100%); background: var(--color-surface); border: 1px solid #e4e7ec; border-radius: 20px; padding: clamp(24px, 5vw, 40px); box-shadow: 0 12px 36px rgb(16 24 40 / 6%); }
+.auth-card h1 { font-size: 1.8rem; margin: 0 0 24px; }
+.auth-card form { display: grid; gap: 16px; }
+.auth-card label { display: grid; gap: 7px; font-weight: 650; font-size: .93rem; }
+.auth-card input { width: 100%; min-height: 44px; border: 1px solid #d0d5dd; border-radius: 10px; padding: 10px 12px; color: var(--color-text); background: white; font: inherit; }
+.auth-card input:focus-visible, .auth-card button:focus-visible, .auth-links a:focus-visible { outline: 3px solid #84adff; outline-offset: 2px; }
+.auth-card button { min-height: 46px; border: 0; border-radius: 10px; background: var(--color-primary); color: white; font: inherit; font-weight: 750; cursor: pointer; }
+.auth-card button:disabled { opacity: .65; cursor: wait; }
+.auth-error, .auth-success { margin: 0; padding: 11px 13px; border-radius: 10px; line-height: 1.6; }
+.auth-error { color: var(--color-danger); background: var(--color-danger-soft); }
+.auth-success { color: var(--color-success); background: var(--color-success-soft); }
+.auth-links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 20px; }
+@media (max-width: 640px) { .auth-nav { margin-inline-start: 0; width: 100%; } .topbar { flex-wrap: wrap; } }
