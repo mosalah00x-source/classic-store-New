@@ -53,7 +53,7 @@ export function AuthForm({ mode, locale, resetToken }: Props) {
     </form>
     <nav className="auth-links">
       {mode !== 'login' && <a href={`/${locale}/login`}>{locale === 'ar' ? 'تسجيل الدخول' : 'Sign in'}</a>}
-      {mode === 'login' && <><a href={`/${locale}/register`}>{locale === 'ar' ? 'إنشاء حساب' : 'Create account'}</a><a href={`/${locale}/forgot-password`}>{locale === 'ar' ? 'نسيت كلمة المرور؟' : 'Forgot password?'}</a></>}
+      {mode === 'login' && <><a href={`/${locale}/register`}>{locale === 'ar' ? 'إنشاء حساب' : 'Create account'}</a><a href={`/${locale}/forgot-password`}>{locale === 'ar' ? 'نسيت كلمة المرور؟' : 'Forgot password?'}</a><a href={`/${locale}/account`}>{locale === 'ar' ? 'حسابي' : 'My account'}</a></>}
       <a href={`/${locale}`}>{locale === 'ar' ? 'الرئيسية' : 'Home'}</a>
     </nav>
   </section>;
