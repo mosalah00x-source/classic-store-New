@@ -226,9 +226,19 @@ paths:
       summary: "POST /auth/register"
       description: "SRS section 9 operation 5. Auth: Public. Unspecified fields are not invented."
       security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
       responses:
-        '200':
+        '201':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR, EMAIL_OR_PHONE_REQUIRED]
@@ -278,9 +288,19 @@ paths:
       summary: "POST /auth/login"
       description: "SRS section 9 operation 6. Auth: Public. Unspecified fields are not invented."
       security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -334,6 +354,10 @@ paths:
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -405,6 +429,12 @@ paths:
       security:
         - bearerAuth: []
       x-auth-requirement: "Customer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
@@ -451,9 +481,19 @@ paths:
       description: "SRS section 9 operation 10. Auth: Public، 202 دائمًا. Unspecified fields are not invented."
       security: []
       x-response-contract: Always returns the same 202 response shape regardless of account existence (DEC-15).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
       responses:
         '202':
           description: Accepted; identical response shape for existing and unknown accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForgotPasswordResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -476,6 +516,12 @@ paths:
       description: "SRS section 9 operation 11. Auth: Reset token. Unspecified fields are not invented."
       security:
         - resetTokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
@@ -526,6 +572,10 @@ paths:
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -569,9 +619,19 @@ paths:
       security:
         - bearerAuth: []
       x-auth-requirement: "Customer (مشتقة)"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfilePatchRequest'
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -620,6 +680,10 @@ paths:
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressList'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -664,9 +728,19 @@ paths:
         - bearerAuth: []
       x-auth-requirement: "Customer"
       x-open-question: [OPEN-11, OPEN-12]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
       responses:
-        '200':
+        '201':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -717,10 +791,15 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       x-open-question: [OPEN-11, OPEN-12]
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -770,10 +849,21 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       x-open-question: [OPEN-11, OPEN-12]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
       responses:
         '200':
           description: Successful response; detailed fields only where defined by SRS.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
         '400':
           description: HTTP 400 response.
           x-error-codes: [VALIDATION_ERROR]
@@ -823,8 +913,9 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
-        '200':
+        '204':
           description: Successful response; detailed fields only where defined by SRS.
         '400':
           description: HTTP 400 response.
@@ -3671,6 +3762,182 @@ components:
         details:
           type: object
           additionalProperties: true
+
+    RegisterRequest:
+      type: object
+      additionalProperties: false
+      required: [password, firstName, lastName]
+      properties:
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          pattern: '^\+?[0-9]{7,24}$'
+        password:
+          type: string
+          minLength: 10
+          maxLength: 72
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+      anyOf:
+        - required: [email]
+        - required: [phone]
+      description: At least one of email or phone is required. Role is intentionally not accepted; public registration always creates CUSTOMER.
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      required: [identifier, password]
+      properties:
+        identifier:
+          type: string
+          description: Unique email address or phone number.
+        password:
+          type: string
+    ChangePasswordRequest:
+      type: object
+      additionalProperties: false
+      required: [currentPassword, newPassword]
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+          minLength: 10
+          maxLength: 72
+    ForgotPasswordRequest:
+      type: object
+      additionalProperties: false
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+    ResetPasswordRequest:
+      type: object
+      additionalProperties: false
+      required: [newPassword]
+      properties:
+        newPassword:
+          type: string
+          minLength: 10
+          maxLength: 72
+      description: Reset credential is supplied via resetTokenAuth Bearer security.
+    ProfilePatchRequest:
+      type: object
+      additionalProperties: false
+      anyOf:
+        - required: [firstName]
+        - required: [lastName]
+        - required: [phone]
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        phone:
+          type: string
+          pattern: '^\\+?[0-9]{7,24}$'
+    AddressRequest:
+      type: object
+      additionalProperties: false
+      required: [recipientName, phone, countryCode, street]
+      properties:
+        recipientName:
+          type: string
+        phone:
+          type: string
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+        governorateId:
+          type: integer
+          format: int64
+        cityId:
+          type: integer
+          format: int64
+        district:
+          type: string
+        street:
+          type: string
+        building:
+          type: string
+        apartment:
+          type: string
+        postalCode:
+          type: string
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+        isDefault:
+          type: boolean
+      description: Latitude and longitude must be both null or both present. Governorate and city IDs must match existing V1 reference rows. Phone format and authoritative location catalogue remain OPEN-11/12.
+    UserResponse:
+      type: object
+      required: [id, role]
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+          enum: [CUSTOMER, ADMIN, OPERATIONS, WAREHOUSE, SUPPORT]
+    TokenResponse:
+      type: object
+      required: [accessToken, refreshToken, tokenType, expiresIn]
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        tokenType:
+          type: string
+          const: Bearer
+        expiresIn:
+          type: integer
+          description: Access token lifetime in seconds (900).
+    ForgotPasswordResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          const: If the account exists, password reset instructions will be sent.
+      description: Identical response shape and message for existing and unknown accounts.
+    Address:
+      allOf:
+        - $ref: '#/components/schemas/AddressRequest'
+        - type: object
+          required: [id]
+          properties:
+            id:
+              type: string
+              format: uuid
+    AddressList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Address'
     Money:
       type: string
       pattern: '^[0-9]+\.[0-9]{2}$'

@@ -101,6 +101,9 @@ jobs:
           cache: maven
       - name: Verify backend
         working-directory: backend
+        env:
+          DOCKER_API_VERSION: "1.44"
+          MAVEN_OPTS: "-Dapi.version=1.44"
         run: |
           chmod +x mvnw
           ./mvnw -B verify
