@@ -53,7 +53,7 @@ public class SecurityConfig {
    .addFilterBefore(correlationIdFilter,UsernamePasswordAuthenticationFilter.class)
    .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class).build();
  }
- @Bean CorsConfigurationSource corsConfigurationSource(@Value("\${security.cors.allowed-origins:}") String allowedOrigins){
+ @Bean CorsConfigurationSource corsConfigurationSource(@Value("${security.cors.allowed-origins:}") String allowedOrigins){
   CorsConfiguration config=new CorsConfiguration();
   config.setAllowedOrigins(Arrays.stream(allowedOrigins.split(",")).map(String::trim).filter(v->!v.isEmpty()).toList());
   config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
