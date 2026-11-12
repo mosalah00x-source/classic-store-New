@@ -13,7 +13,11 @@ import static com.classicstore.catalog.CatalogDtos.*;
 class CatalogService {
     private static final int DEFAULT_PAGE = 0, DEFAULT_SIZE = 20, MAX_SIZE = 100;
     private final CatalogRepository repository;
-    CatalogService(CatalogRepository repository) { this.repository = repository; }
+    private final CatalogMapper mapper;
+    CatalogService(CatalogRepository repository, CatalogMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     @Transactional(readOnly = true)
     ProductPage listProducts(String q, String categoryId, String brandId, String minPrice,
@@ -23,10 +27,8 @@ class CatalogService {
         long total = repository.countProducts(filters);
         Map<UUID, List<Category>> categories = repository.findActiveCategoriesForProducts(
             rows.stream().map(CatalogRepository.ProductRow::id).toList());
-        List<ProductSummary> content = rows.stream().map(row -> new ProductSummary(
-            row.id(), row.slug(), row.nameAr(), row.nameEn(), money(row.priceFrom()), "EGP",
-            row.primaryImage(), row.brandName() == null ? null : new Brand(row.brandName()),
-            categories.getOrDefault(row.id(), List.of()))).toList();
+        List<ProductSummary> content = rows.stream().map(row ->
+            mapper.toSummary(row, categories.getOrDefault(row.id(), List.of()))).toList();
         int totalPages = total == 0 ? 0 : (int) ((total + filters.size() - 1) / filters.size());
         return new ProductPage(filters.page(), filters.size(), total, totalPages, content);
     }
@@ -35,9 +37,7 @@ class CatalogService {
     ProductDetail getProduct(String slug) {
         CatalogRepository.ProductRow row = repository.findPublicProductBySlug(slug).orElseThrow(CatalogService::notFound);
         List<Category> categories = repository.findActiveCategoriesForProducts(List.of(row.id())).getOrDefault(row.id(), List.of());
-        return new ProductDetail(row.id(), row.slug(), row.nameAr(), row.nameEn(), row.descriptionAr(),
-            row.descriptionEn(), row.brandName() == null ? null : new Brand(row.brandName()), categories,
-            repository.findActiveVariants(row.id()), repository.findImages(row.id()));
+        return mapper.toDetail(row, categories, repository.findActiveVariants(row.id()), repository.findImages(row.id()));
     }
 
     @Transactional(readOnly = true)
@@ -76,9 +76,6 @@ class CatalogService {
     private static int integer(String value, int defaultValue, String field) {
         if (value == null) return defaultValue;
         try { return Integer.parseInt(value); } catch (NumberFormatException ex) { throw validation(field); }
-    }
-    private static String money(BigDecimal value) {
-        return value == null ? null : value.setScale(2, java.math.RoundingMode.UNNECESSARY).toPlainString();
     }
     private static BusinessException validation(String field) {
         return new BusinessException("VALIDATION_ERROR", "البيانات المدخلة غير صحيحة",
