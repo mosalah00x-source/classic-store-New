@@ -4126,7 +4126,6 @@ components:
           type: [string, "null"]
         sortOrder:
           type: integer
-          minimum: 0
     Category:
       type: object
       required: [id, parentId, nameAr, nameEn, slug, sortOrder]
