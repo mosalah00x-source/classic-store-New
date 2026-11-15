@@ -1,0 +1,113 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import type { ProductDetail } from '@/lib/product-detail-api';
+import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
+
+function formatPrice(value: string): string {
+  return new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP', maximumFractionDigits: 2 }).format(Number(value));
+}
+
+export function ProductDetailClient({ product }: { product: ProductDetail }) {
+  const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id ?? '');
+  const [selectedImageId, setSelectedImageId] = useState(product.images[0]?.id ?? '');
+  const selectedVariant = product.variants.find((variant) => variant.id === selectedVariantId) ?? product.variants[0];
+  const selectedImage = product.images.find((image) => image.id === selectedImageId) ?? product.images[0];
+  const gallery = useMemo(
+    () => [...product.images].sort((a, b) => a.sortOrder - b.sortOrder),
+    [product.images]
+  );
+
+  return (
+    <main className="product-detail-shell">
+      <nav className="product-breadcrumb" aria-label="مسار التنقل">
+        <Link href="/ar/products">المنتجات</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{product.nameAr}</span>
+      </nav>
+
+      <div className="product-detail-grid">
+        <section className="product-gallery" aria-label="صور المنتج">
+          <div className="product-gallery-main">
+            {selectedImage ? (
+              <img
+                src={selectedImage.imageUrl || PRODUCT_IMAGE_PLACEHOLDER}
+                alt={selectedImage.altAr || product.nameAr}
+                onError={(event) => onProductImageError(event, product.nameAr)}
+              />
+            ) : (
+              <div className="product-gallery-empty" role="img" aria-label="لا توجد صورة للمنتج">لا توجد صورة</div>
+            )}
+          </div>
+          {gallery.length > 1 && (
+            <div className="product-gallery-thumbnails" aria-label="اختر صورة">
+              {gallery.map((image, index) => (
+                <button
+                  key={image.id}
+                  type="button"
+                  className={image.id === selectedImage?.id ? 'is-selected' : ''}
+                  aria-label={image.altAr || `الصورة ${index + 1}`}
+                  aria-pressed={image.id === selectedImage?.id}
+                  onClick={() => setSelectedImageId(image.id)}
+                >
+                  <img
+                    src={image.imageUrl || PRODUCT_IMAGE_PLACEHOLDER}
+                    alt=""
+                    onError={(event) => onProductImageError(event, product.nameAr)}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="product-detail-copy">
+          <p className="product-detail-eyebrow">{product.brand?.name ?? 'كلاسيك ستور'}</p>
+          <h1>{product.nameAr}</h1>
+          {product.nameEn && <p className="product-detail-name-en" lang="en" dir="ltr">{product.nameEn}</p>}
+          {product.categories.length > 0 && (
+            <div className="product-detail-categories" aria-label="التصنيفات">
+              {product.categories.map((category) => <span key={category.id}>{category.nameAr}</span>)}
+            </div>
+          )}
+
+          {selectedVariant ? (
+            <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)}</div>
+          ) : (
+            <p className="product-detail-unavailable">غير متاح حاليًا</p>
+          )}
+
+          {product.variants.length > 0 && (
+            <fieldset className="product-variant-picker">
+              <legend>اختر المواصفات</legend>
+              <div className="product-variant-options">
+                {product.variants.map((variant) => (
+                  <button
+                    key={variant.id}
+                    type="button"
+                    className={variant.id === selectedVariant?.id ? 'is-selected' : ''}
+                    aria-pressed={variant.id === selectedVariant?.id}
+                    onClick={() => setSelectedVariantId(variant.id)}
+                  >
+                    {variant.titleAr || variant.sku}
+                  </button>
+                ))}
+              </div>
+              {selectedVariant && (
+                <dl className="product-variant-details">
+                  <div><dt>كود المنتج</dt><dd dir="ltr">{selectedVariant.sku}</dd></div>
+                  {Object.entries(selectedVariant.attributes).map(([key, value]) => (
+                    <div key={key}><dt>{key}</dt><dd>{typeof value === 'string' || typeof value === 'number' ? String(value) : JSON.stringify(value)}</dd></div>
+                  ))}
+                </dl>
+              )}
+            </fieldset>
+          )}
+
+          {product.descriptionAr && <div className="product-description"><h2>وصف المنتج</h2><p>{product.descriptionAr}</p></div>}
+        </section>
+      </div>
+    </main>
+  );
+}
