@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { decideProductDetail } from '../src/lib/product-detail-decision';
 import { getProductDetail, mockProductDetails, ProductDetailRequestError } from '../src/lib/product-detail-api';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { ProductDetailClient } from '../src/components/ProductDetailClient';
+
 
 test('product detail mock returns the public product contract with active variants and ordered images', async () => {
   const product = await getProductDetail('classic-blender', {
@@ -47,4 +51,30 @@ test('a null successful response is classified as notFound, not rendered as a pr
 
 test('product detail fixture remains keyed by its canonical slug', () => {
   assert.equal(mockProductDetails['classic-blender']?.slug, 'classic-blender');
+});
+
+test('all detail mock variants render without null or undefined text', () => {
+  const base = mockProductDetails['classic-blender'];
+  assert.ok(base);
+  const multiCategory = {
+    id: '10000000-0000-4000-8000-000000000003',
+    parentId: null,
+    nameAr: 'أجهزة منزلية',
+    nameEn: null,
+    slug: 'home-appliances',
+    sortOrder: 2
+  };
+  const cases = [
+    base,
+    { ...base, variants: base.variants.slice(0, 1) },
+    { ...base, images: [] },
+    { ...base, brand: null },
+    { ...base, variants: [] },
+    { ...base, categories: [...base.categories, multiCategory] }
+  ];
+
+  for (const product of cases) {
+    const html = renderToStaticMarkup(createElement(ProductDetailClient, { product }));
+    assert.doesNotMatch(html, /\\b(?:null|undefined)\\b/, `unexpected nullish text for ${product.slug}`);
+  }
 });
