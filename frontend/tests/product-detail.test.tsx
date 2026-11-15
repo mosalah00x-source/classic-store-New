@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { decideProductDetail } from '../src/lib/product-detail-decision';
 import { getProductDetail, mockProductDetails, ProductDetailRequestError } from '../src/lib/product-detail-api';
 
 test('product detail mock returns the public product contract with active variants and ordered images', async () => {
@@ -15,11 +16,33 @@ test('product detail mock returns the public product contract with active varian
   assert.equal(product.categories[0]?.slug, 'kitchen-appliances');
 });
 
-test('product detail mock returns a not-found error for unknown slugs', async () => {
-  await assert.rejects(
-    () => getProductDetail('missing-product', { API_MOCKING: 'true', NODE_ENV: 'test' }),
-    (error: unknown) => error instanceof ProductDetailRequestError && error.status === 404
-  );
+test('unknown slug 404 is classified as notFound', () => {
+  const error = new ProductDetailRequestError('المنتج غير موجود.', 404);
+  assert.deepEqual(decideProductDetail({ ok: false, error }), { kind: 'notFound' });
+});
+
+test('API 500 remains an error state and is not classified as notFound', () => {
+  const error = new ProductDetailRequestError('تعذر تحميل تفاصيل المنتج.', 500);
+  const decision = decideProductDetail({ ok: false, error });
+  assert.equal(decision.kind, 'error');
+  if (decision.kind === 'error') assert.equal(decision.error, error);
+});
+
+test('network errors remain an error state and are not classified as notFound', () => {
+  const error = new TypeError('Network failure');
+  const decision = decideProductDetail({ ok: false, error });
+  assert.equal(decision.kind, 'error');
+  if (decision.kind === 'error') assert.equal(decision.error, error);
+});
+
+test('valid product is passed through as a non-null product decision', () => {
+  const product = mockProductDetails['classic-blender'];
+  assert.ok(product);
+  assert.deepEqual(decideProductDetail({ ok: true, product }), { kind: 'ok', product });
+});
+
+test('a null successful response is classified as notFound, not rendered as a product', () => {
+  assert.deepEqual(decideProductDetail({ ok: true, product: null }), { kind: 'notFound' });
 });
 
 test('product detail fixture remains keyed by its canonical slug', () => {
