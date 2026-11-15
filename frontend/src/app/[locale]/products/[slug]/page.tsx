@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { ProductDetailClient } from '@/components/ProductDetailClient';
+import { decideProductDetail } from '@/lib/product-detail-decision';
 import { getProductDetail, ProductDetailRequestError } from '@/lib/product-detail-api';
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
@@ -34,22 +35,21 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const result = await getProductDetail(slug)
     .then((product) => ({ ok: true as const, product }))
     .catch((error: unknown) => ({ ok: false as const, error }));
+  const decision = decideProductDetail(result);
 
-  if (!result.ok) {
-    if (result.error instanceof ProductDetailRequestError && result.error.status === 404) notFound();
+  if (decision.kind === 'notFound') notFound();
 
+  if (decision.kind === 'error') {
     return (
       <main className="catalog-shell">
         <h1>تعذر تحميل تفاصيل المنتج</h1>
         <section className="catalog-state" role="alert">
-          <p>{result.error instanceof ProductDetailRequestError ? result.error.message : 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.'}</p>
+          <p>{decision.error instanceof ProductDetailRequestError ? decision.error.message : 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.'}</p>
           <a href={`/ar/products/${encodeURIComponent(slug)}`}>إعادة المحاولة</a>
         </section>
       </main>
     );
   }
 
-  if (!result.product) notFound();
-
-  return <ProductDetailClient product={result.product} />;
+  return <ProductDetailClient product={decision.product} />;
 }
