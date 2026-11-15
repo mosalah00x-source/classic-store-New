@@ -30,5 +30,10 @@ export function parseCatalogFilters(search: SearchParams): CatalogFilters {
 
 export function mergeProductItems(current: ProductSummary[], incoming: ProductSummary[]): ProductSummary[] {
   const seen = new Set(current.map((product) => product.id));
-  return [...current, ...incoming.filter((product) => !seen.has(product.id))];
+  const uniqueIncoming = incoming.filter((product) => {
+    if (seen.has(product.id)) return false;
+    seen.add(product.id);
+    return true;
+  });
+  return [...current, ...uniqueIncoming];
 }

@@ -149,6 +149,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
         {error && <p className="catalog-error" role="alert">{error} <button type="button" onClick={() => { setError(''); router.refresh(); }}>{t('retry')}</button></p>}
         {items.length === 0 ? <div className="catalog-state"><h2>{t('emptyTitle')}</h2><p>{t('emptyMessage')}</p></div> :
           <div className="catalog-grid">{items.map((product) => <ProductCard key={product.id} product={product} />)}</div>}
+        {loading && <div className="catalog-grid catalog-skeleton-grid" aria-label={t('loading')} aria-busy="true">{Array.from({ length: 4 }, (_, index) => <div className="catalog-skeleton" key={index}><span /><span /><span /></div>)}</div>}
         {hasMore && <button className="catalog-load-more" type="button" disabled={loading} onClick={loadMore}>{loading ? t('loading') : t('loadMore')}</button>}
       </section>
     </div>
