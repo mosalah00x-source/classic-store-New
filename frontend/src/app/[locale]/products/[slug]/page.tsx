@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { ProductDetailClient } from '@/components/ProductDetailClient';
 import { decideProductDetail } from '@/lib/product-detail-decision';
-import { getProductDetail } from '@/lib/product-detail-api';
+import { getProductDetail, ProductDetailRequestError } from '@/lib/product-detail-api';
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
 
@@ -44,7 +44,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <main className="catalog-shell">
         <h1>تعذر تحميل تفاصيل المنتج</h1>
         <section className="catalog-state" role="alert">
-          <p>{decision.error instanceof Error ? decision.error.message : 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.'}</p>
+          <p>{decision.error instanceof ProductDetailRequestError ? decision.error.message : 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.'}</p>
           <a href={`/ar/products/${encodeURIComponent(slug)}`}>إعادة المحاولة</a>
         </section>
       </main>
