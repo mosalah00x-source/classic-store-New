@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import type { SyntheticEvent } from 'react';
 import { handleCatalogMock, isCatalogMockEnabled } from '../src/lib/catalog-mock-handlers';
 import { hasMoreCatalogPages, mergeProductItems, parseCatalogFilters } from '../src/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '../src/lib/product-image';
@@ -94,7 +95,7 @@ test('failed product image switches to the shared placeholder asset', () => {
     dataset: {} as DOMStringMap,
     hidden: false
   };
-  onProductImageError({ currentTarget: image } as unknown as React.SyntheticEvent<HTMLImageElement>, 'لا توجد صورة');
+  onProductImageError({ currentTarget: image } as unknown as SyntheticEvent<HTMLImageElement>, 'لا توجد صورة');
   assert.equal(image.src, PRODUCT_IMAGE_PLACEHOLDER);
   assert.equal(image.alt, 'لا توجد صورة');
   assert.equal(image.dataset.fallbackApplied, 'true');
