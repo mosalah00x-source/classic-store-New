@@ -76,7 +76,7 @@ footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--sp
 .catalog-card { min-width: 0; background: white; border: 1px solid #e4e7ec; border-radius: 15px; overflow: hidden; transition: box-shadow .15s ease, transform .15s ease; }
 .catalog-card:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(16, 24, 40, .08); }
 .catalog-card-link { display: block; text-decoration: none; height: 100%; }
-.catalog-card-image { aspect-ratio: 1 / 1; display: grid; place-items: center; background: #f2f4f7; color: var(--color-text-muted); }
+.catalog-card-image { position: relative; aspect-ratio: 1 / 1; display: grid; place-items: center; background: #f2f4f7; color: var(--color-text-muted); }
 .catalog-card-image img { width: 100%; height: 100%; object-fit: cover; }
 .catalog-card-copy { padding: 13px; }
 .catalog-card-copy h2 { font-size: .98rem; margin: 0; line-height: 1.6; }

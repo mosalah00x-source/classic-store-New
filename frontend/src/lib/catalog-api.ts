@@ -59,9 +59,11 @@ export function getCategories(): Promise<CatalogCategory[]> {
   return catalogRequest<CatalogCategory[]>('/categories');
 }
 
-export function buildCategoryTree(categories: CatalogCategory[]) {
-  const byId = new Map(categories.map((category) => [category.id, { ...category, children: [] as CatalogCategory[] }]));
-  const roots: Array<CatalogCategory & { children: CatalogCategory[] }> = [];
+type CategoryNode = CatalogCategory & { children: CategoryNode[] };
+
+export function buildCategoryTree(categories: CatalogCategory[]): CategoryNode[] {
+  const byId = new Map(categories.map((category) => [category.id, { ...category, children: [] as CategoryNode[] }]));
+  const roots: CategoryNode[] = [];
 
   for (const category of categories) {
     const node = byId.get(category.id);
@@ -71,7 +73,7 @@ export function buildCategoryTree(categories: CatalogCategory[]) {
     else roots.push(node);
   }
 
-  const sortTree = (nodes: Array<CatalogCategory & { children: CatalogCategory[] }>) => {
+  const sortTree = (nodes: CategoryNode[]) => {
     nodes.sort((a, b) => a.sortOrder - b.sortOrder || a.nameAr.localeCompare(b.nameAr, 'ar'));
     nodes.forEach((node) => sortTree(node.children));
   };

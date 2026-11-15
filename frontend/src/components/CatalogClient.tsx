@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } from '@/lib/catalog-types';
@@ -166,7 +167,7 @@ function ProductCard({ product }: { product: ProductSummary }) {
   const t = useTranslations('Catalog');
   return <article className="catalog-card">
     <a className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
-      <div className="catalog-card-image">{product.primaryImage ? <img src={product.primaryImage.imageUrl} alt={product.primaryImage.altAr || product.nameAr} loading="lazy" /> : <span aria-hidden="true">{t('imagePlaceholder')}</span>}</div>
+      <div className="catalog-card-image">{product.primaryImage ? <Image src={product.primaryImage.imageUrl} alt={product.primaryImage.altAr || product.nameAr} fill unoptimized sizes="(max-width: 720px) 50vw, (max-width: 980px) 33vw, 25vw" /> : <span aria-hidden="true">{t('imagePlaceholder')}</span>}</div>
       <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: product.priceFrom })}</p></div>
     </a>
   </article>;
