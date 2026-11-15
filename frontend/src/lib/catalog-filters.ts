@@ -37,3 +37,7 @@ export function mergeProductItems(current: ProductSummary[], incoming: ProductSu
   });
   return [...current, ...uniqueIncoming];
 }
+
+export function hasMoreCatalogPages(page: { page: number; totalPages: number }): boolean {
+  return page.page + 1 < page.totalPages;
+}
