@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (process.env.API_MOCKING === 'true' && process.env.NODE_ENV !== 'production') {
-    const mocked = handleCatalogMock(`http://catalog.local/products?${query.toString()}`);
+    const mocked = handleCatalogMock(`${incoming.origin}/products?${query.toString()}`);
     if (mocked) return mocked;
   }
 

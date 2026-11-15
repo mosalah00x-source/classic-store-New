@@ -71,7 +71,7 @@ function json(body: unknown, status = 200): Response {
  * It is enabled only by the server route when API_MOCKING=true.
  */
 export function handleCatalogMock(requestUrl: string): Response | null {
-  const url = new URL(requestUrl, 'http://localhost');
+  const url = new URL(requestUrl);
   if (url.pathname === '/categories' && url.search === '') return json([rootCategory, childCategory]);
   if (url.pathname !== '/products') return null;
 

@@ -23,7 +23,7 @@ function toSearchParams(filters: CatalogFilters): URLSearchParams {
 
 async function catalogRequest<T>(path: string): Promise<T> {
   if (process.env.API_MOCKING === 'true' && process.env.NODE_ENV !== 'production') {
-    const mocked = handleCatalogMock(`http://catalog.local${path}`);
+    const mocked = handleCatalogMock(new URL(path, apiBaseUrl()).toString());
     if (mocked) {
       if (!mocked.ok) {
         const payload = (await mocked.json().catch(() => undefined)) as CatalogApiError | undefined;
