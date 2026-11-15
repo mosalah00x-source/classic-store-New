@@ -5,6 +5,7 @@ import type { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } from '@/lib/catalog-types';
+import { mergeProductItems } from '@/lib/catalog-filters';
 
 type Props = { initialPage: ProductPage; categories: CatalogCategory[]; initialFilters: CatalogFilters };
 
@@ -117,7 +118,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
       const next = payload as ProductPage;
       setItems((current) => {
         const seen = new Set(current.map((product) => product.id));
-        return [...current, ...next.content.filter((product) => !seen.has(product.id))];
+        return mergeProductItems(current, next.content);
       });
       setPage(next);
     } catch {
@@ -138,7 +139,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   function filterFields() {
     return <form className="catalog-filter-form" onSubmit={submit}>
       <label>{t('search')}<input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('searchPlaceholder')} /></label>
-      <label>{t('category')}<select value={filters.categoryId ?? ''} onChange={(event) => setFilters((current) => ({ ...current, categoryId: event.target.value || undefined }))}><option value="">{t('allCategories')}</option>{flatCategories.map((category) => <option key={category.id} value={category.id}>{category.nameAr}</option>)}</select></label>
+      <label>{t('category')}<select value={filters.categoryId ?? ''} onChange={(event) => setFilters((current) => ({ ...current, categoryId: event.target.value || undefined }))}><option value="">{t('allCategories')}</option>{flatCategories.map((category) => <option key={category.id} value={category.id}>{category.parentId ? '　└ ' : ''}{category.nameAr}</option>)}</select></label>
       <div className="catalog-price-fields"><label>{t('minPrice')}<input inputMode="decimal" value={minPrice} onChange={(event) => setMinPrice(event.target.value)} /></label><label>{t('maxPrice')}<input inputMode="decimal" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)} /></label></div>
       <label>{t('sort')}<select value={filters.sort ?? 'newest'} onChange={(event) => setFilters((current) => ({ ...current, sort: event.target.value as CatalogFilters['sort'] }))}><option value="newest">{t('newest')}</option><option value="priceAsc">{t('priceAsc')}</option><option value="priceDesc">{t('priceDesc')}</option></select></label>
       <button className="catalog-primary-button" type="submit">{t('apply')}</button>
