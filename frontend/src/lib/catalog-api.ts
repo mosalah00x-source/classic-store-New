@@ -1,5 +1,6 @@
 import type { CatalogCategory, CatalogFilters, ProductPage } from './catalog-types';
 import { CatalogRequestError, type CatalogApiError } from './catalog-types';
+import { handleCatalogMock } from './catalog-mock-handlers';
 
 function apiBaseUrl(): string {
   const value = process.env.API_BASE_URL;
@@ -21,6 +22,17 @@ function toSearchParams(filters: CatalogFilters): URLSearchParams {
 }
 
 async function catalogRequest<T>(path: string): Promise<T> {
+  if (process.env.API_MOCKING === 'true' && process.env.NODE_ENV !== 'production') {
+    const mocked = handleCatalogMock(`http://catalog.local${path}`);
+    if (mocked) {
+      if (!mocked.ok) {
+        const payload = (await mocked.json().catch(() => undefined)) as CatalogApiError | undefined;
+        throw new CatalogRequestError(payload?.messageAr ?? 'تعذر تحميل بيانات الكتالوج.', mocked.status, payload);
+      }
+      return (await mocked.json()) as T;
+    }
+  }
+
   const response = await fetch(`${apiBaseUrl()}${path}`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
