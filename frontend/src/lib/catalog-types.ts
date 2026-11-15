@@ -1,8 +1,11 @@
 export type Money = string;
 
 export type CatalogImage = {
+  id: string;
+  variantId?: string | null;
   imageUrl: string;
-  altAr: string;
+  altAr: string | null;
+  sortOrder: number;
 };
 
 export type CatalogBrand = {

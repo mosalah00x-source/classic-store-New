@@ -26,7 +26,7 @@ const products: ProductSummary[] = [
     nameEn: 'Classic blender',
     priceFrom: '950.00',
     currency: 'EGP',
-    primaryImage: { imageUrl: '/mock/blender.webp', altAr: 'خلاط كلاسيك' },
+    primaryImage: { id: '50000000-0000-4000-8000-000000000001', variantId: null, imageUrl: '/mock/blender.webp', altAr: 'خلاط كلاسيك', sortOrder: 0 },
     brand: { id: '30000000-0000-4000-8000-000000000001', name: 'كلاسيك', slug: 'classic' },
     categories: [rootCategory, childCategory]
   },
@@ -48,7 +48,7 @@ const products: ProductSummary[] = [
     nameEn: null,
     priceFrom: '725.00',
     currency: 'EGP',
-    primaryImage: { imageUrl: '/mock/toaster.webp', altAr: 'محمصة خبز' },
+    primaryImage: { id: '50000000-0000-4000-8000-000000000002', variantId: null, imageUrl: '/mock/toaster.webp', altAr: 'محمصة خبز', sortOrder: 0 },
     brand: null,
     categories: [rootCategory]
   }
