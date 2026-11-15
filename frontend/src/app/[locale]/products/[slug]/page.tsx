@@ -31,20 +31,23 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const { locale, slug } = await params;
   if (locale !== 'ar') redirect(`/ar/products/${encodeURIComponent(slug)}`);
 
-  try {
-    const product = await getProductDetail(slug);
-    return <ProductDetailClient product={product} />;
-  } catch (error) {
-    if (error instanceof ProductDetailRequestError && error.status === 404) notFound();
+  const result = await getProductDetail(slug)
+    .then((product) => ({ product, error: null as unknown }))
+    .catch((error: unknown) => ({ product: null, error }));
+
+  if (result.error) {
+    if (result.error instanceof ProductDetailRequestError && result.error.status === 404) notFound();
 
     return (
       <main className="catalog-shell">
         <h1>تعذر تحميل تفاصيل المنتج</h1>
         <section className="catalog-state" role="alert">
-          <p>{error instanceof ProductDetailRequestError ? error.message : 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.'}</p>
+          <p>{result.error instanceof ProductDetailRequestError ? result.error.message : 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.'}</p>
           <a href={`/ar/products/${encodeURIComponent(slug)}`}>إعادة المحاولة</a>
         </section>
       </main>
     );
   }
+
+  return <ProductDetailClient product={result.product} />;
 }
