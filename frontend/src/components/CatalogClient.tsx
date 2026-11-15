@@ -168,7 +168,7 @@ function ProductCard({ product }: { product: ProductSummary }) {
   const t = useTranslations('Catalog');
   return <article className="catalog-card">
     <a className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
-      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage ? (product.primaryImage.altAr || product.nameAr) : t('imagePlaceholder')} fill unoptimized onError={(event) => onProductImageError(event, t('imagePlaceholder'))} sizes="(max-width: 720px) 50vw, (max-width: 980px) 33vw, 25vw" /></div>
+      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || product.nameAr} fill unoptimized onError={(event) => onProductImageError(event, product.primaryImage?.altAr || product.nameAr)} sizes="(max-width: 720px) 50vw, (max-width: 980px) 33vw, 25vw" /></div>
       <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: product.priceFrom })}</p></div>
     </a>
   </article>;
