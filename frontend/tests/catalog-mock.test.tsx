@@ -1,7 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { handleCatalogMock } from '../src/lib/catalog-mock-handlers';
-import { mergeProductItems, parseCatalogFilters } from '../src/lib/catalog-filters';
+import type { SyntheticEvent } from 'react';
+import { handleCatalogMock, isCatalogMockEnabled } from '../src/lib/catalog-mock-handlers';
+import { hasMoreCatalogPages, mergeProductItems, parseCatalogFilters } from '../src/lib/catalog-filters';
+import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '../src/lib/product-image';
+import type { ProductPage } from '../src/lib/catalog-types';
 
 test('catalog mocks include null image, null price, null brand and multiple categories', async () => {
   const response = handleCatalogMock('https://catalog.invalid/products?page=0&size=20');
@@ -55,4 +58,51 @@ test('load-more merge appends only unseen product IDs', async () => {
   const body = await response.json();
   const merged = mergeProductItems(body.content.slice(0, 2), [body.content[1], body.content[2]]);
   assert.equal(merged.length, 3);
+});
+
+test('many mock scenario provides 45 unique products across 20/20/5 pages', async () => {
+  const pages = await Promise.all([0, 1, 2].map(async (page) => {
+    const response = handleCatalogMock(`https://catalog.invalid/products?page=${page}&size=20`, 'many');
+    assert.ok(response);
+    return (await response.json()) as ProductPage;
+  }));
+  assert.deepEqual(pages.map((page) => page.content.length), [20, 20, 5]);
+  assert.deepEqual(pages.map((page) => page.totalElements), [45, 45, 45]);
+  const ids = pages.flatMap((page) => page.content.map((product) => product.id));
+  assert.equal(new Set(ids).size, 45);
+  assert.equal(hasMoreCatalogPages(pages[2]), false);
+  assert.equal(hasMoreCatalogPages(pages[0]), true);
+  const all = pages.flatMap((page) => page.content);
+  assert.ok(all.some((product) => product.priceFrom === null));
+  assert.ok(all.some((product) => product.primaryImage === null));
+  assert.ok(all.some((product) => product.brand === null));
+});
+
+test('mock responder is disabled in production even when API_MOCKING=true', () => {
+  assert.equal(isCatalogMockEnabled({ API_MOCKING: 'true', NODE_ENV: 'production' }), false);
+  assert.equal(isCatalogMockEnabled({ API_MOCKING: 'true', NODE_ENV: 'development' }), true);
+  assert.equal(isCatalogMockEnabled({ API_MOCKING: 'false', NODE_ENV: 'development' }), false);
+});
+
+test('Arabic plural rules cover zero, one, two, few and many', () => {
+  const rules = new Intl.PluralRules('ar');
+  assert.deepEqual([0, 1, 2, 3, 11].map((count) => rules.select(count)), ['zero', 'one', 'two', 'few', 'many']);
+});
+
+test('failed product image switches to the shared placeholder asset', () => {
+  const image = {
+    src: '/mock/broken.svg',
+    alt: 'صورة المنتج',
+    dataset: {} as DOMStringMap,
+    hidden: false
+  };
+  onProductImageError({ currentTarget: image } as unknown as SyntheticEvent<HTMLImageElement>, 'لا توجد صورة');
+  assert.equal(image.src, PRODUCT_IMAGE_PLACEHOLDER);
+  assert.equal(image.alt, 'لا توجد صورة');
+  assert.equal(image.dataset.fallbackApplied, 'true');
+});
+
+test('load more is hidden when the final page has been reached', () => {
+  assert.equal(hasMoreCatalogPages({ page: 2, totalPages: 3 }), false);
+  assert.equal(hasMoreCatalogPages({ page: 0, totalPages: 3 }), true);
 });

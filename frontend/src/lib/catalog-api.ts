@@ -1,6 +1,6 @@
 import type { CatalogCategory, CatalogFilters, ProductPage } from './catalog-types';
 import { CatalogRequestError, type CatalogApiError } from './catalog-types';
-import { handleCatalogMock } from './catalog-mock-handlers';
+import { handleCatalogMock, isCatalogMockEnabled } from './catalog-mock-handlers';
 
 function apiBaseUrl(): string {
   const value = process.env.API_BASE_URL;
@@ -22,8 +22,9 @@ function toSearchParams(filters: CatalogFilters): URLSearchParams {
 }
 
 async function catalogRequest<T>(path: string): Promise<T> {
-  if (process.env.API_MOCKING === 'true' && process.env.NODE_ENV !== 'production') {
-    const mocked = handleCatalogMock(new URL(path, apiBaseUrl()).toString());
+  if (isCatalogMockEnabled(process.env)) {
+    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : 'default';
+    const mocked = handleCatalogMock(new URL(path, apiBaseUrl()).toString(), scenario);
     if (mocked) {
       if (!mocked.ok) {
         const payload = (await mocked.json().catch(() => undefined)) as CatalogApiError | undefined;

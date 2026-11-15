@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { handleCatalogMock } from '@/lib/catalog-mock-handlers';
+import { handleCatalogMock, isCatalogMockEnabled } from '@/lib/catalog-mock-handlers';
 
 const ALLOWED_PARAMS = ['q', 'categoryId', 'brandId', 'minPrice', 'maxPrice', 'sort', 'page', 'size'] as const;
 
@@ -11,8 +11,9 @@ export async function GET(request: NextRequest) {
     if (value !== null) query.set(key, value);
   }
 
-  if (process.env.API_MOCKING === 'true' && process.env.NODE_ENV !== 'production') {
-    const mocked = handleCatalogMock(`${incoming.origin}/products?${query.toString()}`);
+  if (isCatalogMockEnabled(process.env)) {
+    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : 'default';
+    const mocked = handleCatalogMock(`${incoming.origin}/products?${query.toString()}`, scenario);
     if (mocked) return mocked;
   }
 

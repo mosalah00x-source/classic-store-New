@@ -18,6 +18,15 @@ const childCategory: CatalogCategory = {
   sortOrder: 1
 };
 
+const accessoriesCategory: CatalogCategory = {
+  id: '10000000-0000-4000-8000-000000000003',
+  parentId: null,
+  nameAr: 'الإكسسوارات',
+  nameEn: 'Accessories',
+  slug: 'accessories',
+  sortOrder: 2
+};
+
 const products: ProductSummary[] = [
   {
     id: '20000000-0000-4000-8000-000000000001',
@@ -26,7 +35,7 @@ const products: ProductSummary[] = [
     nameEn: 'Classic blender',
     priceFrom: '950.00',
     currency: 'EGP',
-    primaryImage: { id: '50000000-0000-4000-8000-000000000001', variantId: null, imageUrl: '/mock/blender.webp', altAr: 'خلاط كلاسيك', sortOrder: 0 },
+    primaryImage: { id: '50000000-0000-4000-8000-000000000001', variantId: null, imageUrl: '/mock/blender.svg', altAr: 'خلاط كلاسيك', sortOrder: 0 },
     brand: { id: '30000000-0000-4000-8000-000000000001', name: 'كلاسيك', slug: 'classic' },
     categories: [rootCategory, childCategory]
   },
@@ -48,11 +57,36 @@ const products: ProductSummary[] = [
     nameEn: null,
     priceFrom: '725.00',
     currency: 'EGP',
-    primaryImage: { id: '50000000-0000-4000-8000-000000000002', variantId: null, imageUrl: '/mock/toaster.webp', altAr: 'محمصة خبز', sortOrder: 0 },
+    primaryImage: { id: '50000000-0000-4000-8000-000000000002', variantId: null, imageUrl: '/mock/toaster.svg', altAr: 'محمصة خبز', sortOrder: 0 },
     brand: null,
     categories: [rootCategory]
   }
 ];
+
+const manyProducts: ProductSummary[] = Array.from({ length: 45 }, (_, index) => {
+  const number = index + 1;
+  const category = number % 3 === 0 ? accessoriesCategory : number % 2 === 0 ? childCategory : rootCategory;
+  const hasImage = number % 7 !== 0;
+  const hasPrice = number % 9 !== 0;
+  const hasBrand = number % 4 !== 0;
+  return {
+    id: `21000000-0000-4000-8000-${String(number).padStart(12, '0')}`,
+    slug: `demo-product-${number}`,
+    nameAr: `منتج تجريبي ${number}`,
+    nameEn: `Demo product ${number}`,
+    priceFrom: hasPrice ? `${(250 + ((number * 137) % 2400)).toFixed(2)}` : null,
+    currency: 'EGP',
+    primaryImage: hasImage ? {
+      id: `51000000-0000-4000-8000-${String(number).padStart(12, '0')}`,
+      variantId: null,
+      imageUrl: number % 2 === 0 ? '/mock/blender.svg' : '/mock/toaster.svg',
+      altAr: `صورة منتج تجريبي ${number}`,
+      sortOrder: 0
+    } : null,
+    brand: hasBrand ? { id: '30000000-0000-4000-8000-000000000001', name: 'كلاسيك', slug: 'classic' } : null,
+    categories: [category]
+  };
+});
 
 const errorPayload = (code: string, messageAr: string, messageEn: string) => ({
   code,
@@ -66,13 +100,22 @@ function json(body: unknown, status = 200): Response {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 }
 
+export function isCatalogMockEnabled(environment: {
+  API_MOCKING?: string;
+  NODE_ENV?: string;
+}): boolean {
+  return environment.API_MOCKING === 'true' && environment.NODE_ENV !== 'production';
+}
+
 /**
  * Shared deterministic catalog mock used by the route handler and Node tests.
- * It is enabled only by the server route when API_MOCKING=true.
+ * It is enabled only outside production when API_MOCKING=true.
  */
-export function handleCatalogMock(requestUrl: string): Response | null {
+export function handleCatalogMock(requestUrl: string, scenario: 'default' | 'many' = 'default'): Response | null {
   const url = new URL(requestUrl);
-  if (url.pathname === '/categories' && url.search === '') return json([rootCategory, childCategory]);
+  const many = scenario === 'many';
+  const categories = many ? [rootCategory, childCategory, accessoriesCategory] : [rootCategory, childCategory];
+  if (url.pathname === '/categories' && url.search === '') return json(categories);
   if (url.pathname !== '/products') return null;
 
   const q = url.searchParams.get('q')?.trim() ?? '';
@@ -99,7 +142,8 @@ export function handleCatalogMock(requestUrl: string): Response | null {
     return json(errorPayload('VALIDATION_ERROR', 'بيانات التصفية غير صحيحة.', 'Invalid catalog filters.'), 400);
   }
 
-  let filtered = products.filter((product) => {
+  const source = many ? manyProducts : products;
+  let filtered = source.filter((product) => {
     const matchesQuery = !q || product.nameAr.includes(q);
     const matchesCategory = !categoryId || product.categories.some((category) => category.id === categoryId);
     const price = product.priceFrom === null ? null : Number(product.priceFrom);
