@@ -4,6 +4,7 @@ import type { SyntheticEvent } from 'react';
 import { handleCatalogMock, isCatalogMockEnabled } from '../src/lib/catalog-mock-handlers';
 import { hasMoreCatalogPages, mergeProductItems, parseCatalogFilters } from '../src/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '../src/lib/product-image';
+import type { ProductPage } from '../src/lib/catalog-types';
 
 test('catalog mocks include null image, null price, null brand and multiple categories', async () => {
   const response = handleCatalogMock('https://catalog.invalid/products?page=0&size=20');
@@ -63,7 +64,7 @@ test('many mock scenario provides 45 unique products across 20/20/5 pages', asyn
   const pages = await Promise.all([0, 1, 2].map(async (page) => {
     const response = handleCatalogMock(`https://catalog.invalid/products?page=${page}&size=20`, 'many');
     assert.ok(response);
-    return response.json();
+    return (await response.json()) as ProductPage;
   }));
   assert.deepEqual(pages.map((page) => page.content.length), [20, 20, 5]);
   assert.deepEqual(pages.map((page) => page.totalElements), [45, 45, 45]);
