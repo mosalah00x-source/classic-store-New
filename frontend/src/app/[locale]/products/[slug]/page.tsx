@@ -49,5 +49,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     );
   }
 
+  if (!result.product) notFound();
+
   return <ProductDetailClient product={result.product} />;
 }
