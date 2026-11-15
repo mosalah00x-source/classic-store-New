@@ -46,15 +46,6 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   const hasMore = page.page + 1 < page.totalPages;
 
   useEffect(() => {
-    setPage(initialPage);
-    setItems(initialPage.content);
-    setFilters(initialFilters);
-    setQuery(initialFilters.q ?? '');
-    setMinPrice(initialFilters.minPrice ?? '');
-    setMaxPrice(initialFilters.maxPrice ?? '');
-  }, [initialPage, initialFilters]);
-
-  useEffect(() => {
     if (!drawerOpen) return;
     const root = drawerRef.current;
     const focusable = () => root?.querySelectorAll<HTMLElement>('button, input, select, a[href], [tabindex]:not([tabindex="-1"])') ?? [];
@@ -116,10 +107,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
         return;
       }
       const next = payload as ProductPage;
-      setItems((current) => {
-        const seen = new Set(current.map((product) => product.id));
-        return mergeProductItems(current, next.content);
-      });
+      setItems((current) => mergeProductItems(current, next.content));
       setPage(next);
     } catch {
       setError(t('errorMessage'));
