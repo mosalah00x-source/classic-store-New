@@ -32,10 +32,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
   if (locale !== 'ar') redirect(`/ar/products/${encodeURIComponent(slug)}`);
 
   const result = await getProductDetail(slug)
-    .then((product) => ({ product, error: null as unknown }))
-    .catch((error: unknown) => ({ product: null, error }));
+    .then((product) => ({ ok: true as const, product }))
+    .catch((error: unknown) => ({ ok: false as const, error }));
 
-  if (result.error) {
+  if (!result.ok) {
     if (result.error instanceof ProductDetailRequestError && result.error.status === 404) notFound();
 
     return (
