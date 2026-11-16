@@ -142,7 +142,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
     <header className="catalog-heading"><div><h1>{t('title')}</h1><p>{t('subtitle')}</p></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
     {topLevelCategories.length > 0 && <nav className="catalog-category-chips" aria-label={t('category')}>
       {topLevelCategories.map((category) => <button key={category.id} type="button" aria-pressed={filters.categoryId === category.id} onClick={() => apply({ ...filters, categoryId: filters.categoryId === category.id ? undefined : category.id, page: 0 })}>{category.nameAr}</button>)}
-    </nav>
+    </nav>}
     <div className="catalog-layout">
       <aside className="catalog-sidebar"><h2>{t('filters')}</h2>{filterFields()}</aside>
       <section className="catalog-results" aria-live="polite">
