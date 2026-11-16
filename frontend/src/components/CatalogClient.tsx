@@ -46,6 +46,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   const tree = useMemo(() => categoryTree(categories), [categories]);
   const flatCategories = useMemo(() => flattenCategories(tree), [tree]);
   const hasMore = hasMoreCatalogPages(page);
+  const topLevelCategories = tree;
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -137,15 +138,19 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   }
 
   return <main className="catalog-shell">
-    <header className="catalog-heading"><div><p className="catalog-eyebrow">CLASSIC STORE</p><h1>{t('title')}</h1><p>{t('subtitle')}</p></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
+    <nav className="catalog-breadcrumb" aria-label="مسار التنقل"><Link href="/ar/products">الرئيسية</Link><span aria-hidden="true">&gt;</span><span aria-current="page">جميع المنتجات</span></nav>
+    <header className="catalog-heading"><div><h1>{t('title')}</h1><p>{t('subtitle')}</p></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
+    {topLevelCategories.length > 0 && <nav className="catalog-category-chips" aria-label={t('category')}>
+      {topLevelCategories.map((category) => <button key={category.id} type="button" aria-pressed={filters.categoryId === category.id} onClick={() => apply({ ...filters, categoryId: filters.categoryId === category.id ? undefined : category.id, page: 0 })}>{category.nameAr}</button>)}
+    </nav>
     <div className="catalog-layout">
       <aside className="catalog-sidebar"><h2>{t('filters')}</h2>{filterFields()}</aside>
       <section className="catalog-results" aria-live="polite">
         <div className="catalog-toolbar"><span>{t('resultCount', { count: page.totalElements })}</span><div className="catalog-chips">
-          {filters.q && <button type="button" onClick={() => removeFilter('q')}>{filters.q} ×</button>}
-          {filters.categoryId && <button type="button" onClick={() => removeFilter('categoryId')}>{flatCategories.find((item) => item.id === filters.categoryId)?.nameAr ?? t('category')} ×</button>}
-          {filters.minPrice && <button type="button" onClick={() => removeFilter('minPrice')}>{t('minPrice')}: {filters.minPrice} ×</button>}
-          {filters.maxPrice && <button type="button" onClick={() => removeFilter('maxPrice')}>{t('maxPrice')}: {filters.maxPrice} ×</button>}
+          {filters.q && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('q')}>{filters.q} ×</button>}
+          {filters.categoryId && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('categoryId')}>{flatCategories.find((item) => item.id === filters.categoryId)?.nameAr ?? t('category')} ×</button>}
+          {filters.minPrice && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('minPrice')}>{t('minPrice')}: {filters.minPrice} ×</button>}
+          {filters.maxPrice && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('maxPrice')}>{t('maxPrice')}: {filters.maxPrice} ×</button>}
           {(filters.q || filters.categoryId || filters.minPrice || filters.maxPrice || filters.sort !== 'newest') && <button type="button" onClick={() => { setQuery(''); setMinPrice(''); setMaxPrice(''); setFilters({ sort: 'newest', page: 0, size: 20 }); apply({ sort: 'newest' }); }}>{t('clearAll')}</button>}
         </div></div>
         {error && <p className="catalog-error" role="alert">{error} <button type="button" onClick={() => { setError(''); router.refresh(); }}>{t('retry')}</button></p>}
@@ -167,9 +172,9 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
 function ProductCard({ product }: { product: ProductSummary }) {
   const t = useTranslations('Catalog');
   return <article className="catalog-card">
-    <a className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
+    <Link className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
       <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || product.nameAr} fill unoptimized onError={(event) => onProductImageError(event, product.primaryImage?.altAr || product.nameAr)} sizes="(max-width: 720px) 50vw, (max-width: 980px) 33vw, 25vw" /></div>
       <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: product.priceFrom })}</p></div>
-    </a>
+    </Link>
   </article>;
 }
