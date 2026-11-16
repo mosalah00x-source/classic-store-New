@@ -12,8 +12,7 @@
     "language": "English"
   },
   "Catalog": {
-    "title": "تسوق المنتجات",
-    "subtitle": "اكتشف منتجاتنا واختر ما يناسبك",
+    "title": "جميع المنتجات",
     "filters": "تصفية المنتجات",
     "search": "ابحث عن منتج",
     "searchPlaceholder": "اكتب اسم المنتج",
