@@ -4,10 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { ProductDetail } from '@/lib/product-detail-api';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
-
-function formatPrice(value: string): string {
-  return new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP', maximumFractionDigits: 2 }).format(Number(value));
-}
+import { formatPrice } from '@/lib/price-format';
 
 export function ProductDetailClient({ product }: { product: ProductDetail }) {
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id ?? '');
@@ -76,7 +73,7 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
           )}
 
           {selectedVariant ? (
-            <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)}</div>
+            <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} ج.م</div>
           ) : (
             <p className="product-detail-unavailable">غير متاح حاليًا</p>
           )}
