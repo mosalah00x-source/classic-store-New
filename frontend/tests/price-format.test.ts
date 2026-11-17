@@ -8,7 +8,7 @@ test('catalog and product detail share Latin-digit two-decimal price formatting'
     const detailAmount = formatPrice(value);
     assert.equal(detailAmount, catalogAmount);
     assert.equal(catalogAmount, value);
-    assert.match(catalogAmount, /^\\d+\\.\\d{2}$/);
+    assert.match(catalogAmount, /^\d+\.\d{2}$/);
   }
 });
 
