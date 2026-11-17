@@ -1,17 +1,33 @@
  :root {
   --color-surface: #ffffff;
-  --color-surface-muted: #f5f6f8;
-  --color-text: #172033;
-  --color-text-muted: #667085;
-  --color-primary: #2457a6;
-  --color-primary-soft: #eaf1fc;
-  --color-danger: #b42318;
-  --color-danger-soft: #fff1f0;
-  --color-success: #067647;
-  --color-success-soft: #ecfdf3;
+  --color-surface-muted: #fafafa;
+  --color-text: #1d1d1f;
+  --color-text-muted: #666666;
+  --color-primary: #e0592a;
+  --color-primary-soft: color-mix(in srgb, #e0592a 10%, white);
+  --color-danger: #e30613;
+  --color-danger-soft: color-mix(in srgb, #e30613 8%, white);
+  --color-success: #2e8b4f;
+  --color-success-soft: color-mix(in srgb, #2e8b4f 10%, white);
+  --color-border: #dcdcdc;
+  --color-border-muted: #ececec;
+  --color-logo-inverted: #f1efeb;
+  --color-logo: var(--color-text);
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
   --font-body: var(--font-arabic), var(--font-latin), sans-serif;
+}
+:root[data-theme="dark"] {
+  --color-surface: #1a1a1d;
+  --color-surface-muted: #0f0f11;
+  --color-text: #f1efeb;
+  --color-text-muted: #a2a2a8;
+  --color-primary-soft: color-mix(in srgb, #e0592a 18%, #1a1a1d);
+  --color-danger-soft: color-mix(in srgb, #e30613 12%, #1a1a1d);
+  --color-success-soft: color-mix(in srgb, #2e8b4f 16%, #1a1a1d);
+  --color-border: #2e2e33;
+  --color-border-muted: #2c2c31;
+  --color-logo: var(--color-logo-inverted);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
@@ -206,6 +222,9 @@ footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--sp
 .catalog-skeleton{background:var(--surf);border-color:var(--bd)}
 .catalog-skeleton span{background:linear-gradient(90deg,var(--cimg) 25%,var(--bd2) 50%,var(--cimg) 75%);background-size:200% 100%}
 .product-detail-shell{padding-block:18px 64px}
+.product-detail-top-actions{display:flex;justify-content:flex-start;margin-bottom:12px}
+.product-theme-toggle{min-height:40px;padding:8px 16px;border:1px solid var(--bd);border-radius:999px;background:var(--surf);color:var(--text);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.product-theme-toggle:focus-visible{outline:3px solid color-mix(in srgb,var(--org) 30%,transparent);outline-offset:2px}
 .product-breadcrumb{margin-block:10px 22px}
 .product-breadcrumb a{color:var(--text)}
 .product-detail-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(28px,5vw,72px)}
