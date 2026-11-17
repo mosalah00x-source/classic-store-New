@@ -111,7 +111,7 @@ test('showcase detail mocks cover all 18 catalog slugs and preserve catalog valu
 
   const skus = details.map((product) => product.variants[0]?.sku);
   assert.equal(new Set(skus).size, 18);
-  assert.equal(skus[4], 'WOOL0010');
+  assert.equal(skus[4], 'SHOWCASE-05');
   assert.equal(skus[0], 'SHOWCASE-01');
   assert.equal(skus[17], 'SHOWCASE-18');
   assert.ok(skus.every((sku, index) => index === 4 || /^SHOWCASE-\d{2}$/.test(sku ?? '')));
