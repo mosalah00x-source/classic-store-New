@@ -85,8 +85,8 @@ test('all detail mock variants render without null or undefined text', () => {
         createElement(ProductDetailClient, { product })
       )
     );
-    assert.doesNotMatch(html, /ProductTheme\\./, `raw translation key rendered for ${product.slug}`);
-    assert.doesNotMatch(html, /\\b(?:null|undefined)\\b/, `unexpected nullish text for ${product.slug}`);
+    assert.doesNotMatch(html, /ProductTheme\./, `raw translation key rendered for ${product.slug}`);
+    assert.doesNotMatch(html, /\b(?:null|undefined)\b/, `unexpected nullish text for ${product.slug}`);
   }
 });
 
