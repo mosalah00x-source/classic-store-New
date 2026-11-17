@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { decideProductDetail } from '../src/lib/product-detail-decision';
 import { getProductDetail, mockProductDetails, ProductDetailRequestError } from '../src/lib/product-detail-api';
+import { handleCatalogMock } from '../src/lib/catalog-mock-handlers';
+import type { ProductPage } from '../src/lib/catalog-types';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { ProductDetailClient } from '../src/components/ProductDetailClient';
@@ -77,4 +79,58 @@ test('all detail mock variants render without null or undefined text', () => {
     const html = renderToStaticMarkup(createElement(ProductDetailClient, { product }));
     assert.doesNotMatch(html, /\\b(?:null|undefined)\\b/, `unexpected nullish text for ${product.slug}`);
   }
+});
+
+
+test('showcase detail mocks cover all 18 catalog slugs and preserve catalog values', async () => {
+  const response = handleCatalogMock('https://catalog.invalid/products?page=0&size=20', 'showcase');
+  assert.ok(response);
+  const catalogPage = (await response.json()) as ProductPage;
+  const environment = { API_MOCKING: 'true', API_MOCK_SCENARIO: 'showcase', NODE_ENV: 'test' };
+  const details = await Promise.all(catalogPage.content.map((product) => getProductDetail(product.slug, environment)));
+
+  assert.equal(details.length, 18);
+  assert.deepEqual(details.map((product) => product.slug), catalogPage.content.map((product) => product.slug));
+
+  for (const [index, summary] of catalogPage.content.entries()) {
+    const detail = details[index];
+    assert.ok(detail);
+    assert.equal(detail.nameAr, summary.nameAr);
+    assert.deepEqual(detail.categories, summary.categories);
+    assert.equal(detail.variants.length, 1);
+    assert.equal(detail.variants[0]?.price, summary.priceFrom);
+    assert.equal(Object.hasOwn(detail, 'oldPrice'), false);
+    assert.equal(Object.hasOwn(detail, 'discount'), false);
+    assert.equal(Object.hasOwn(detail.variants[0] ?? {}, 'oldPrice'), false);
+    assert.equal(Object.hasOwn(detail.variants[0] ?? {}, 'discount'), false);
+    assert.equal(detail.brand, null);
+    assert.equal(detail.images.length, index === 0 ? 4 : 1);
+    assert.ok(detail.images.every((image) => image.imageUrl === '/mock/showcase-placeholder.svg'));
+    assert.equal(detail.descriptionAr !== null, index === 4);
+  }
+
+  const skus = details.map((product) => product.variants[0]?.sku);
+  assert.equal(new Set(skus).size, 18);
+  assert.equal(skus[4], 'WOOL0010');
+  assert.equal(skus[0], 'SHOWCASE-01');
+  assert.equal(skus[17], 'SHOWCASE-18');
+  assert.ok(skus.every((sku, index) => index === 4 || /^SHOWCASE-\\d{2}$/.test(sku ?? '')));
+});
+
+test('showcase detail data is isolated from the existing many and default detail behavior', async () => {
+  const existingEnvironment = { API_MOCKING: 'true', NODE_ENV: 'test' };
+  const manyEnvironment = { API_MOCKING: 'true', API_MOCK_SCENARIO: 'many', NODE_ENV: 'test' };
+  const showcaseEnvironment = { API_MOCKING: 'true', API_MOCK_SCENARIO: 'showcase', NODE_ENV: 'test' };
+
+  assert.equal((await getProductDetail('classic-blender', existingEnvironment)).slug, 'classic-blender');
+  assert.equal((await getProductDetail('classic-blender', manyEnvironment)).slug, 'classic-blender');
+  await assert.rejects(
+    getProductDetail('showcase-tie-floral-85', existingEnvironment),
+    (error: unknown) => error instanceof ProductDetailRequestError && error.status === 404
+  );
+  await assert.rejects(
+    getProductDetail('showcase-tie-floral-85', manyEnvironment),
+    (error: unknown) => error instanceof ProductDetailRequestError && error.status === 404
+  );
+  assert.equal((await getProductDetail('showcase-tie-floral-85', showcaseEnvironment)).slug, 'showcase-tie-floral-85');
 });
