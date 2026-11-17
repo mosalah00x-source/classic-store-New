@@ -14,8 +14,10 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
 
   useEffect(() => {
     const storedTheme = readThemePreference();
-    setTheme(storedTheme);
     document.documentElement.setAttribute('data-theme', storedTheme);
+    const frame = window.requestAnimationFrame(() => setTheme(storedTheme));
+
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   function toggleTheme() {
