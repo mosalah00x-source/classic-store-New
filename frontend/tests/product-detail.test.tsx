@@ -81,8 +81,11 @@ test('all detail mock variants render without null or undefined text', () => {
     const html = renderToStaticMarkup(
       createElement(
         NextIntlClientProvider,
-        { locale: 'ar', messages: arMessages },
-        createElement(ProductDetailClient, { product })
+        {
+          locale: 'ar',
+          messages: arMessages,
+          children: createElement(ProductDetailClient, { product })
+        }
       )
     );
     assert.doesNotMatch(html, /ProductTheme\./, `raw translation key rendered for ${product.slug}`);
