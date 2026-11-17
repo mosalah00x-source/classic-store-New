@@ -134,3 +134,20 @@ test('showcase empty categories return a valid empty product page', async () => 
   assert.equal(page.content.length, 0);
   assert.equal(page.totalElements, 0);
 });
+
+
+test('showcase supports search, category, price-range and price sorting filters', async () => {
+  const search = handleCatalogMock('https://catalog.invalid/products?q=حزام&page=0&size=20', 'showcase');
+  const category = handleCatalogMock('https://catalog.invalid/products?categoryId=10000000-0000-4000-8000-000000000102&page=0&size=20', 'showcase');
+  const range = handleCatalogMock('https://catalog.invalid/products?minPrice=400.00&maxPrice=480.00&sort=priceAsc&page=0&size=20', 'showcase');
+  assert.ok(search && category && range);
+  const searchPage = await search.json();
+  const categoryPage = await category.json();
+  const rangePage = await range.json();
+  assert.equal(searchPage.totalElements, 2);
+  assert.equal(categoryPage.totalElements, 2);
+  const prices = rangePage.content.map((product: { priceFrom: string }) => Number(product.priceFrom));
+  assert.ok(prices.length > 0);
+  assert.deepEqual(prices, [...prices].sort((a, b) => a - b));
+  assert.ok(prices.every((price: number) => price >= 400 && price <= 480));
+});
