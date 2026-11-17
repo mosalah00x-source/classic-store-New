@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } from '@/lib/catalog-types';
 import { hasMoreCatalogPages, mergeProductItems } from '@/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
+import { formatPrice } from '@/lib/price-format';
 
 type Props = { initialPage: ProductPage; categories: CatalogCategory[]; initialFilters: CatalogFilters };
 
@@ -179,7 +180,7 @@ function ProductCard({ product, eager }: { product: ProductSummary; eager: boole
   return <article className="catalog-card">
     <Link className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
       <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || product.nameAr} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || product.nameAr)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
-      <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: product.priceFrom })}</p></div>
+      <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: formatPrice(product.priceFrom) })}</p></div>
     </Link>
   </article>;
 }
