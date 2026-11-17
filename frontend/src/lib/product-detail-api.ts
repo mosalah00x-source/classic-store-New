@@ -1,4 +1,5 @@
-import { isCatalogMockEnabled } from './catalog-mock-handlers';
+import { handleCatalogMock, isCatalogMockEnabled } from './catalog-mock-handlers';
+import type { ProductPage } from './catalog-types';
 
 export type ProductDetailBrand = { id: string; name: string; slug: string };
 export type ProductDetailCategory = {
@@ -74,6 +75,63 @@ export const mockProductDetails: Record<string, ProductDetail> = {
   }
 };
 
+
+// Local-only showcase detail fixtures. WOOL0010 is copied verbatim from
+// docs/ui-reference/index.html; all other SKUs are explicitly synthetic.
+const showcaseReferenceSkus: Record<string, string> = {
+  'showcase-reversible-wool-scarf-brown': 'WOOL0010'
+};
+
+async function getShowcaseProductDetail(slug: string): Promise<ProductDetail> {
+  const response = handleCatalogMock('https://catalog.invalid/products?page=0&size=100', 'showcase');
+  if (!response) throw new ProductDetailRequestError('المنتج غير موجود.', 404);
+
+  const page = (await response.json()) as ProductPage;
+  const index = page.content.findIndex((product) => product.slug === slug);
+  const product = page.content[index];
+  if (!product) throw new ProductDetailRequestError('المنتج غير موجود.', 404);
+  if (product.priceFrom === null) {
+    throw new ProductDetailRequestError('سعر المنتج غير متاح في بيانات العرض المحلي.', 500);
+  }
+
+  const sku = showcaseReferenceSkus[product.slug] ?? `SHOWCASE-${String(index + 1).padStart(2, '0')}`;
+  const imageCount = index === 0 ? 4 : 1;
+  const imageUrl = product.primaryImage?.imageUrl ?? '/mock/showcase-placeholder.svg';
+  const imageAlt = product.primaryImage?.altAr ?? product.nameAr;
+
+  return {
+    id: product.id,
+    slug: product.slug,
+    nameAr: product.nameAr,
+    nameEn: product.nameEn,
+    descriptionAr: product.slug === 'showcase-reversible-wool-scarf-brown'
+      ? 'اسكارفاتنا مناسبة لجميع المناسبات، سواء كانت مناسبة رسمية أو خروجة كاجوال. مصنوعة من خامات عالية الجودة، تم تصميمها لتمنحك الدفء والأناقة في نفس الوقت. اختر من مجموعة واسعة من النقشات والألوان لتجد الاسكارف المثالي لك. احصل على اسكارفك الآن عبر الإنترنت أو قم بزيارة فروعنا!'
+      : null,
+    descriptionEn: null,
+    brand: null,
+    categories: product.categories.map((category) => ({ ...category })),
+    variants: [
+      {
+        id: `42000000-0000-4000-8000-${String(index + 1).padStart(12, '0')}`,
+        sku,
+        titleAr: null,
+        attributes: {},
+        price: product.priceFrom,
+        currency: 'EGP'
+      }
+    ],
+    // The first showcase product has four copies of the shared placeholder
+    // for thumbnail-gallery review; every other product has one image.
+    images: Array.from({ length: imageCount }, (_, imageIndex) => ({
+      id: `53000000-0000-4000-8000-${String(index * 4 + imageIndex + 1).padStart(12, '0')}`,
+      variantId: null,
+      imageUrl,
+      altAr: imageAlt,
+      sortOrder: imageIndex
+    }))
+  };
+}
+
 function apiBaseUrl(): string {
   const value = process.env.API_BASE_URL;
   if (!value) throw new Error('API_BASE_URL must be configured on the server');
@@ -82,9 +140,10 @@ function apiBaseUrl(): string {
 
 export async function getProductDetail(
   slug: string,
-  environment: { API_BASE_URL?: string; API_MOCKING?: string; NODE_ENV?: string } = process.env
+  environment: { API_BASE_URL?: string; API_MOCKING?: string; API_MOCK_SCENARIO?: string; NODE_ENV?: string } = process.env
 ): Promise<ProductDetail> {
   if (isCatalogMockEnabled(environment)) {
+    if (environment.API_MOCK_SCENARIO === 'showcase') return getShowcaseProductDetail(slug);
     const mocked = mockProductDetails[slug];
     if (!mocked) throw new ProductDetailRequestError('المنتج غير موجود.', 404);
     return mocked;
