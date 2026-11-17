@@ -3,11 +3,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } from '@/lib/catalog-types';
 import { hasMoreCatalogPages, mergeProductItems } from '@/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
+import { formatPrice } from '@/lib/price-format';
 
 type Props = { initialPage: ProductPage; categories: CatalogCategory[]; initialFilters: CatalogFilters };
 
@@ -46,6 +48,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   const tree = useMemo(() => categoryTree(categories), [categories]);
   const flatCategories = useMemo(() => flattenCategories(tree), [tree]);
   const hasMore = hasMoreCatalogPages(page);
+  const topLevelCategories = tree;
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -126,31 +129,38 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
     apply(next);
   }
 
+  function sortField() {
+    return <label className="catalog-sort-control">{t('sort')}<select value={filters.sort ?? 'newest'} onChange={(event) => setFilters((current) => ({ ...current, sort: event.target.value as CatalogFilters['sort'] }))}><option value="newest">{t('newest')}</option><option value="priceAsc">{t('priceAsc')}</option><option value="priceDesc">{t('priceDesc')}</option></select></label>;
+  }
+
   function filterFields() {
     return <form className="catalog-filter-form" onSubmit={submit}>
       <label>{t('search')}<input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('searchPlaceholder')} /></label>
       <label>{t('category')}<select value={filters.categoryId ?? ''} onChange={(event) => setFilters((current) => ({ ...current, categoryId: event.target.value || undefined }))}><option value="">{t('allCategories')}</option>{flatCategories.map((category) => <option key={category.id} value={category.id}>{category.parentId ? '　└ ' : ''}{category.nameAr}</option>)}</select></label>
       <div className="catalog-price-fields"><label>{t('minPrice')}<input inputMode="decimal" value={minPrice} onChange={(event) => setMinPrice(event.target.value)} /></label><label>{t('maxPrice')}<input inputMode="decimal" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)} /></label></div>
-      <label>{t('sort')}<select value={filters.sort ?? 'newest'} onChange={(event) => setFilters((current) => ({ ...current, sort: event.target.value as CatalogFilters['sort'] }))}><option value="newest">{t('newest')}</option><option value="priceAsc">{t('priceAsc')}</option><option value="priceDesc">{t('priceDesc')}</option></select></label>
       <button className="catalog-primary-button" type="submit">{t('apply')}</button>
     </form>;
   }
 
   return <main className="catalog-shell">
-    <header className="catalog-heading"><div><p className="catalog-eyebrow">CLASSIC STORE</p><h1>{t('title')}</h1><p>{t('subtitle')}</p></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
+    <nav className="catalog-breadcrumb" aria-label="مسار التنقل"><Link href="/ar/products">الرئيسية</Link><span aria-hidden="true">&gt;</span><span aria-current="page">جميع المنتجات</span></nav>
+    <header className="catalog-heading"><div><h1>{t('title')}</h1></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
+    {topLevelCategories.length > 0 && <nav className="catalog-category-chips" aria-label={t('category')}>
+      {topLevelCategories.map((category) => <button key={category.id} type="button" aria-pressed={filters.categoryId === category.id} onClick={() => apply({ ...filters, categoryId: filters.categoryId === category.id ? undefined : category.id, page: 0 })}>{category.nameAr}</button>)}
+    </nav>}
     <div className="catalog-layout">
-      <aside className="catalog-sidebar"><h2>{t('filters')}</h2>{filterFields()}</aside>
+      <aside className="catalog-sidebar"><section className="catalog-sort-box">{sortField()}</section><section className="catalog-filter-box"><h2>{t('filters')}</h2>{filterFields()}</section></aside>
       <section className="catalog-results" aria-live="polite">
         <div className="catalog-toolbar"><span>{t('resultCount', { count: page.totalElements })}</span><div className="catalog-chips">
-          {filters.q && <button type="button" onClick={() => removeFilter('q')}>{filters.q} ×</button>}
-          {filters.categoryId && <button type="button" onClick={() => removeFilter('categoryId')}>{flatCategories.find((item) => item.id === filters.categoryId)?.nameAr ?? t('category')} ×</button>}
-          {filters.minPrice && <button type="button" onClick={() => removeFilter('minPrice')}>{t('minPrice')}: {filters.minPrice} ×</button>}
-          {filters.maxPrice && <button type="button" onClick={() => removeFilter('maxPrice')}>{t('maxPrice')}: {filters.maxPrice} ×</button>}
+          {filters.q && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('q')}>{filters.q} ×</button>}
+          {filters.categoryId && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('categoryId')}>{flatCategories.find((item) => item.id === filters.categoryId)?.nameAr ?? t('category')} ×</button>}
+          {filters.minPrice && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('minPrice')}>{t('minPrice')}: {filters.minPrice} ×</button>}
+          {filters.maxPrice && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('maxPrice')}>{t('maxPrice')}: {filters.maxPrice} ×</button>}
           {(filters.q || filters.categoryId || filters.minPrice || filters.maxPrice || filters.sort !== 'newest') && <button type="button" onClick={() => { setQuery(''); setMinPrice(''); setMaxPrice(''); setFilters({ sort: 'newest', page: 0, size: 20 }); apply({ sort: 'newest' }); }}>{t('clearAll')}</button>}
         </div></div>
         {error && <p className="catalog-error" role="alert">{error} <button type="button" onClick={() => { setError(''); router.refresh(); }}>{t('retry')}</button></p>}
         {items.length === 0 ? <div className="catalog-state"><h2>{t('emptyTitle')}</h2><p>{t('emptyMessage')}</p></div> :
-          <div className="catalog-grid">{items.map((product) => <ProductCard key={product.id} product={product} />)}</div>}
+          <div className="catalog-grid">{items.map((product, index) => <ProductCard key={product.id} product={product} eager={index < 9} />)}</div>}
         {loading && <div className="catalog-grid catalog-skeleton-grid" aria-label={t('loading')} aria-busy="true">{Array.from({ length: 4 }, (_, index) => <div className="catalog-skeleton" key={index}><span /><span /><span /></div>)}</div>}
         {hasMore && <button className="catalog-load-more" type="button" disabled={loading} onClick={loadMore}>{loading ? t('loading') : t('loadMore')}</button>}
       </section>
@@ -158,18 +168,19 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
     {drawerOpen && <div className="catalog-drawer-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setDrawerOpen(false); }}>
       <aside className="catalog-drawer" role="dialog" aria-modal="true" aria-labelledby="catalog-drawer-title" ref={drawerRef}>
         <div className="catalog-drawer-heading"><h2 id="catalog-drawer-title">{t('filters')}</h2><button type="button" onClick={() => setDrawerOpen(false)} aria-label={t('close')}>×</button></div>
-        {filterFields()}
+        <section className="catalog-sort-box">{sortField()}</section>
+        <section className="catalog-filter-box"><h2>{t('filters')}</h2>{filterFields()}</section>
       </aside>
     </div>}
   </main>;
 }
 
-function ProductCard({ product }: { product: ProductSummary }) {
+function ProductCard({ product, eager }: { product: ProductSummary; eager: boolean }) {
   const t = useTranslations('Catalog');
   return <article className="catalog-card">
-    <a className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
-      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || product.nameAr} fill unoptimized onError={(event) => onProductImageError(event, product.primaryImage?.altAr || product.nameAr)} sizes="(max-width: 720px) 50vw, (max-width: 980px) 33vw, 25vw" /></div>
-      <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: product.priceFrom })}</p></div>
-    </a>
+    <Link className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
+      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || product.nameAr} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || product.nameAr)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
+      <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: formatPrice(product.priceFrom) })}</p></div>
+    </Link>
   </article>;
 }

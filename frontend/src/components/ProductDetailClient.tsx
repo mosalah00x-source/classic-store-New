@@ -4,10 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { ProductDetail } from '@/lib/product-detail-api';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
-
-function formatPrice(value: string): string {
-  return new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP', maximumFractionDigits: 2 }).format(Number(value));
-}
+import { formatPrice } from '@/lib/price-format';
 
 export function ProductDetailClient({ product }: { product: ProductDetail }) {
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id ?? '');
@@ -22,8 +19,10 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
   return (
     <main className="product-detail-shell">
       <nav className="product-breadcrumb" aria-label="مسار التنقل">
-        <Link href="/ar/products">المنتجات</Link>
-        <span aria-hidden="true">/</span>
+        <Link href="/ar/products">الرئيسية</Link>
+        <span aria-hidden="true">&gt;</span>
+        <Link href="/ar/products">جميع المنتجات</Link>
+        <span aria-hidden="true">&gt;</span>
         <span aria-current="page">{product.nameAr}</span>
       </nav>
 
@@ -63,8 +62,9 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
         </section>
 
         <section className="product-detail-copy">
-          <p className="product-detail-eyebrow">{product.brand?.name ?? 'كلاسيك ستور'}</p>
+          {product.brand?.name && <p className="product-detail-eyebrow">{product.brand.name}</p>}
           <h1>{product.nameAr}</h1>
+          {selectedVariant && <p className="product-detail-sku">كود المنتج: <b dir="ltr">{selectedVariant.sku}</b></p>}
           {product.nameEn && <p className="product-detail-name-en" lang="en" dir="ltr">{product.nameEn}</p>}
           {product.categories.length > 0 && (
             <div className="product-detail-categories" aria-label="التصنيفات">
@@ -73,7 +73,7 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
           )}
 
           {selectedVariant ? (
-            <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)}</div>
+            <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} ج.م</div>
           ) : (
             <p className="product-detail-unavailable">غير متاح حاليًا</p>
           )}
@@ -106,6 +106,7 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
           )}
 
           {product.descriptionAr && <div className="product-description"><h2>وصف المنتج</h2><p>{product.descriptionAr}</p></div>}
+          <Link className="product-back-link" href="/ar/products">العودة إلى جميع المنتجات</Link>
         </section>
       </div>
     </main>

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (isCatalogMockEnabled(process.env)) {
-    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : 'default';
+    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : process.env.API_MOCK_SCENARIO === 'showcase' ? 'showcase' : 'default';
     const mocked = handleCatalogMock(`${incoming.origin}/products?${query.toString()}`, scenario);
     if (mocked) return mocked;
   }
@@ -26,7 +26,18 @@ export async function GET(request: NextRequest) {
       headers: { Accept: 'application/json' },
       cache: 'no-store'
     });
-    return new NextResponse(await upstream.text(), {
+    const body = await upstream.text();
+    if (!body.trim()) {
+      return NextResponse.json({
+        code: 'EMPTY_UPSTREAM_RESPONSE',
+        messageAr: 'أعاد الخادم استجابة فارغة بدلًا من بيانات الكتالوج.',
+        messageEn: 'The catalog service returned an empty response.',
+        traceId: '',
+        details: {}
+      }, { status: upstream.ok ? 502 : upstream.status });
+    }
+
+    return new NextResponse(body, {
       status: upstream.status,
       headers: { 'Content-Type': upstream.headers.get('content-type') ?? 'application/json', 'Cache-Control': 'no-store' }
     });
