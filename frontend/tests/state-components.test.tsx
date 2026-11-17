@@ -23,3 +23,10 @@ test('ErrorState renders messageEn for English locale', () => {
   assert.match(html, /Unable to load/);
   assert.doesNotMatch(html, /تعذر التحميل/);
 });
+import { BrandLogo } from '../src/components/BrandLogo';
+
+test('BrandLogo renders the home link and prototype mask span', () => {
+  const html = renderToStaticMarkup(<BrandLogo locale="ar" />);
+  assert.match(html, /<a[^>]*href="\\/ar"[^>]*aria-label="ClassicStore"/);
+  assert.match(html, /<span class="logo-img"/);
+});
