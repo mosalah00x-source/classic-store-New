@@ -11,7 +11,7 @@ type Search = Record<string, string | string[] | undefined>;
 
 export async function generateMetadata() {
   const t = await getTranslations('Catalog');
-  return { title: t('title'), description: t('subtitle') };
+  return { title: t('title'), description: t('metaDescription') };
 }
 
 export default async function ProductsPage({ params, searchParams }: {
