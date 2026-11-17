@@ -8,6 +8,14 @@ test('catalog and product detail share Latin-digit two-decimal price formatting'
     const detailAmount = formatPrice(value);
     assert.equal(detailAmount, catalogAmount);
     assert.equal(catalogAmount, value);
-    assert.match(catalogAmount, /^\d+\.\d{2}$/);
+    assert.match(catalogAmount, /^\\d+\\.\\d{2}$/);
   }
+});
+
+test('invalid, empty, null and undefined price values never become NaN', () => {
+  assert.equal(formatPrice('not-a-price'), 'not-a-price');
+  assert.equal(formatPrice(''), '');
+  assert.equal(formatPrice('   '), '   ');
+  assert.equal(formatPrice(null), '');
+  assert.equal(formatPrice(undefined), '');
 });
