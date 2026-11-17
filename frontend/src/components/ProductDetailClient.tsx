@@ -1,12 +1,29 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { readThemePreference, writeThemePreference, type ThemePreference } from '@/lib/theme-preference';
 import Link from 'next/link';
 import type { ProductDetail } from '@/lib/product-detail-api';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
 import { formatPrice } from '@/lib/price-format';
 
 export function ProductDetailClient({ product }: { product: ProductDetail }) {
+  const t = useTranslations('ProductTheme');
+  const [theme, setTheme] = useState<ThemePreference>('light');
+
+  useEffect(() => {
+    const storedTheme = readThemePreference();
+    setTheme(storedTheme);
+    document.documentElement.setAttribute('data-theme', storedTheme);
+  }, []);
+
+  function toggleTheme() {
+    const nextTheme: ThemePreference = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    writeThemePreference(nextTheme);
+  }
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id ?? '');
   const [selectedImageId, setSelectedImageId] = useState(product.images[0]?.id ?? '');
   const selectedVariant = product.variants.find((variant) => variant.id === selectedVariantId) ?? product.variants[0];
@@ -18,6 +35,11 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
 
   return (
     <main className="product-detail-shell">
+      <div className="product-detail-top-actions">
+        <button type="button" className="product-theme-toggle" aria-pressed={theme === 'dark'} onClick={toggleTheme}>
+          {theme === 'dark' ? t('switchToLight') : t('switchToDark')}
+        </button>
+      </div>
       <nav className="product-breadcrumb" aria-label="مسار التنقل">
         <Link href="/ar/products">الرئيسية</Link>
         <span aria-hidden="true">&gt;</span>
