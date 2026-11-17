@@ -40,5 +40,9 @@
     "loading": "جارٍ التحميل...",
     "close": "إغلاق",
     "metaDescription": "اكتشف منتجاتنا واختر ما يناسبك"
+  },
+  "ProductTheme": {
+    "switchToDark": "تفعيل الوضع الداكن",
+    "switchToLight": "تفعيل الوضع الفاتح"
   }
 }
