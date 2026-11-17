@@ -7,6 +7,8 @@ import type { ProductPage } from '../src/lib/catalog-types';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { ProductDetailClient } from '../src/components/ProductDetailClient';
+import { NextIntlClientProvider } from 'next-intl';
+import arMessages from '../src/messages/ar.json';
 
 
 test('product detail mock returns the public product contract with active variants and ordered images', async () => {
@@ -76,7 +78,14 @@ test('all detail mock variants render without null or undefined text', () => {
   ];
 
   for (const product of cases) {
-    const html = renderToStaticMarkup(createElement(ProductDetailClient, { product }));
+    const html = renderToStaticMarkup(
+      createElement(
+        NextIntlClientProvider,
+        { locale: 'ar', messages: arMessages },
+        createElement(ProductDetailClient, { product })
+      )
+    );
+    assert.doesNotMatch(html, /ProductTheme\\./, `raw translation key rendered for ${product.slug}`);
     assert.doesNotMatch(html, /\\b(?:null|undefined)\\b/, `unexpected nullish text for ${product.slug}`);
   }
 });
