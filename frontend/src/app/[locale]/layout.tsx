@@ -20,7 +20,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   setRequestLocale(locale);
   const messages = await getMessages();
   return (
-    <html lang={locale} dir={getDirection(locale)} className={`${cairo.variable} ${inter.variable}`}>
+    <html lang={locale} dir={getDirection(locale)} data-theme="light" className={`${cairo.variable} ${inter.variable}`}>
       <body><NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider></body>
     </html>
   );
