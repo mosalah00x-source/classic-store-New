@@ -76,11 +76,10 @@ export const mockProductDetails: Record<string, ProductDetail> = {
 };
 
 
-// Local-only showcase detail fixtures. WOOL0010 is copied verbatim from
-// docs/ui-reference/index.html; all other SKUs are explicitly synthetic.
-const showcaseReferenceSkus: Record<string, string> = {
-  'showcase-reversible-wool-scarf-brown': 'WOOL0010'
-};
+// Local-only showcase detail fixtures. Every SKU is synthetic because the
+// prototype's v-product panel hardcodes WOOL0010 as shared sample text; it is
+// not a per-product data-sku and store.js does not replace it when products change.
+
 
 async function getShowcaseProductDetail(slug: string): Promise<ProductDetail> {
   const response = handleCatalogMock('https://catalog.invalid/products?page=0&size=100', 'showcase');
@@ -94,7 +93,7 @@ async function getShowcaseProductDetail(slug: string): Promise<ProductDetail> {
     throw new ProductDetailRequestError('سعر المنتج غير متاح في بيانات العرض المحلي.', 500);
   }
 
-  const sku = showcaseReferenceSkus[product.slug] ?? `SHOWCASE-${String(index + 1).padStart(2, '0')}`;
+  // All 18 showcase SKUs are synthetic local-display identifiers (SHOWCASE-01..18).\n  const sku = `SHOWCASE-${String(index + 1).padStart(2, '0')}`;
   const imageCount = index === 0 ? 4 : 1;
   const imageUrl = product.primaryImage?.imageUrl ?? '/mock/showcase-placeholder.svg';
   const imageAlt = product.primaryImage?.altAr ?? product.nameAr;
@@ -104,6 +103,8 @@ async function getShowcaseProductDetail(slug: string): Promise<ProductDetail> {
     slug: product.slug,
     nameAr: product.nameAr,
     nameEn: product.nameEn,
+    // This copy is hardcoded in the shared prototype v-product template.
+    // Keep it only on the scarf fixture; it is template text, not verified product copy.
     descriptionAr: product.slug === 'showcase-reversible-wool-scarf-brown'
       ? 'اسكارفاتنا مناسبة لجميع المناسبات، سواء كانت مناسبة رسمية أو خروجة كاجوال. مصنوعة من خامات عالية الجودة، تم تصميمها لتمنحك الدفء والأناقة في نفس الوقت. اختر من مجموعة واسعة من النقشات والألوان لتجد الاسكارف المثالي لك. احصل على اسكارفك الآن عبر الإنترنت أو قم بزيارة فروعنا!'
       : null,
