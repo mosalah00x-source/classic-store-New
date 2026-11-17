@@ -161,7 +161,7 @@ footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--sp
   --color-logo: var(--color-text);
 }
 @media (prefers-color-scheme: dark) {
-  :root { --color-logo: var(--color-logo-inverted); }
+  :root:not([data-theme="light"]) { --color-logo: var(--color-logo-inverted); }
 }
 :root[data-theme="dark"] { --color-logo: var(--color-logo-inverted); }
 .logo-img {
