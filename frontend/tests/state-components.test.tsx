@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { ErrorState } from '../src/components/ErrorState';
 import { getDirection } from '../src/i18n/direction';
+import { BrandLogo } from '../src/components/BrandLogo';
 
 test('getDirection returns rtl for Arabic locale', () => {
   assert.equal(getDirection('ar'), 'rtl');
@@ -22,4 +23,10 @@ test('ErrorState renders messageEn for English locale', () => {
   const html = renderToStaticMarkup(<ErrorState locale="en" title="Error" messageAr="تعذر التحميل" messageEn="Unable to load" />);
   assert.match(html, /Unable to load/);
   assert.doesNotMatch(html, /تعذر التحميل/);
+});
+test('BrandLogo renders the home link and prototype mask span', () => {
+  const html = renderToStaticMarkup(<BrandLogo locale="ar" />);
+  assert.ok(html.includes('href="/ar"'));
+  assert.ok(html.includes('aria-label="ClassicStore"'));
+  assert.ok(html.includes('<span class="logo-img"'));
 });
