@@ -4,7 +4,6 @@ import { decideProductDetail } from '../src/lib/product-detail-decision';
 import { getProductDetail, mockProductDetails, ProductDetailRequestError } from '../src/lib/product-detail-api';
 import { handleCatalogMock } from '../src/lib/catalog-mock-handlers';
 import type { ProductPage } from '../src/lib/catalog-types';
-import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { ProductDetailClient } from '../src/components/ProductDetailClient';
 import { NextIntlClientProvider } from 'next-intl';
@@ -79,14 +78,9 @@ test('all detail mock variants render without null or undefined text', () => {
 
   for (const product of cases) {
     const html = renderToStaticMarkup(
-      createElement(
-        NextIntlClientProvider,
-        {
-          locale: 'ar',
-          messages: arMessages,
-          children: createElement(ProductDetailClient, { product })
-        }
-      )
+      <NextIntlClientProvider locale="ar" messages={arMessages}>
+        <ProductDetailClient product={product} />
+      </NextIntlClientProvider>
     );
     assert.doesNotMatch(html, /ProductTheme\./, `raw translation key rendered for ${product.slug}`);
     assert.doesNotMatch(html, /\b(?:null|undefined)\b/, `unexpected nullish text for ${product.slug}`);
