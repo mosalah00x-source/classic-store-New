@@ -93,7 +93,8 @@ async function getShowcaseProductDetail(slug: string): Promise<ProductDetail> {
     throw new ProductDetailRequestError('سعر المنتج غير متاح في بيانات العرض المحلي.', 500);
   }
 
-  // All 18 showcase SKUs are synthetic local-display identifiers (SHOWCASE-01..18).\n  const sku = `SHOWCASE-${String(index + 1).padStart(2, '0')}`;
+  // All 18 showcase SKUs are synthetic local-display identifiers (SHOWCASE-01..18).
+  const sku = `SHOWCASE-${String(index + 1).padStart(2, '0')}`;
   const imageCount = index === 0 ? 4 : 1;
   const imageUrl = product.primaryImage?.imageUrl ?? '/mock/showcase-placeholder.svg';
   const imageAlt = product.primaryImage?.altAr ?? product.nameAr;
