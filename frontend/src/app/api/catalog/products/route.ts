@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (isCatalogMockEnabled(process.env)) {
-    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : 'default';
+    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : process.env.API_MOCK_SCENARIO === 'showcase' ? 'showcase' : 'default';
     const mocked = handleCatalogMock(`${incoming.origin}/products?${query.toString()}`, scenario);
     if (mocked) return mocked;
   }

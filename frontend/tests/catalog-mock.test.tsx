@@ -106,3 +106,31 @@ test('load more is hidden when the final page has been reached', () => {
   assert.equal(hasMoreCatalogPages({ page: 2, totalPages: 3 }), false);
   assert.equal(hasMoreCatalogPages({ page: 0, totalPages: 3 }), true);
 });
+
+
+test('showcase mock exposes nine categories and paginates 18 unique reference products as 10 then 8', async () => {
+  const categoriesResponse = handleCatalogMock('https://catalog.invalid/categories', 'showcase');
+  assert.ok(categoriesResponse);
+  const categories = await categoriesResponse.json();
+  assert.equal(categories.length, 9);
+  const firstResponse = handleCatalogMock('https://catalog.invalid/products?page=0', 'showcase');
+  const secondResponse = handleCatalogMock('https://catalog.invalid/products?page=1&size=10', 'showcase');
+  assert.ok(firstResponse && secondResponse);
+  const first = (await firstResponse.json()) as ProductPage;
+  const second = (await secondResponse.json()) as ProductPage;
+  assert.deepEqual([first.content.length, second.content.length], [10, 8]);
+  assert.equal(first.size, 10);
+  assert.equal(first.totalElements, 18);
+  assert.equal(first.totalPages, 2);
+  const all = [...first.content, ...second.content];
+  assert.equal(new Set(all.map((product) => product.id)).size, 18);
+  assert.ok(all.every((product) => !Object.hasOwn(product, 'oldPrice') && !Object.hasOwn(product, 'discount')));
+});
+
+test('showcase empty categories return a valid empty product page', async () => {
+  const response = handleCatalogMock('https://catalog.invalid/products?categoryId=10000000-0000-4000-8000-000000000104', 'showcase');
+  assert.ok(response);
+  const page = await response.json();
+  assert.equal(page.content.length, 0);
+  assert.equal(page.totalElements, 0);
+});

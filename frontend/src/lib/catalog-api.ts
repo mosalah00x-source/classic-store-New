@@ -23,7 +23,7 @@ function toSearchParams(filters: CatalogFilters): URLSearchParams {
 
 async function catalogRequest<T>(path: string): Promise<T> {
   if (isCatalogMockEnabled(process.env)) {
-    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : 'default';
+    const scenario = process.env.API_MOCK_SCENARIO === 'many' ? 'many' : process.env.API_MOCK_SCENARIO === 'showcase' ? 'showcase' : 'default';
     const mocked = handleCatalogMock(new URL(path, apiBaseUrl()).toString(), scenario);
     if (mocked) {
       if (!mocked.ok) {
@@ -53,7 +53,8 @@ async function catalogRequest<T>(path: string): Promise<T> {
 }
 
 export function getProducts(filters: CatalogFilters = {}): Promise<ProductPage> {
-  return catalogRequest<ProductPage>(`/products?${toSearchParams(filters).toString()}`);
+  const requestFilters = process.env.API_MOCK_SCENARIO === 'showcase' ? { ...filters, size: 10 } : filters;
+  return catalogRequest<ProductPage>(`/products?${toSearchParams(requestFilters).toString()}`);
 }
 
 export function getCategories(): Promise<CatalogCategory[]> {
