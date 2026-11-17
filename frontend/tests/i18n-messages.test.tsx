@@ -9,7 +9,7 @@ function sourceFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = join(directory, entry.name);
     if (entry.isDirectory()) return sourceFiles(path);
-    return /\\.tsx?$/.test(entry.name) ? [path] : [];
+    return /\.tsx?$/.test(entry.name) ? [path] : [];
   });
 }
 
@@ -31,19 +31,18 @@ test('all statically referenced next-intl messages exist in ar.json', () => {
   for (const file of sourceFiles(src)) {
     const source = readFileSync(file, 'utf8');
     const bindings = [...source.matchAll(
-      /(?:const|let)\\s+([A-Za-z_$][\\w$]*)\\s*=\\s*(?:await\\s+)?(?:useTranslations|getTranslations)\\(\\s*['"]([^'"]+)['"]\\s*\\)/g
+      /(?:const|let)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:await\s+)?(?:useTranslations|getTranslations)\(\s*['"]([^'"]+)['"]\s*\)/g
     )];
 
     for (const [, translator, namespace] of bindings) {
-      const escapedName = translator.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&');
-      const callPattern = new RegExp('\\\\b' + escapedName + '\\\\s*(?:\\\\.(?:rich|markup|raw|has))?\\\\(\\\\s*[\'"]([^\'"]+)[\'"]', 'g');
+      const callPattern = new RegExp('\\b' + translator + '\\s*(?:\\.(?:rich|markup|raw|has))?\\(\\s*[\'"]([^\'"]+)[\'"]', 'g');
       for (const [, key] of source.matchAll(callPattern)) {
         if (!hasMessage(messages, namespace, key)) {
-          missing.push(`${file.replace(src + '/', '')}: ${namespace}.${key}`);
+          missing.push(file.replace(src + '/', '') + ': ' + namespace + '.' + key);
         }
       }
     }
   }
 
-  assert.deepEqual(missing, [], `Missing Arabic translation messages:\\n${missing.join('\\n')}`);
+  assert.deepEqual(missing, [], 'Missing Arabic translation messages:\n' + missing.join('\n'));
 });
