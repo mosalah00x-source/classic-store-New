@@ -14,5 +14,10 @@
   "ProductTheme": {
     "switchToDark": "Switch to dark mode",
     "switchToLight": "Switch to light mode"
+  },
+  "ProductPrice": {
+    "oldPriceLabel": "Previous price",
+    "discountBadge": "{percent}% off",
+    "savings": "Save {amount} EGP"
   }
 }
