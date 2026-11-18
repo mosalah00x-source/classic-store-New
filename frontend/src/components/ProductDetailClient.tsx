@@ -10,6 +10,7 @@ import { formatPrice } from '@/lib/price-format';
 
 export function ProductDetailClient({ product }: { product: ProductDetail }) {
   const t = useTranslations('ProductTheme');
+  const priceT = useTranslations('ProductPrice');
   const [theme, setTheme] = useState<ThemePreference>('light');
 
   useEffect(() => {
@@ -96,9 +97,35 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
             </div>
           )}
 
-          {selectedVariant ? (
-            <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} ج.م</div>
-          ) : (
+          {selectedVariant ? (() => {
+            const currentRaw = selectedVariant.price.trim();
+            const oldRaw = product.oldPrice?.trim();
+            const currentPrice = currentRaw === '' ? Number.NaN : Number(currentRaw);
+            const oldPrice = oldRaw == null || oldRaw === '' ? Number.NaN : Number(oldRaw);
+            const hasDiscount = Number.isFinite(currentPrice)
+              && Number.isFinite(oldPrice)
+              && oldPrice > currentPrice;
+            const percent = hasDiscount
+              ? product.discountPercent ?? Math.round(((oldPrice - currentPrice) / oldPrice) * 100)
+              : 0;
+            const savings = hasDiscount ? (oldPrice - currentPrice).toFixed(2) : '';
+
+            return (
+              <>
+                <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} ج.م</div>
+                {hasDiscount && (
+                  <div className="product-price-promotion">
+                    <span className="product-price-old">
+                      <span className="visually-hidden">{priceT('oldPriceLabel')}: </span>
+                      <s aria-hidden="true">{formatPrice(oldRaw)} ج.م</s>
+                    </span>
+                    <span className="product-price-badge">{priceT('discountBadge', { percent })}</span>
+                    <span className="product-price-savings">{priceT('savings', { amount: formatPrice(savings) })}</span>
+                  </div>
+                )}
+              </>
+            );
+          })() : (
             <p className="product-detail-unavailable">غير متاح حاليًا</p>
           )}
 
