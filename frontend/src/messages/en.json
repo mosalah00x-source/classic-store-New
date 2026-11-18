@@ -10,5 +10,9 @@
     "successTitle": "Everything is ready",
     "successMessage": "The interface is ready.",
     "language": "العربية"
+  },
+  "ProductTheme": {
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
   }
 }
