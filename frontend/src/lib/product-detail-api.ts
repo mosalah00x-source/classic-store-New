@@ -22,6 +22,8 @@ export type ProductDetail = {
   categories: ProductDetailCategory[];
   variants: ProductDetailVariant[];
   images: ProductDetailImage[];
+  oldPrice?: string | null;
+  discountPercent?: number | null;
 };
 
 export type ProductDetailApiError = {
