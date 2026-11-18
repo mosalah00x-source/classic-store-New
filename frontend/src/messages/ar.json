@@ -44,5 +44,10 @@
   "ProductTheme": {
     "switchToDark": "تفعيل الوضع الداكن",
     "switchToLight": "تفعيل الوضع الفاتح"
+  },
+  "ProductPrice": {
+    "oldPriceLabel": "السعر السابق",
+    "discountBadge": "خصم {percent}%",
+    "savings": "وفر {amount} ج.م"
   }
 }
