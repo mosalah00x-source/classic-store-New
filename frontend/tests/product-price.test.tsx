@@ -7,8 +7,12 @@ import { mockProductDetails } from '../src/lib/product-detail-api';
 import arMessages from '../src/messages/ar.json';
 import enMessages from '../src/messages/en.json';
 
-const base = mockProductDetails['classic-blender'];
-assert.ok(base);
+const source = mockProductDetails['classic-blender'];
+assert.ok(source);
+const base = {
+  ...source,
+  variants: source.variants.map((variant, index) => index === 0 ? { ...variant, price: '712.50' } : variant)
+};
 
 function render(product: typeof base, locale: 'ar' | 'en' = 'ar') {
   const messages = locale === 'ar' ? arMessages : enMessages;
