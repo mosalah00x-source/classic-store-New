@@ -15,7 +15,9 @@
 | Document | Central path | Original source branch/path | Notes |
 |---|---|---|---|
 | Product SRS v1.1.1 | `docs/reference/Classic_Store_SRS_v1.1.1.md` | `BackendApp/docs/reference/` | Product scope and requirements |
-| Project master reference (Arabic) | `docs/reference/Classic_Store_Project_Master_Reference_AR.md` | `main/docs/reference/` | Historical snapshot; verify live repository state for current implementation status |
+| Project master reference (Arabic) | `docs/reference/Classic_Store_Project_Master_Reference_AR.md` | `main/docs/reference/` and `docs/ui-reference/docs/reference/` | Historical snapshot; verify live repository state for current implementation status |
+| Backend README | `docs/reference/BACKEND_README.md` | `BackendApp/backend/README.md` | Backend skeleton/toolchain notes from source branch |
+| Project reference README | `docs/reference/PROJECT_REFERENCE_README.md` | `docs/ui-reference/docs/reference/README.md` | Original reference index README |
 | OpenAPI contract | `docs/api/openapi.yaml` | `BackendApp/docs/api/` | API contract; not proof every operation is implemented |
 | T-06 acceptance report | `docs/api/T06-acceptance-report.md` | `BackendApp/docs/api/` | Historical contract/CI evidence tied to the SHAs and run stated inside the report |
 | T-07 identity decision | `docs/decisions/T-07-identity-derived-contracts.md` | `BackendApp/docs/decisions/` | Identity-related contract decisions |
