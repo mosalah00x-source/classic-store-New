@@ -46,7 +46,7 @@ export function StorefrontHeader({ categories }: { categories: CatalogCategory[]
           <Link href="/products">{t('newArrivals')}</Link>
         </nav>
 
-        <Link className="storefront-logo" href="/" aria-label="ClassicStore"><BrandLogo locale={locale} /></Link>
+        <div className="storefront-logo"><BrandLogo locale={locale} /></div>
 
         <div className="storefront-tools">
           <form className="storefront-search" role="search" onSubmit={submitSearch}>
