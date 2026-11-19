@@ -46,3 +46,14 @@ test('all statically referenced next-intl messages exist in ar.json', () => {
 
   assert.deepEqual(missing, [], 'Missing Arabic translation messages:\n' + missing.join('\n'));
 });
+
+
+test('English storefront and catalog messages cover every Arabic UI key', () => {
+  const root = resolve(process.cwd(), 'src/messages');
+  const ar = JSON.parse(readFileSync(join(root, 'ar.json'), 'utf8')) as Messages;
+  const en = JSON.parse(readFileSync(join(root, 'en.json'), 'utf8')) as Messages;
+  for (const namespace of ['Storefront', 'Catalog']) {
+    const missing = Object.keys(ar[namespace] ?? {}).filter((key) => !hasMessage(en, namespace, key));
+    assert.deepEqual(missing, [], `Missing English ${namespace} messages: ${missing.join(', ')}`);
+  }
+});
