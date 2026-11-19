@@ -13,11 +13,9 @@ export async function generateMetadata() {
   return { title: t('title'), description: t('metaDescription') };
 }
 
-export default async function ProductsPage({ params, searchParams }: {
-  params: Promise<{ locale: string }>;
+export default async function ProductsPage({ searchParams }: {
   searchParams: Promise<Search>;
 }) {
-  const { locale } = await params;
   const search = await searchParams;
   const filters = parseCatalogFilters(search);
   const t = await getTranslations('Catalog');
