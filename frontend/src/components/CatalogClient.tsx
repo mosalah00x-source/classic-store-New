@@ -144,7 +144,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   }
 
   return <main className="catalog-shell">
-    <nav className="catalog-breadcrumb" aria-label="مسار التنقل"><Link href="/products">الرئيسية</Link><span aria-hidden="true">&gt;</span><span aria-current="page">جميع المنتجات</span></nav>
+    <nav className="catalog-breadcrumb" aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"}><Link href="/">{locale === "ar" ? "الرئيسية" : "Home"}</Link><span aria-hidden="true">&gt;</span><span aria-current="page">{t("title")}</span></nav>
     <header className="catalog-heading"><div><h1>{t('title')}</h1></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
     {topLevelCategories.length > 0 && <nav className="catalog-category-chips" aria-label={t('category')}>
       {topLevelCategories.map((category) => <button key={category.id} type="button" aria-pressed={filters.categoryId === category.id} onClick={() => apply({ ...filters, categoryId: filters.categoryId === category.id ? undefined : category.id, page: 0 })}>{(locale === 'ar' ? category.nameAr : category.nameEn || category.nameAr)}</button>)}
@@ -182,7 +182,7 @@ function ProductCard({ product, eager }: { product: ProductSummary; eager: boole
   const productName = locale === 'ar' ? product.nameAr : product.nameEn || product.nameAr;
   return <article className="catalog-card">
     <Link className="catalog-card-link" href={`/products/${encodeURIComponent(product.slug)}`} aria-label={productName}>
-      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || productName} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || product.nameAr)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
+      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || productName} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || productName)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
       <div className="catalog-card-copy"><h2>{productName}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: formatPrice(product.priceFrom) })}</p></div>
     </Link>
   </article>;
