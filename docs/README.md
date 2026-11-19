@@ -10,6 +10,7 @@
 - [تقرير التحقق V3](reports/V3-verification-report-2026-11-18.md)
 - [تقرير V2 التاريخي — لا يُعدّل](reports/CLASSICSTORE_PROJECT_SUMMARY_AND_IMPLEMENTATION_REPORT_V2_PO_DECISIONS_2026-11-18.md)
 - [Project Master Reference (Arabic)](reference/Classic_Store_Project_Master_Reference_AR.md)
+- [Consolidated SQL reference V1–V7](reference/Classic_Store_Consolidated_V1-V7.sql)
 - [Frontend Language, Direction and Theme Guide](reference/FRONTEND_LANGUAGE_THEME_GUIDE.md)
 
 ## الوثائق المركزية ومصادرها
@@ -17,6 +18,7 @@
 | الوثيقة | المصدر الأصلي (الفرع والمسار وBlob SHA) | النسخة المعتمدة | من يحق له تحديث المحتوى |
 |---|---|---|---|
 | Project Master Reference | main / docs/reference/Classic_Store_Project_Master_Reference_AR.md / 72c8e48757bb9b17bd0d533549220c0c9abaf6a9 | docs/reference/Classic_Store_Project_Master_Reference_AR.md | أمين التوثيق يحدّث الوقائع بدليل GitHub؛ PO يعتمد تغييرات المتطلبات والقرارات |
+| Consolidated SQL reference V1–V7 | main / db/reference/Classic_Store_Consolidated_V1-V7.sql / 878d18095f39e0d96b83b9adde02c154c296aaa4 (نفس Blob SHA على docs/ui-reference وfeature/t01-citext-schema) | docs/reference/Classic_Store_Consolidated_V1-V7.sql | Backend owner يحدّث المصدر الفني مع مراجعة؛ أمين التوثيق ينسخ النسخة المعتمدة؛ PO يعتمد أي تغيير في نطاق المنتج |
 | Product SRS v1.1.1 | BackendApp / docs/reference/Classic_Store_SRS_v1.1.1.md / 0c654d87cbb529ef10654e9e543734bc7d45e6ef | docs/reference/Classic_Store_SRS_v1.1.1.md | PO يملك المتطلبات؛ BA/Tech يقترح، وPO يعتمد |
 | OpenAPI contract | BackendApp / docs/api/openapi.yaml / cb59eeda98669f2ecf1460a9ee98d3d99e83debe | docs/api/openapi.yaml | API owner يقترح التغيير؛ PO يعتمد نطاق العقد. الملف لم يُعدّل في هذه المهمة |
 | T-06 acceptance report | BackendApp / docs/api/T06-acceptance-report.md / cc9f30eda4619628dae0ff64375fb06a6e982e30 | docs/api/T06-acceptance-report.md | QA/Backend owner يحدّث الأدلة فقط مع Run/SHA قابلين للتحقق؛ PO يعتمد القبول |
@@ -25,7 +27,7 @@
 | Static UI reference guide | FrontendApp / docs/ui-reference/README.md / 6b3af94924722e1e77d7c59e10b671ad8e0f00b5 | docs/ui-reference/README.md | Frontend owner يحدّث وصف النموذج؛ PO يعتمد تغييرات المرجع/النطاق |
 | Backend README copy | BackendApp / backend/README.md / 6d200ee15b406b78d51ba8710e2e786c405697a4 | docs/reference/BACKEND_README.md | Backend owner؛ وأمين التوثيق للتنسيق |
 | Project Reference README copy | docs/ui-reference / docs/reference/README.md / 6b3af94924722e1e77d7c59e10b671ad8e0f00b5 | docs/reference/PROJECT_REFERENCE_README.md | أمين التوثيق؛ PO يعتمد قواعد الحوكمة |
-| Frontend language/theme guide | مستخلص من FrontendApp source وقرارات PO؛ ليس نسخة من ملف واحد | docs/reference/FRONTEND_LANGUAGE_THEME_GUIDE.md | Frontend owner يحدّث التنفيذ المرصود؛ PO وحده يغيّر سياسة اللغة/الثيم |
+| Consolidated SQL reference V1–V7 | مستخلص من FrontendApp source وقرارات PO؛ ليس نسخة من ملف واحد | docs/reference/FRONTEND_LANGUAGE_THEME_GUIDE.md | Frontend owner يحدّث التنفيذ المرصود؛ PO وحده يغيّر سياسة اللغة/الثيم |
 | Project reports V2/V3 | V2 على هذا الفرع؛ V3 مشتق من مراجعة V2 وGitHub | docs/reports/ | أمين التوثيق؛ قرارات PO لا تُضاف إلا من تصريح PO مكتوب |
 | V3 verification report | فحص GitHub مباشر في 19 نوفمبر 2026 | docs/reports/V3-verification-report-2026-11-18.md | المراجع/أمين التوثيق مع أدلة مباشرة فقط |
 
@@ -39,6 +41,7 @@
 6. أدلة اللغة والثيم يحدّثها Frontend owner وفق الشيفرة الفعلية؛ سياسة المنتج نفسها يملكها PO.
 7. لا تُنقل وثيقة جديدة إلى هذا الفرع دون تسجيل الفرع والمسار الأصليين وBlob SHA في هذا الفهرس.
 8. عند اختلاف نسخ الوثائق، النسخة المركزية هي المرجع الجاري؛ النسخ القديمة لا تُدمج تلقائياً ولا تُستبدل بصمت.
+9. ملف SQL التجميعي مرجع توثيقي للقراءة والمراجعة فقط؛ لا يُعامل كبديل عن Flyway migrations، ولا يُنفذ على قاعدة قائمة.
 
 ## مواقع التنفيذ (ليست مصادر الوثائق)
 
@@ -48,7 +51,7 @@
 
 ## تغطية فحص الفروع
 
-تم فحص الفروع الـ30 وشجرة كل فرع عند آخر SHA الظاهر في GitHub بتاريخ 19 نوفمبر 2026. القائمة التفصيلية ومسارات الوثائق في V3 وفي تقرير التحقق. لم تظهر وثائق مشروع إضافية مستقلة خارج المسارات المدرجة، باستثناء ملف SQL المرجعي db/reference/Classic_Store_Consolidated_V1-V7.sql الذي لم يُنقل لأنه ملف SQL تقني خارج نطاق هذه المهمة.
+تم فحص الفروع الـ30 وشجرة كل فرع عند آخر SHA الظاهر في GitHub بتاريخ 19 نوفمبر 2026. القائمة التفصيلية ومسارات الوثائق في V3 وفي تقرير التحقق. لم تظهر وثائق مشروع إضافية مستقلة خارج المسارات المدرجة، بمع توثيق ملف SQL التجميعي الآن في `docs/reference/Classic_Store_Consolidated_V1-V7.sql`؛ هذا النقل توثيقي ولا يحوله إلى Migration أو دليلاً على التنفيذ.
 
 ## قيود النسخ القديمة
 

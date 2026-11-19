@@ -99,14 +99,16 @@
 1. فحص Reviews وConversation comments لبقية PRs #1–#21 و#24–#25؛ لم يُنفذ هذا الفحص الشامل في هذه المهمة.
 2. تنفيذ تحقق بصري فعلي بالمتصفح للصفحات المطلوبة، مع screenshots على 1440 و390، وLight/Dark، وRTL/LTR.
 3. إذا لزم وضع تحذير stale داخل النسخ الموجودة في main وBackendApp وFrontendApp وفروع الميزات، فهذا يتطلب نطاقاً منفصلاً؛ لم تُعدّل أي فروع أصلية هنا.
-4. حسم ما إذا كان ملف db/reference/Classic_Store_Consolidated_V1-V7.sql مطلوباً كمستند مركزي أم يظل مرجع SQL تقنياً خارج docs.
 5. حسم تعارض طلب provenance header في OpenAPI مع المنع الصريح من تحديث OpenAPI؛ الملف تُرك دون تعديل.
 
 ## تعارضات تحتاج قراراً من PO
 
 1. **OpenAPI provenance:** البند 2.4 يطلب إضافة header إلى openapi.yaml، بينما قائمة الممنوعات تنص صراحةً على عدم تحديث OpenAPI. تم احترام المنع وترك الملف دون تغيير.
 2. **علامة stale داخل الفروع الأصلية:** توحيد المصدر يتطلب تعليم النسخ القديمة داخل main/BackendApp/FrontendApp، لكن المهمة تمنع تعديل هذه الفروع. أُعلن في docs/README.md أن نسخها تاريخية وغير معتمدة، دون تعديلها.
-3. **ملف SQL المرجعي:** db/reference/Classic_Store_Consolidated_V1-V7.sql موجود في main وdocs/ui-reference وfeature/t01-citext-schema، ولم يُنقل أو يُعدّل. يلزم تحديد ما إذا كان يدخل ضمن الوثائق المركزية.
+
+## قرار PO اللاحق — ملف SQL المرجعي
+
+وافق PO على إدراج `db/reference/Classic_Store_Consolidated_V1-V7.sql` ضمن الوثائق المركزية. نُسخت النسخة إلى `docs/reference/Classic_Store_Consolidated_V1-V7.sql` من `main`، مع إضافة ترويسة provenance فقط. Blob SHA الأصلي `878d18095f39e0d96b83b9adde02c154c296aaa4`، وهو مطابق أيضاً على `docs/ui-reference` و`feature/t01-citext-schema`. لم يُنفذ الملف على PostgreSQL حي وفق ترويسة المصدر، وهو ملف مرجعي تجميعي وليس Migration.
 
 ## اختلاف نسخة V2 المرفوعة عن GitHub
 
