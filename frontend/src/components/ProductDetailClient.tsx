@@ -71,10 +71,10 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
           {product.brand?.name && <p className="product-detail-eyebrow">{product.brand.name}</p>}
           <h1>{productName}</h1>
           {selectedVariant && <p className="product-detail-sku">{isAr ? 'كود المنتج:' : 'SKU:'} <b dir="ltr">{selectedVariant.sku}</b></p>}
-          {product.nameEn && <p className="product-detail-name-en" lang="en" dir="ltr">{product.nameEn}</p>}
+          {isAr && product.nameEn && <p className="product-detail-name-en" lang="en" dir="ltr">{product.nameEn}</p>}
           {product.categories.length > 0 && (
             <div className="product-detail-categories" aria-label={isAr ? 'التصنيفات' : 'Categories'}>
-              {product.categories.map((category) => <span key={category.id}>{category.nameAr}</span>)}
+              {product.categories.map((category) => <span key={category.id}>{isAr ? category.nameAr : category.nameEn || category.nameAr}</span>)}
             </div>
           )}
 
@@ -93,12 +93,12 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
 
             return (
               <>
-                <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} ج.م</div>
+                <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} {isAr ? 'ج.م' : 'EGP'}</div>
                 {hasDiscount && (
                   <div className="product-price-promotion">
                     <span className="product-price-old">
                       <span className="visually-hidden">{priceT('oldPriceLabel')}: </span>
-                      <s aria-hidden="true">{formatPrice(oldRaw)} ج.م</s>
+                      <s aria-hidden="true">{formatPrice(oldRaw)} {isAr ? 'ج.م' : 'EGP'}</s>
                     </span>
                     <span className="product-price-badge">{priceT('discountBadge', { percent })}</span>
                     <span className="product-price-savings">{priceT('savings', { amount: formatPrice(savings) })}</span>
@@ -122,13 +122,13 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
                     aria-pressed={variant.id === selectedVariant?.id}
                     onClick={() => setSelectedVariantId(variant.id)}
                   >
-                    {variant.titleAr || variant.sku}
+                    {isAr ? variant.titleAr || variant.sku : variant.sku}
                   </button>
                 ))}
               </div>
               {selectedVariant && (
                 <dl className="product-variant-details">
-                  <div><dt>كود المنتج</dt><dd dir="ltr">{selectedVariant.sku}</dd></div>
+                  <div><dt>{isAr ? 'كود المنتج' : 'SKU'}</dt><dd dir="ltr">{selectedVariant.sku}</dd></div>
                   {Object.entries(selectedVariant.attributes).map(([key, value]) => (
                     <div key={key}><dt>{key}</dt><dd>{typeof value === 'string' || typeof value === 'number' ? String(value) : JSON.stringify(value)}</dd></div>
                   ))}
@@ -137,7 +137,7 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
             </fieldset>
           )}
 
-          {product.descriptionAr && <div className="product-description"><h2>{isAr ? 'وصف المنتج' : 'Description'}</h2><p>{productDescription}</p></div>}
+          {productDescription && <div className="product-description"><h2>{isAr ? 'وصف المنتج' : 'Description'}</h2><p>{productDescription}</p></div>}
           <Link className="product-back-link" href="/products">{isAr ? "العودة إلى جميع المنتجات" : "Back to all products"}</Link>
         </section>
       </div>
