@@ -42,8 +42,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <main className="catalog-shell">
         <h1>{locale === 'ar' ? 'تعذر تحميل تفاصيل المنتج' : 'Unable to load product details'}</h1>
         <section className="catalog-state" role="alert">
-          <p>{decision.error instanceof ProductDetailRequestError ? decision.error.message : locale === 'ar' ? 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.' : 'There was a problem loading product details. Please try again.'}</p>
-          <a href={`/ar/products/${encodeURIComponent(slug)}`}>إعادة المحاولة</a>
+          <p>{decision.error instanceof ProductDetailRequestError ? (locale === 'ar' ? decision.error.payload?.messageAr : decision.error.payload?.messageEn) ?? decision.error.message : locale === 'ar' ? 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.' : 'There was a problem loading product details. Please try again.'}</p>
+          <a href={`/${locale}/products/${encodeURIComponent(slug)}`}>{locale === "ar" ? "إعادة المحاولة" : "Try again"}</a>
         </section>
       </main>
     );
