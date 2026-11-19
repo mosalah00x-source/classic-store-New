@@ -49,5 +49,24 @@
     "oldPriceLabel": "السعر السابق",
     "discountBadge": "خصم {percent}%",
     "savings": "وفر {amount} ج.م"
+  },
+  "Storefront": {
+    "mainNavigation": "التنقل الرئيسي",
+    "home": "الرئيسية",
+    "categories": "التصنيفات",
+    "allCategories": "كل التصنيفات",
+    "newArrivals": "وصل حديثاً",
+    "search": "ابحث عن منتج",
+    "searchSubmit": "تنفيذ البحث",
+    "cart": "السلة",
+    "darkTheme": "تفعيل الوضع الداكن",
+    "lightTheme": "تفعيل الوضع الفاتح",
+    "login": "تسجيل الدخول",
+    "allProducts": "جميع المنتجات",
+    "footerNavigation": "روابط المتجر",
+    "footerDescription": "اكتشف منتجات Classic Store.",
+    "contact": "تواصل معنا",
+    "contactComingSoon": "معلومات التواصل ستتوفر قريباً.",
+    "createAccount": "إنشاء حساب"
   }
 }

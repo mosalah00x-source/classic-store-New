@@ -3,9 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useRouter, Link } from '@/i18n/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } from '@/lib/catalog-types';
 import { hasMoreCatalogPages, mergeProductItems } from '@/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
@@ -34,6 +33,7 @@ function flattenCategories(items: CategoryNode[]): CatalogCategory[] {
 
 export function CatalogClient({ initialPage, categories, initialFilters }: Props) {
   const t = useTranslations('Catalog');
+  const locale = useLocale();
   const router = useRouter();
   const [page, setPage] = useState(initialPage);
   const [items, setItems] = useState(initialPage.content);
@@ -79,7 +79,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
     if (next.sort && next.sort !== 'newest') params.set('sort', next.sort);
     const suffix = params.toString();
     setDrawerOpen(false);
-    router.push(suffix ? `/ar/products?${suffix}` : '/ar/products');
+    router.push(suffix ? `/products?${suffix}` : '/products');
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -136,17 +136,17 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   function filterFields() {
     return <form className="catalog-filter-form" onSubmit={submit}>
       <label>{t('search')}<input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('searchPlaceholder')} /></label>
-      <label>{t('category')}<select value={filters.categoryId ?? ''} onChange={(event) => setFilters((current) => ({ ...current, categoryId: event.target.value || undefined }))}><option value="">{t('allCategories')}</option>{flatCategories.map((category) => <option key={category.id} value={category.id}>{category.parentId ? '　└ ' : ''}{category.nameAr}</option>)}</select></label>
+      <label>{t('category')}<select value={filters.categoryId ?? ''} onChange={(event) => setFilters((current) => ({ ...current, categoryId: event.target.value || undefined }))}><option value="">{t('allCategories')}</option>{flatCategories.map((category) => <option key={category.id} value={category.id}>{category.parentId ? '　└ ' : ''}{locale === 'ar' ? category.nameAr : category.nameEn || category.nameAr}</option>)}</select></label>
       <div className="catalog-price-fields"><label>{t('minPrice')}<input inputMode="decimal" value={minPrice} onChange={(event) => setMinPrice(event.target.value)} /></label><label>{t('maxPrice')}<input inputMode="decimal" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)} /></label></div>
       <button className="catalog-primary-button" type="submit">{t('apply')}</button>
     </form>;
   }
 
   return <main className="catalog-shell">
-    <nav className="catalog-breadcrumb" aria-label="مسار التنقل"><Link href="/ar/products">الرئيسية</Link><span aria-hidden="true">&gt;</span><span aria-current="page">جميع المنتجات</span></nav>
+    <nav className="catalog-breadcrumb" aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"}><Link href="/">{locale === "ar" ? "الرئيسية" : "Home"}</Link><span aria-hidden="true">&gt;</span><span aria-current="page">{t("title")}</span></nav>
     <header className="catalog-heading"><div><h1>{t('title')}</h1></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
     {topLevelCategories.length > 0 && <nav className="catalog-category-chips" aria-label={t('category')}>
-      {topLevelCategories.map((category) => <button key={category.id} type="button" aria-pressed={filters.categoryId === category.id} onClick={() => apply({ ...filters, categoryId: filters.categoryId === category.id ? undefined : category.id, page: 0 })}>{category.nameAr}</button>)}
+      {topLevelCategories.map((category) => <button key={category.id} type="button" aria-pressed={filters.categoryId === category.id} onClick={() => apply({ ...filters, categoryId: filters.categoryId === category.id ? undefined : category.id, page: 0 })}>{(locale === 'ar' ? category.nameAr : category.nameEn || category.nameAr)}</button>)}
     </nav>}
     <div className="catalog-layout">
       <aside className="catalog-sidebar"><section className="catalog-sort-box">{sortField()}</section><section className="catalog-filter-box"><h2>{t('filters')}</h2>{filterFields()}</section></aside>
@@ -177,10 +177,12 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
 
 function ProductCard({ product, eager }: { product: ProductSummary; eager: boolean }) {
   const t = useTranslations('Catalog');
+  const locale = useLocale();
+  const productName = locale === 'ar' ? product.nameAr : product.nameEn || product.nameAr;
   return <article className="catalog-card">
-    <Link className="catalog-card-link" href={`/ar/products/${encodeURIComponent(product.slug)}`} aria-label={product.nameAr}>
-      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || product.nameAr} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || product.nameAr)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
-      <div className="catalog-card-copy"><h2>{product.nameAr}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: formatPrice(product.priceFrom) })}</p></div>
+    <Link className="catalog-card-link" href={`/products/${encodeURIComponent(product.slug)}`} aria-label={productName}>
+      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || productName} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || productName)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
+      <div className="catalog-card-copy"><h2>{productName}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: formatPrice(product.priceFrom) })}</p></div>
     </Link>
   </article>;
 }
