@@ -1,32 +1,18 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { readThemePreference, writeThemePreference, type ThemePreference } from '@/lib/theme-preference';
-import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import type { ProductDetail } from '@/lib/product-detail-api';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
 import { formatPrice } from '@/lib/price-format';
 
 export function ProductDetailClient({ product }: { product: ProductDetail }) {
-  const t = useTranslations('ProductTheme');
+  const locale = useLocale();
+  const isAr = locale === 'ar';
   const priceT = useTranslations('ProductPrice');
-  const [theme, setTheme] = useState<ThemePreference>('light');
-
-  useEffect(() => {
-    const storedTheme = readThemePreference();
-    document.documentElement.setAttribute('data-theme', storedTheme);
-    const frame = window.requestAnimationFrame(() => setTheme(storedTheme));
-
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
-
-  function toggleTheme() {
-    const nextTheme: ThemePreference = theme === 'light' ? 'dark' : 'light';
-    setTheme(nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    writeThemePreference(nextTheme);
-  }
+  const productName = isAr ? product.nameAr : product.nameEn || product.nameAr;
+  const productDescription = isAr ? product.descriptionAr : product.descriptionEn || product.descriptionAr;
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id ?? '');
   const [selectedImageId, setSelectedImageId] = useState(product.images[0]?.id ?? '');
   const selectedVariant = product.variants.find((variant) => variant.id === selectedVariantId) ?? product.variants[0];
@@ -38,40 +24,35 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
 
   return (
     <main className="product-detail-shell">
-      <div className="product-detail-top-actions">
-        <button type="button" className="product-theme-toggle" aria-pressed={theme === 'dark'} onClick={toggleTheme}>
-          {theme === 'dark' ? t('switchToLight') : t('switchToDark')}
-        </button>
-      </div>
-      <nav className="product-breadcrumb" aria-label="مسار التنقل">
-        <Link href="/ar/products">الرئيسية</Link>
+      <nav className="product-breadcrumb" aria-label={isAr ? "مسار التنقل" : "Breadcrumb"}>
+        <Link href="/">{isAr ? "الرئيسية" : "Home"}</Link>
         <span aria-hidden="true">&gt;</span>
-        <Link href="/ar/products">جميع المنتجات</Link>
+        <Link href="/products">{isAr ? "جميع المنتجات" : "All products"}</Link>
         <span aria-hidden="true">&gt;</span>
-        <span aria-current="page">{product.nameAr}</span>
+        <span aria-current="page">{productName}</span>
       </nav>
 
       <div className="product-detail-grid">
-        <section className="product-gallery" aria-label="صور المنتج">
+        <section className="product-gallery" aria-label={isAr ? "صور المنتج" : "Product images"}>
           <div className="product-gallery-main">
             {selectedImage ? (
               <img
                 src={selectedImage.imageUrl || PRODUCT_IMAGE_PLACEHOLDER}
-                alt={selectedImage.altAr || product.nameAr}
-                onError={(event) => onProductImageError(event, product.nameAr)}
+                alt={selectedImage.altAr || productName}
+                onError={(event) => onProductImageError(event, productName)}
               />
             ) : (
-              <div className="product-gallery-empty" role="img" aria-label="لا توجد صورة للمنتج">لا توجد صورة</div>
+              <div className="product-gallery-empty" role="img" aria-label={isAr ? "لا توجد صورة للمنتج" : "No product image"}>{isAr ? "لا توجد صورة" : "No image"}</div>
             )}
           </div>
           {gallery.length > 1 && (
-            <div className="product-gallery-thumbnails" aria-label="اختر صورة">
+            <div className="product-gallery-thumbnails" aria-label={isAr ? "اختر صورة" : "Choose an image"}>
               {gallery.map((image, index) => (
                 <button
                   key={image.id}
                   type="button"
                   className={image.id === selectedImage?.id ? 'is-selected' : ''}
-                  aria-label={image.altAr || `الصورة ${index + 1}`}
+                  aria-label={image.altAr || (isAr ? `الصورة ${index + 1}` : `Image ${index + 1}`)}
                   aria-pressed={image.id === selectedImage?.id}
                   onClick={() => setSelectedImageId(image.id)}
                 >
@@ -88,11 +69,11 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
 
         <section className="product-detail-copy">
           {product.brand?.name && <p className="product-detail-eyebrow">{product.brand.name}</p>}
-          <h1>{product.nameAr}</h1>
-          {selectedVariant && <p className="product-detail-sku">كود المنتج: <b dir="ltr">{selectedVariant.sku}</b></p>}
+          <h1>{productName}</h1>
+          {selectedVariant && <p className="product-detail-sku">{isAr ? 'كود المنتج:' : 'SKU:'} <b dir="ltr">{selectedVariant.sku}</b></p>}
           {product.nameEn && <p className="product-detail-name-en" lang="en" dir="ltr">{product.nameEn}</p>}
           {product.categories.length > 0 && (
-            <div className="product-detail-categories" aria-label="التصنيفات">
+            <div className="product-detail-categories" aria-label={isAr ? 'التصنيفات' : 'Categories'}>
               {product.categories.map((category) => <span key={category.id}>{category.nameAr}</span>)}
             </div>
           )}
@@ -126,12 +107,12 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
               </>
             );
           })() : (
-            <p className="product-detail-unavailable">غير متاح حاليًا</p>
+            <p className="product-detail-unavailable">{isAr ? 'غير متاح حاليًا' : 'Currently unavailable'}</p>
           )}
 
           {product.variants.length > 0 && (
             <fieldset className="product-variant-picker">
-              <legend>اختر المواصفات</legend>
+              <legend>{isAr ? 'اختر المواصفات' : 'Choose an option'}</legend>
               <div className="product-variant-options">
                 {product.variants.map((variant) => (
                   <button
@@ -156,8 +137,8 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
             </fieldset>
           )}
 
-          {product.descriptionAr && <div className="product-description"><h2>وصف المنتج</h2><p>{product.descriptionAr}</p></div>}
-          <Link className="product-back-link" href="/ar/products">العودة إلى جميع المنتجات</Link>
+          {product.descriptionAr && <div className="product-description"><h2>{isAr ? 'وصف المنتج' : 'Description'}</h2><p>{productDescription}</p></div>}
+          <Link className="product-back-link" href="/products">{isAr ? "العودة إلى جميع المنتجات" : "Back to all products"}</Link>
         </section>
       </div>
     </main>
