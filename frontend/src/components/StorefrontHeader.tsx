@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { BrandLogo } from '@/components/BrandLogo';
-import { Link, useRouter } from '@/i18n/navigation';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import type { CatalogCategory } from '@/lib/catalog-types';
 import { useStorefrontTheme } from '@/components/StorefrontThemeProvider';
 
@@ -11,6 +11,7 @@ export function StorefrontHeader({ categories }: { categories: CatalogCategory[]
   const locale = useLocale();
   const t = useTranslations('Storefront');
   const router = useRouter();
+  const pathname = usePathname();
   const { theme, toggleTheme } = useStorefrontTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -57,7 +58,7 @@ export function StorefrontHeader({ categories }: { categories: CatalogCategory[]
             {theme === 'dark' ? '☀' : '☾'}
           </button>
           <Link className="storefront-login" href="/login">{t('login')}</Link>
-          <Link className="storefront-locale" href="/" locale={locale === 'ar' ? 'en' : 'ar'}>{locale === 'ar' ? 'EN' : 'AR'}</Link>
+          <Link className="storefront-locale" href={pathname} locale={locale === 'ar' ? 'en' : 'ar'}>{locale === 'ar' ? 'EN' : 'AR'}</Link>
         </div>
       </div>
     </header>
