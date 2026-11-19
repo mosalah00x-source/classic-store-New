@@ -27,7 +27,7 @@
 | Static UI reference guide | FrontendApp / docs/ui-reference/README.md / 6b3af94924722e1e77d7c59e10b671ad8e0f00b5 | docs/ui-reference/README.md | Frontend owner يحدّث وصف النموذج؛ PO يعتمد تغييرات المرجع/النطاق |
 | Backend README copy | BackendApp / backend/README.md / 6d200ee15b406b78d51ba8710e2e786c405697a4 | docs/reference/BACKEND_README.md | Backend owner؛ وأمين التوثيق للتنسيق |
 | Project Reference README copy | docs/ui-reference / docs/reference/README.md / 6b3af94924722e1e77d7c59e10b671ad8e0f00b5 | docs/reference/PROJECT_REFERENCE_README.md | أمين التوثيق؛ PO يعتمد قواعد الحوكمة |
-| Consolidated SQL reference V1–V7 | مستخلص من FrontendApp source وقرارات PO؛ ليس نسخة من ملف واحد | docs/reference/FRONTEND_LANGUAGE_THEME_GUIDE.md | Frontend owner يحدّث التنفيذ المرصود؛ PO وحده يغيّر سياسة اللغة/الثيم |
+| دليل اللغة والثيم | مستخلص من FrontendApp source وقرارات PO؛ ليس نسخة من ملف واحد | docs/reference/FRONTEND_LANGUAGE_THEME_GUIDE.md | Frontend owner يحدّث التنفيذ المرصود؛ PO وحده يغيّر سياسة اللغة/الثيم |
 | Project reports V2/V3 | V2 على هذا الفرع؛ V3 مشتق من مراجعة V2 وGitHub | docs/reports/ | أمين التوثيق؛ قرارات PO لا تُضاف إلا من تصريح PO مكتوب |
 | V3 verification report | فحص GitHub مباشر في 19 نوفمبر 2026 | docs/reports/V3-verification-report-2026-11-18.md | المراجع/أمين التوثيق مع أدلة مباشرة فقط |
 
