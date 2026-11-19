@@ -53,7 +53,7 @@ export function StorefrontHeader({ categories }: { categories: CatalogCategory[]
             <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t('search')} aria-label={t('search')} />
             <button type="submit" aria-label={t('searchSubmit')}>⌕</button>
           </form>
-          <Link className="storefront-cart" href="/products" aria-label={t('cart')}>♧ <span>0</span></Link>
+          <Link className="storefront-cart" href="/products" aria-label={t('cart')}>🛒 <span>0</span></Link>
           <button className="storefront-icon-button" type="button" onClick={toggleTheme} aria-pressed={theme === 'dark'} aria-label={theme === 'dark' ? t('lightTheme') : t('darkTheme')}>
             {theme === 'dark' ? '☀' : '☾'}
           </button>
