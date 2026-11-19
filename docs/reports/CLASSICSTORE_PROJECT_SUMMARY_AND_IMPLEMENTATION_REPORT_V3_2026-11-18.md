@@ -30,7 +30,7 @@
 
 ## 0. حالة التحقق من هذا المستند — الإصدار V3
 
-> **نطاق هذه النسخة:** تجمع هذه النسخة بين مراجعة المشروع، ونتائج فحص GitHub الحي بتاريخ 18 نوفمبر 2026، والتصحيحات الناتجة عن الفحص، وقرارات PO التي أكدها المستخدم صراحةً. أُودع هذا الملف لاحقاً على فرع توثيق مستقل دون تعديل كود التطبيق أو الفروع الفنية.
+ > **نطاق هذه النسخة:** مراجعة V2 مقابل GitHub الحي بتاريخ 19 نوفمبر 2026، وتصحيح حالات التحقق وقرارات PO وتوحيد مصدر الوثائق. هذه نسخة توثيقية فقط؛ لم تُعدّل فروع التطبيق أو Migrations أو OpenAPI أو PRs.
 
 ### مفتاح الحالات
 
@@ -322,7 +322,7 @@
 
 ---
 
-## 8. مخالفات إجرائية محتملة
+## 8. سجل أحداث GitHub وحدود الاستنتاج
 
 | PR | الواقعة | التقييم | الحالة |
 |---|---|---|---|
@@ -546,18 +546,18 @@ Ready وMerged أحداث حالة وتوقيت فقط. لا تُعدّ أي م�
 | الفرع | آخر SHA | الوثائق/المراجع الموجودة في الشجرة |
 |---|---|---|
 | BackendApp | 15bb4080cd1e48bbc52141e45a83c0e18987e098 | docs/api/T06-acceptance-report.md; docs/api/openapi.yaml; docs/decisions/T-07-identity-derived-contracts.md; docs/reference/Classic_Store_SRS_v1.1.1.md; docs/reports/T-07-identity-implementation-report.md |
-| FrontendApp | dd00ddd5fb6c21800f9928662893a27b4a290d63 | docs/ui-reference/README.md; assets/logo.png; css/base.css; css/pages.css; index.html; js/i18n.js; js/main.js; js/store.js |
+| FrontendApp | dd00ddd5fb6c21800f9928662893a27b4a290d63 | docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
 | ci/t12-frontend-ci-all-prs | b23c9e846d29103532b440df5d2ae14562bd7e53 | لا توجد وثائق مطابقة للنطاق |
 | docs/project-reference | 6a1cd7b56528677dce0231ec36c20aacbaf5f74e | docs/README.md; docs/api/T06-acceptance-report.md; docs/api/openapi.yaml; docs/decisions/T-07-identity-derived-contracts.md; docs/reference/BACKEND_README.md; docs/reference/Classic_Store_Project_Master_Reference_AR.md; docs/reference/Classic_Store_SRS_v1.1.1.md; docs/reference/FRONTEND_LANGUAGE_THEME_GUIDE.md; docs/reference/PROJECT_REFERENCE_README.md; docs/reports/CLASSICSTORE_PROJECT_SUMMARY_AND_IMPLEMENTATION_REPORT_V2_PO_DECISIONS_2026-11-18.md; docs/reports/T-07-identity-implementation-report.md; docs/ui-reference/README.md |
-| docs/ui-reference | f995cb19eb87d4e16e07b67e1df0f4ea226f173d | db/reference/Classic_Store_Consolidated_V1-V7.sql; docs/reference/Classic_Store_Project_Master_Reference_AR.md; docs/reference/README.md; docs/ui-reference/README.md; UI prototype assets/css/html/js |
-| docs/ui-reference-pr | 3a805ab39f252f5424199af84e1d1a0bd96744a3 | docs/ui-reference/README.md; UI prototype assets/css/html/js |
-| feat/frontend-logo-mask | 238906994b24d3e26c65f67d1155e6cb0bf911eb | docs/ui-reference/README.md; UI prototype assets/css/html/js |
-| feat/frontend-product-price-detail | 62daf03803bad719eb4a6346ac109623e5406371 | docs/ui-reference/README.md; UI prototype assets/css/html/js |
-| feat/frontend-theme-toggle | 3f4fccc4309000a268126578f8c3edd51c354d10 | docs/ui-reference/README.md; UI prototype assets/css/html/js |
+| docs/ui-reference | f995cb19eb87d4e16e07b67e1df0f4ea226f173d | db/reference/Classic_Store_Consolidated_V1-V7.sql; docs/reference/Classic_Store_Project_Master_Reference_AR.md; docs/reference/README.md; docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
+| docs/ui-reference-pr | 3a805ab39f252f5424199af84e1d1a0bd96744a3 | docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
+| feat/frontend-logo-mask | 238906994b24d3e26c65f67d1155e6cb0bf911eb | docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
+| feat/frontend-product-price-detail | 62daf03803bad719eb4a6346ac109623e5406371 | docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
+| feat/frontend-theme-toggle | 3f4fccc4309000a268126578f8c3edd51c354d10 | docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
 | feature/b02-catalog-read | 1a9f582a844936237707dc855cc4be4479dd6bfa | docs/api/T06-acceptance-report.md; docs/api/openapi.yaml; docs/decisions/T-07-identity-derived-contracts.md; docs/reference/Classic_Store_SRS_v1.1.1.md; docs/reports/T-07-identity-implementation-report.md |
 | feature/b02c-brands | 4bbfdb98b990a55df820d59ce1f1dae08d7768fc | docs/api/T06-acceptance-report.md; docs/api/openapi.yaml; docs/decisions/T-07-identity-derived-contracts.md; docs/reference/Classic_Store_SRS_v1.1.1.md; docs/reports/T-07-identity-implementation-report.md |
 | feature/b02d-stable-ordering | a676c35f93aeac961d44bd3efaab8b3b50bbfc5a | docs/api/T06-acceptance-report.md; docs/api/openapi.yaml; docs/decisions/T-07-identity-derived-contracts.md; docs/reference/Classic_Store_SRS_v1.1.1.md; docs/reports/T-07-identity-implementation-report.md |
-| feature/f1-ui-align | 576d41378a2b222eeca6db5e7316aa1f8cc9a453 | docs/ui-reference/README.md; UI prototype assets/css/html/js |
+| feature/f1-ui-align | 576d41378a2b222eeca6db5e7316aa1f8cc9a453 | docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
 | feature/f1a-fix-visual | c553593e9a486720d56521962de4de04ddce3d44 | لا توجد وثائق مطابقة للنطاق |
 | feature/f1a-products-list | 157645ff0ca68bf6afb50a1f770e921ae0a938e4 | لا توجد وثائق مطابقة للنطاق |
 | feature/f1b-page-tests | 92fa91454db8c5e44f571ff262b05859b67d3595 | لا توجد وثائق مطابقة للنطاق |
