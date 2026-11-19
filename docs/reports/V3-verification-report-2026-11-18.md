@@ -38,7 +38,7 @@
 
 تم فحص قائمة الفروع الحية وشجرة كل فرع عند SHA الظاهر أدناه. جميع استجابات recursive tree أعادت truncated=false. مسارات frontend/src/app/api هي كود وليست وثائق.
 
-| الفرع | آخر SHA | الوثائق/المراجع الموجودة في الشجرة |
+| الفرع | SHA وقت الفحص (قبل نشر V3) | الوثائق/المراجع الموجودة في الشجرة |
 |---|---|---|
 | BackendApp | 15bb4080cd1e48bbc52141e45a83c0e18987e098 | docs/api/T06-acceptance-report.md; docs/api/openapi.yaml; docs/decisions/T-07-identity-derived-contracts.md; docs/reference/Classic_Store_SRS_v1.1.1.md; docs/reports/T-07-identity-implementation-report.md |
 | FrontendApp | dd00ddd5fb6c21800f9928662893a27b4a290d63 | docs/ui-reference/README.md; docs/ui-reference/assets/logo.png; docs/ui-reference/css/base.css; docs/ui-reference/css/pages.css; docs/ui-reference/index.html; docs/ui-reference/js/i18n.js; docs/ui-reference/js/main.js; docs/ui-reference/js/store.js |
@@ -70,6 +70,8 @@
 | feature/t10-catalog-contract | 84285db84c479827bafdb6c4c4a816126eca1dd4 | docs/api/T06-acceptance-report.md; docs/api/openapi.yaml; docs/decisions/T-07-identity-derived-contracts.md; docs/reference/Classic_Store_SRS_v1.1.1.md; docs/reports/T-07-identity-implementation-report.md |
 | fix/f1b-product-detail-null-guard | 33e6f0fd3e4bac8bd3b350abb2be55352d01db1b | لا توجد وثائق مطابقة للنطاق |
 | main | 0c6e9f1ad9614aba87e2a91b5e7f5f3c72b4ee85 | db/reference/Classic_Store_Consolidated_V1-V7.sql; docs/reference/Classic_Store_Project_Master_Reference_AR.md |
+
+**توضيح لقطة SHA:** الجدول يسجل SHA لكل فرع وقت الفحص وقبل نشر V3. كان فرع docs/project-reference عند 6a1cd7b56528677dce0231ec36c20aacbaf5f74e وقت الفحص، ثم تقدم إلى commit نشر V3 الموضح في سجل GitHub. بقية الفروع لم تُعدّل ضمن هذه المهمة.
 
 ## 1.4 حالة V1
 
