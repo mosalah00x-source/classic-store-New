@@ -1,3 +1,5 @@
+> نسخة مرجعية من الفرع BackendApp (المسار الأصلي: docs/api/T06-acceptance-report.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 # T-06 — OpenAPI draft acceptance report
 
 - Source: `docs/reference/Classic_Store_SRS_v1.1.1.md` sections 8.2 and 9.

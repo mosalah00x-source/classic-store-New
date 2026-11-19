@@ -1,3 +1,5 @@
+> نسخة مرجعية من الفرع BackendApp (المسار الأصلي: docs/reports/T-07-identity-implementation-report.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 # T-07 Identity Implementation Report
 
 Status: implemented on `feature/t07-identity`; PR #6 remains Draft and unmerged. Product Owner approval has not been granted.

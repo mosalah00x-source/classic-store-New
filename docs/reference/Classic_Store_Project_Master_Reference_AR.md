@@ -1,3 +1,5 @@
+> نسخة مرجعية من الفرع main (المسار الأصلي: docs/reference/Classic_Store_Project_Master_Reference_AR.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 > **Central documentation copy**
 >
 > Original source: `main/docs/reference/Classic_Store_Project_Master_Reference_AR.md`  

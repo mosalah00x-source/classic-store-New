@@ -1,3 +1,5 @@
+> نسخة مرجعية من الفرع FrontendApp (المسار الأصلي: docs/ui-reference/README.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 > **Central documentation copy**
 >
 > Original source: `FrontendApp/docs/ui-reference/README.md`  

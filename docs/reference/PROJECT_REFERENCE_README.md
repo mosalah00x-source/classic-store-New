@@ -1,6 +1,8 @@
+> نسخة مرجعية من الفرع docs/ui-reference (المسار الأصلي: docs/reference/README.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 > **Central documentation copy**
 >
-> Original source: `docs/ui-reference/docs/reference/README.md`  
+> Original source: branch `docs/ui-reference`, path `docs/reference/README.md`  
 > Source blob: `6b3af94924722e1e77d7c59e10b671ad8e0f00b5`  
 > Content preserved from the source branch.
 

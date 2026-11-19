@@ -1,3 +1,5 @@
+> نسخة مرجعية من الفرع BackendApp (المسار الأصلي: backend/README.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 > **Central documentation copy**
 >
 > Original source: `BackendApp/backend/README.md`  

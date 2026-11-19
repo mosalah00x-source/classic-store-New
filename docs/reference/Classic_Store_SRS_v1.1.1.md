@@ -1,3 +1,5 @@
+> نسخة مرجعية من الفرع BackendApp (المسار الأصلي: docs/reference/Classic_Store_SRS_v1.1.1.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 # Classic Store: SRS v1.1.1
 
 **الحالة:** Baseline معتمد داخليًا بواسطة Product Owner الذي أدى أيضًا أدوار Tech Lead وQA وOperations وSecurity (11 نوفمبر 2026). الاعتماد صادر من شخص واحد وليس مراجعة مستقلة؛ انظر DEC-GOV-01 وAR-03.
