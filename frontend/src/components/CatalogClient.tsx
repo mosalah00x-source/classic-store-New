@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter, Link } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } from '@/lib/catalog-types';
