@@ -5,6 +5,7 @@ import { Link, usePathname } from '@/i18n/navigation';
 
 const STORAGE_KEY = 'classic-store:bottom-nav:v1';
 const CHANGE_EVENT = 'classic-store:bottom-nav-change';
+let fallbackExpanded = true;
 type NavigationItem = { id: 'home' | 'products' | 'product' | 'cart' | 'checkout' | 'done'; href?: '/' | '/products'; enabled: boolean };
 const items: NavigationItem[] = [
   { id: 'home', href: '/', enabled: true },
@@ -28,7 +29,7 @@ function getExpandedSnapshot() {
   try {
     return window.localStorage.getItem(STORAGE_KEY) !== 'collapsed';
   } catch {
-    return true;
+    return fallbackExpanded;
   }
 }
 
@@ -42,10 +43,12 @@ export function StorefrontBottomNav() {
   const expanded = useSyncExternalStore(subscribeToExpandedState, getExpandedSnapshot, getServerExpandedSnapshot);
 
   function toggleExpanded() {
+    const next = !expanded;
+    fallbackExpanded = next;
     try {
-      window.localStorage.setItem(STORAGE_KEY, expanded ? 'collapsed' : 'expanded');
+      window.localStorage.setItem(STORAGE_KEY, next ? 'expanded' : 'collapsed');
     } catch {
-      // Keep the current page usable when storage is unavailable.
+      // Keep the preference in memory for this page view when storage is unavailable.
     }
     window.dispatchEvent(new Event(CHANGE_EVENT));
   }
