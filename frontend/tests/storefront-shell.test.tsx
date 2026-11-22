@@ -29,3 +29,31 @@ test('shared footer exposes store links and contact information', () => {
   assert.ok(source.includes('footerNavigation'));
   assert.ok(source.includes('contactComingSoon'));
 });
+
+
+test('category mega menu supports pointer, outside-click, Escape and keyboard navigation', () => {
+  const source = readFileSync(resolve(process.cwd(), 'src/components/StorefrontHeader.tsx'), 'utf8');
+  for (const required of [
+    'onMouseEnter={() => setMenuOpen(true)}',
+    'onMouseLeave={() => {',
+    "event.key === 'Escape'",
+    "event.key === 'ArrowDown'",
+    "event.key === 'ArrowUp'",
+    "event.key === 'Home'",
+    "event.key === 'End'",
+    "document.addEventListener('pointerdown'",
+    'aria-expanded={menuOpen}',
+    'aria-haspopup="true"',
+  ]) {
+    assert.ok(source.includes(required), `Expected mega menu interaction: ${required}`);
+  }
+});
+
+test('category mega menu CSS wraps long labels and prevents horizontal overflow', () => {
+  const source = readFileSync(resolve(process.cwd(), 'src/app/globals.css'), 'utf8');
+  assert.match(source, /\.storefront-mega-menu[^}]*overflow-x:hidden/);
+  assert.match(source, /\.storefront-mega-menu a\{[^}]*overflow-wrap:anywhere/);
+  assert.match(source, /\.storefront-category-menu::after/);
+  assert.match(source, /:dir\(rtl\) \.storefront-mega-menu/);
+  assert.match(source, /:dir\(ltr\) \.storefront-mega-menu/);
+});
