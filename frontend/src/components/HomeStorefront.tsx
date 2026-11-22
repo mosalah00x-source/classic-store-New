@@ -107,7 +107,7 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
       </section>
 
       <section className="home-section" aria-labelledby="home-best-sellers-title">
-        <SectionHeading id="home-best-sellers-title" eyebrow={t('bestSellersEyebrow')} title={t('bestSellersTitle')} note={t('bestSellersFallbackNote')} />
+        <SectionHeading id="home-best-sellers-title" eyebrow={t('bestSellersEyebrow')} title={t('bestSellersTitle')} note={!productsError && products.length > 0 ? t('bestSellersFallbackNote') : undefined} />
         {productsError ? (
           <ErrorState locale={locale} title={t('productsErrorTitle')} messageAr={t('productsErrorMessage')} messageEn={t('productsErrorMessage')} />
         ) : bestSellers.length === 0 ? (
