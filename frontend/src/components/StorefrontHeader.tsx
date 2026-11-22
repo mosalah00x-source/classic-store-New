@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FocusEvent, type FormEvent, type KeyboardEvent } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { BrandLogo } from '@/components/BrandLogo';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
@@ -15,6 +15,39 @@ export function StorefrontHeader({ categories }: { categories: CatalogCategory[]
   const { theme, toggleTheme } = useStorefrontTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const categoryMenuRef = useRef<HTMLDivElement>(null);
+  const categoryTriggerRef = useRef<HTMLButtonElement>(null);
+  const focusFirstItemOnOpen = useRef(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (event.target instanceof Node && !categoryMenuRef.current?.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: globalThis.KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        categoryTriggerRef.current?.focus();
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    if (focusFirstItemOnOpen.current) {
+      categoryMenuRef.current?.querySelector<HTMLAnchorElement>('.storefront-mega-menu a')?.focus();
+      focusFirstItemOnOpen.current = false;
+    }
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [menuOpen]);
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,20 +56,74 @@ export function StorefrontHeader({ categories }: { categories: CatalogCategory[]
     setSearch('');
   }
 
+  function handleCategoryMenuKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (!menuOpen || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+
+    const links = Array.from(
+      categoryMenuRef.current?.querySelectorAll<HTMLAnchorElement>('.storefront-mega-menu a') ?? [],
+    );
+    if (links.length === 0) return;
+
+    const currentIndex = links.indexOf(document.activeElement as HTMLAnchorElement);
+    let nextIndex = currentIndex;
+
+    if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = links.length - 1;
+    else if (event.key === 'ArrowDown') nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % links.length;
+    else if (event.key === 'ArrowUp') nextIndex = currentIndex < 0 ? links.length - 1 : (currentIndex - 1 + links.length) % links.length;
+
+    event.preventDefault();
+    links[nextIndex]?.focus();
+  }
+
+  function handleCategoryMenuBlur(event: FocusEvent<HTMLDivElement>) {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      setMenuOpen(false);
+    }
+  }
+
+  function closeMenu() {
+    setMenuOpen(false);
+  }
+
   return (
     <header className="storefront-header">
       <div className="storefront-header-inner">
         <nav className="storefront-nav" aria-label={t('mainNavigation')}>
           <Link href="/">{t('home')}</Link>
-          <div className="storefront-category-menu">
-            <button type="button" aria-expanded={menuOpen} aria-controls="storefront-mega-menu" onClick={() => setMenuOpen((open) => !open)}>
+          <div
+            className="storefront-category-menu"
+            ref={categoryMenuRef}
+            onMouseEnter={() => setMenuOpen(true)}
+            onMouseLeave={() => {
+              if (!categoryMenuRef.current?.contains(document.activeElement)) setMenuOpen(false);
+            }}
+            onFocus={() => setMenuOpen(true)}
+            onBlur={handleCategoryMenuBlur}
+            onKeyDown={handleCategoryMenuKeyDown}
+          >
+            <button
+              ref={categoryTriggerRef}
+              type="button"
+              aria-expanded={menuOpen}
+              aria-controls="storefront-mega-menu"
+              aria-haspopup="true"
+              onClick={() => setMenuOpen((open) => !open)}
+              onKeyDown={(event) => {
+                if (event.key === 'ArrowDown') {
+                  event.preventDefault();
+                  focusFirstItemOnOpen.current = true;
+                  setMenuOpen(true);
+                }
+              }}
+            >
               {t('categories')} <span aria-hidden="true">⌄</span>
             </button>
             {menuOpen && (
               <div className="storefront-mega-menu" id="storefront-mega-menu">
-                <Link href="/products" onClick={() => setMenuOpen(false)}>{t('allCategories')}</Link>
+                <Link href="/products" onClick={closeMenu}>{t('allCategories')}</Link>
                 {categories.map((category) => (
-                  <Link key={category.id} href={`/products?categoryId=${encodeURIComponent(category.id)}`} onClick={() => setMenuOpen(false)}>
+                  <Link key={category.id} href={`/products?categoryId=${encodeURIComponent(category.id)}`} onClick={closeMenu}>
                     {locale === 'ar' ? category.nameAr : category.nameEn || category.nameAr}
                   </Link>
                 ))}
