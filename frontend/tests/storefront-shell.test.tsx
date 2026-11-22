@@ -57,3 +57,24 @@ test('category mega menu CSS wraps long labels and prevents horizontal overflow'
   assert.match(source, /:dir\(rtl\) \.storefront-mega-menu/);
   assert.match(source, /:dir\(ltr\) \.storefront-mega-menu/);
 });
+
+
+test('catalog favorite button uses a stable SVG heart for both states', () => {
+  const source = readFileSync(resolve(process.cwd(), 'src/components/CatalogClient.tsx'), 'utf8');
+  assert.match(source, /aria-pressed={isFavorite}/);
+  assert.match(source, /aria-label={isFavorite \? t\('removeFromFavorites'\) : t\('addToFavorites'\)}/);
+  assert.match(source, /<svg className="catalog-favorite-icon" viewBox="0 0 24 24" aria-hidden="true"/);
+  assert.doesNotMatch(source, /isFavorite \? '♥' : '♡'/);
+  const ar = JSON.parse(readFileSync(resolve(process.cwd(), 'src/messages/ar.json'), 'utf8'));
+  const en = JSON.parse(readFileSync(resolve(process.cwd(), 'src/messages/en.json'), 'utf8'));
+  for (const messages of [ar, en]) {
+    assert.ok(messages.Catalog.addToFavorites);
+    assert.ok(messages.Catalog.removeFromFavorites);
+  }
+});
+
+test('catalog favorite SVG is outlined when inactive and filled when active', () => {
+  const source = readFileSync(resolve(process.cwd(), 'src/app/globals.css'), 'utf8');
+  assert.match(source, /\.catalog-favorite-icon \{[^}]*fill: none/);
+  assert.match(source, /\.catalog-favorite-button\[aria-pressed="true"\] \.catalog-favorite-icon \{[^}]*fill: currentColor/);
+});
