@@ -15,7 +15,6 @@ import '../globals.css';
 const cairo = Cairo({ subsets: ['arabic', 'latin'], variable: '--font-arabic', display: 'swap' });
 const inter = Inter({ subsets: ['latin'], variable: '--font-latin', display: 'swap' });
 
-const themeInit = `try { var savedTheme = localStorage.getItem('classic-store-theme'); document.documentElement.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light'); } catch (_) { document.documentElement.setAttribute('data-theme', 'light'); }`;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -30,7 +29,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 
   return (
     <html lang={locale} dir={getDirection(locale)} data-theme="light" suppressHydrationWarning className={`${cairo.variable} ${inter.variable}`}>
-      <head><Script id="classic-store-theme-init" strategy="beforeInteractive">{themeInit}</Script></head>
+      <Script id="classic-store-theme-init" src="/classic-store-theme-init.js" strategy="beforeInteractive" />
       <body>
         <NextIntlClientProvider messages={messages}>
           <StorefrontThemeProvider>
