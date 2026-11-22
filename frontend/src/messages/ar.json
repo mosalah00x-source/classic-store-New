@@ -39,7 +39,9 @@
     "loadMore": "عرض المزيد",
     "loading": "جارٍ التحميل...",
     "close": "إغلاق",
-    "metaDescription": "اكتشف منتجاتنا واختر ما يناسبك"
+    "metaDescription": "اكتشف منتجاتنا واختر ما يناسبك",
+    "breadcrumbLabel": "مسار التنقل",
+    "home": "الرئيسية"
   },
   "ProductTheme": {
     "switchToDark": "تفعيل الوضع الداكن",
@@ -68,5 +70,28 @@
     "contact": "تواصل معنا",
     "contactComingSoon": "معلومات التواصل ستتوفر قريباً.",
     "createAccount": "إنشاء حساب"
+  },
+  "ProductDetail": {
+    "breadcrumbLabel": "مسار التنقل",
+    "home": "الرئيسية",
+    "allProducts": "جميع المنتجات",
+    "productImages": "صور المنتج",
+    "noProductImage": "لا توجد صورة للمنتج",
+    "noImage": "لا توجد صورة",
+    "chooseImage": "اختر صورة",
+    "imageNumber": "الصورة {number}",
+    "skuLabel": "كود المنتج:",
+    "categories": "التصنيفات",
+    "unavailable": "غير متاح حاليًا",
+    "chooseOption": "اختر المواصفات",
+    "description": "وصف المنتج",
+    "backToAllProducts": "العودة إلى جميع المنتجات"
+  },
+  "ProductPage": {
+    "metadataDescription": "تفاصيل {productName} من كلاسيك ستور.",
+    "metadataFallbackTitle": "المنتج | كلاسيك ستور",
+    "errorTitle": "تعذر تحميل تفاصيل المنتج",
+    "errorMessage": "حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.",
+    "retry": "إعادة المحاولة"
   }
 }

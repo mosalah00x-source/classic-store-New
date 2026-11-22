@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { ProductDetailClient } from '@/components/ProductDetailClient';
 import { decideProductDetail } from '@/lib/product-detail-decision';
@@ -8,12 +9,13 @@ type PageProps = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: 'ProductPage' });
 
   try {
     const product = await getProductDetail(slug);
     return {
       title: locale === 'ar' ? product.nameAr : product.nameEn || product.nameAr,
-      description: locale === 'ar' ? (product.descriptionAr ?? `تفاصيل ${product.nameAr} من كلاسيك ستور.`) : (product.descriptionEn ?? product.nameEn ?? product.nameAr),
+      description: locale === 'ar' ? (product.descriptionAr ?? t('metadataDescription', { productName: product.nameAr })) : (product.descriptionEn ?? product.nameEn ?? product.nameAr),
       alternates: { canonical: `/${locale}/products/${encodeURIComponent(product.slug)}` },
       openGraph: {
         title: locale === 'ar' ? product.nameAr : product.nameEn || product.nameAr,
@@ -23,12 +25,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       }
     };
   } catch {
-    return { title: locale === 'ar' ? 'المنتج | كلاسيك ستور' : 'Product | Classic Store' };
+    return { title: t('metadataFallbackTitle') };
   }
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { locale, slug } = await params;
+  const t = await getTranslations('ProductPage');
 
   const result = await getProductDetail(slug)
     .then((product) => ({ ok: true as const, product }))
@@ -40,10 +43,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
   if (decision.kind === 'error') {
     return (
       <main className="catalog-shell">
-        <h1>{locale === 'ar' ? 'تعذر تحميل تفاصيل المنتج' : 'Unable to load product details'}</h1>
+        <h1>{t('errorTitle')}</h1>
         <section className="catalog-state" role="alert">
-          <p>{decision.error instanceof ProductDetailRequestError ? (locale === 'ar' ? decision.error.payload?.messageAr : decision.error.payload?.messageEn) ?? decision.error.message : locale === 'ar' ? 'حدثت مشكلة أثناء تحميل تفاصيل المنتج. حاول مرة أخرى.' : 'There was a problem loading product details. Please try again.'}</p>
-          <a href={`/${locale}/products/${encodeURIComponent(slug)}`}>{locale === "ar" ? "إعادة المحاولة" : "Try again"}</a>
+          <p>{decision.error instanceof ProductDetailRequestError ? (locale === 'ar' ? decision.error.payload?.messageAr : decision.error.payload?.messageEn) ?? decision.error.message : t('errorMessage')}</p>
+          <a href={`/${locale}/products/${encodeURIComponent(slug)}`}>{t('retry')}</a>
         </section>
       </main>
     );

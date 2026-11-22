@@ -143,7 +143,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   }
 
   return <main className="catalog-shell">
-    <nav className="catalog-breadcrumb" aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"}><Link href="/">{locale === "ar" ? "الرئيسية" : "Home"}</Link><span aria-hidden="true">&gt;</span><span aria-current="page">{t("title")}</span></nav>
+    <nav className="catalog-breadcrumb" aria-label={t('breadcrumbLabel')}><Link href="/">{t('home')}</Link><span aria-hidden="true">&gt;</span><span aria-current="page">{t('title')}</span></nav>
     <header className="catalog-heading"><div><h1>{t('title')}</h1></div><button className="catalog-mobile-filter" type="button" onClick={() => setDrawerOpen(true)}>{t('filters')}</button></header>
     {topLevelCategories.length > 0 && <nav className="catalog-category-chips" aria-label={t('category')}>
       {topLevelCategories.map((category) => <button key={category.id} type="button" aria-pressed={filters.categoryId === category.id} onClick={() => apply({ ...filters, categoryId: filters.categoryId === category.id ? undefined : category.id, page: 0 })}>{(locale === 'ar' ? category.nameAr : category.nameEn || category.nameAr)}</button>)}
@@ -153,7 +153,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
       <section className="catalog-results" aria-live="polite">
         <div className="catalog-toolbar"><span>{t('resultCount', { count: page.totalElements })}</span><div className="catalog-chips">
           {filters.q && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('q')}>{filters.q} ×</button>}
-          {filters.categoryId && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('categoryId')}>{flatCategories.find((item) => item.id === filters.categoryId)?.nameAr ?? t('category')} ×</button>}
+          {filters.categoryId && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('categoryId')}>{(() => { const selected = flatCategories.find((item) => item.id === filters.categoryId); return selected ? (locale === 'ar' ? selected.nameAr : selected.nameEn || selected.nameAr) : t('category'); })()} ×</button>}
           {filters.minPrice && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('minPrice')}>{t('minPrice')}: {filters.minPrice} ×</button>}
           {filters.maxPrice && <button className="catalog-filter-chip" type="button" onClick={() => removeFilter('maxPrice')}>{t('maxPrice')}: {filters.maxPrice} ×</button>}
           {(filters.q || filters.categoryId || filters.minPrice || filters.maxPrice || filters.sort !== 'newest') && <button type="button" onClick={() => { setQuery(''); setMinPrice(''); setMaxPrice(''); setFilters({ sort: 'newest', page: 0, size: 20 }); apply({ sort: 'newest' }); }}>{t('clearAll')}</button>}

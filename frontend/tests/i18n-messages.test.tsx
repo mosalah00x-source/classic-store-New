@@ -57,3 +57,21 @@ test('English storefront and catalog messages cover every Arabic UI key', () => 
     assert.deepEqual(missing, [], `Missing English ${namespace} messages: ${missing.join(', ')}`);
   }
 });
+
+
+test('English Catalog and Product routes contain no hard-coded Arabic UI literals', () => {
+  const root = resolve(process.cwd(), 'src');
+  const files = [
+    'components/CatalogClient.tsx',
+    'components/ProductDetailClient.tsx',
+    'app/[locale]/products/[slug]/page.tsx'
+  ];
+  const arabicLiteral = /[\u0600-\u06FF]/u;
+  const violations = files.flatMap((file) => {
+    const source = readFileSync(join(root, file), 'utf8');
+    return source.split(/\r?\n/).flatMap((line, index) =>
+      arabicLiteral.test(line) ? [`${file}:${index + 1}: ${line.trim()}`] : []
+    );
+  });
+  assert.deepEqual(violations, [], 'Hard-coded Arabic UI literals remain:\n' + violations.join('\n'));
+});

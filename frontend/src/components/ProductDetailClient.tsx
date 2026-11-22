@@ -11,6 +11,7 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
   const locale = useLocale();
   const isAr = locale === 'ar';
   const priceT = useTranslations('ProductPrice');
+  const t = useTranslations('ProductDetail');
   const productName = isAr ? product.nameAr : product.nameEn || product.nameAr;
   const productDescription = isAr ? product.descriptionAr : product.descriptionEn || product.descriptionAr;
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id ?? '');
@@ -24,16 +25,16 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
 
   return (
     <main className="product-detail-shell">
-      <nav className="product-breadcrumb" aria-label={isAr ? "مسار التنقل" : "Breadcrumb"}>
-        <Link href="/">{isAr ? "الرئيسية" : "Home"}</Link>
+      <nav className="product-breadcrumb" aria-label={t('breadcrumbLabel')}>
+        <Link href="/">{t('home')}</Link>
         <span aria-hidden="true">&gt;</span>
-        <Link href="/products">{isAr ? "جميع المنتجات" : "All products"}</Link>
+        <Link href="/products">{t('allProducts')}</Link>
         <span aria-hidden="true">&gt;</span>
         <span aria-current="page">{productName}</span>
       </nav>
 
       <div className="product-detail-grid">
-        <section className="product-gallery" aria-label={isAr ? "صور المنتج" : "Product images"}>
+        <section className="product-gallery" aria-label={t('productImages')}>
           <div className="product-gallery-main">
             {selectedImage ? (
               <img
@@ -42,17 +43,17 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
                 onError={(event) => onProductImageError(event, productName)}
               />
             ) : (
-              <div className="product-gallery-empty" role="img" aria-label={isAr ? "لا توجد صورة للمنتج" : "No product image"}>{isAr ? "لا توجد صورة" : "No image"}</div>
+              <div className="product-gallery-empty" role="img" aria-label={t('noProductImage')}>{t('noImage')}</div>
             )}
           </div>
           {gallery.length > 1 && (
-            <div className="product-gallery-thumbnails" aria-label={isAr ? "اختر صورة" : "Choose an image"}>
+            <div className="product-gallery-thumbnails" aria-label={t('chooseImage')}>
               {gallery.map((image, index) => (
                 <button
                   key={image.id}
                   type="button"
                   className={image.id === selectedImage?.id ? 'is-selected' : ''}
-                  aria-label={image.altAr || (isAr ? `الصورة ${index + 1}` : `Image ${index + 1}`)}
+                  aria-label={image.altAr || t('imageNumber', { number: index + 1 })}
                   aria-pressed={image.id === selectedImage?.id}
                   onClick={() => setSelectedImageId(image.id)}
                 >
@@ -70,10 +71,10 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
         <section className="product-detail-copy">
           {product.brand?.name && <p className="product-detail-eyebrow">{product.brand.name}</p>}
           <h1>{productName}</h1>
-          {selectedVariant && <p className="product-detail-sku">{isAr ? 'كود المنتج:' : 'SKU:'} <b dir="ltr">{selectedVariant.sku}</b></p>}
+          {selectedVariant && <p className="product-detail-sku">{t('skuLabel')} <b dir="ltr">{selectedVariant.sku}</b></p>}
           {isAr && product.nameEn && <p className="product-detail-name-en" lang="en" dir="ltr">{product.nameEn}</p>}
           {product.categories.length > 0 && (
-            <div className="product-detail-categories" aria-label={isAr ? 'التصنيفات' : 'Categories'}>
+            <div className="product-detail-categories" aria-label={t('categories')}>
               {product.categories.map((category) => <span key={category.id}>{isAr ? category.nameAr : category.nameEn || category.nameAr}</span>)}
             </div>
           )}
@@ -107,12 +108,12 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
               </>
             );
           })() : (
-            <p className="product-detail-unavailable">{isAr ? 'غير متاح حاليًا' : 'Currently unavailable'}</p>
+            <p className="product-detail-unavailable">{t('unavailable')}</p>
           )}
 
           {product.variants.length > 0 && (
             <fieldset className="product-variant-picker">
-              <legend>{isAr ? 'اختر المواصفات' : 'Choose an option'}</legend>
+              <legend>{t('chooseOption')}</legend>
               <div className="product-variant-options">
                 {product.variants.map((variant) => (
                   <button
@@ -128,7 +129,7 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
               </div>
               {selectedVariant && (
                 <dl className="product-variant-details">
-                  <div><dt>{isAr ? 'كود المنتج' : 'SKU'}</dt><dd dir="ltr">{selectedVariant.sku}</dd></div>
+                  <div><dt>{t('skuLabel')}</dt><dd dir="ltr">{selectedVariant.sku}</dd></div>
                   {Object.entries(selectedVariant.attributes).map(([key, value]) => (
                     <div key={key}><dt>{key}</dt><dd>{typeof value === 'string' || typeof value === 'number' ? String(value) : JSON.stringify(value)}</dd></div>
                   ))}
@@ -137,8 +138,8 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
             </fieldset>
           )}
 
-          {productDescription && <div className="product-description"><h2>{isAr ? 'وصف المنتج' : 'Description'}</h2><p>{productDescription}</p></div>}
-          <Link className="product-back-link" href="/products">{isAr ? "العودة إلى جميع المنتجات" : "Back to all products"}</Link>
+          {productDescription && <div className="product-description"><h2>{t('description')}</h2><p>{productDescription}</p></div>}
+          <Link className="product-back-link" href="/products">{t('backToAllProducts')}</Link>
         </section>
       </div>
     </main>
