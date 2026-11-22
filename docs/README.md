@@ -6,9 +6,11 @@
 
 ## المراجع الرئيسية
 - [قرار PO — شريط التنقل السفلي .dn (بديل قرار F2 السابق)](decisions/F2-dn-nav-bar-decision.md)
+- [قرار PO — تأجيل شارات الخصم و«جديد» من F4](decisions/F4-badges-deferred.md)
 
 - [تقرير المشروع V3](reports/CLASSICSTORE_PROJECT_SUMMARY_AND_IMPLEMENTATION_REPORT_V3_2026-11-18.md)
 - [تقرير التحقق V3](reports/V3-verification-report-2026-11-18.md)
+- [تقرير المشروع V4 — تحقق حي وقرارات PO (22 نوفمبر 2026)](reports/CLASSICSTORE_PROJECT_SUMMARY_AND_IMPLEMENTATION_REPORT_V4_2026-11-22.md)
 - [تقرير إغلاق F1 — Shared Storefront Shell](reports/F1-storefront-shell-completion-report.md)
 - [تقرير إغلاق F3 — Home Storefront](reports/F3-home-storefront-completion-report.md)
 - [تقرير V2 التاريخي — لا يُعدّل](reports/CLASSICSTORE_PROJECT_SUMMARY_AND_IMPLEMENTATION_REPORT_V2_PO_DECISIONS_2026-11-18.md)
