@@ -64,6 +64,7 @@ test('Home loading, empty and error state components render their accessible sta
 
 
 test('English Home uses English fallbacks when API names have no English value', () => {
+  const arabicLiteral = new RegExp('[' + String.fromCharCode(0x0600) + '-' + String.fromCharCode(0x06ff) + ']', 'u');
   const category: CatalogCategory = { id: 'cat-1', parentId: null, nameAr: 'اسم عربي', nameEn: null, slug: 'category', sortOrder: 1 };
   const product: ProductSummary = { id: 'product-1', slug: 'product', nameAr: 'اسم عربي', nameEn: null, priceFrom: null, currency: 'EGP', primaryImage: null, brand: null, categories: [category] };
   const categoryName = getHomeCategoryName(category, 'en', en.HomePage.categoryNameUnavailable);
