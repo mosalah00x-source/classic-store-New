@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
-import Script from 'next/script';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { Cairo, Inter } from 'next/font/google';
@@ -29,9 +28,6 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 
   return (
     <html lang={locale} dir={getDirection(locale)} data-theme="light" suppressHydrationWarning className={`${cairo.variable} ${inter.variable}`}>
-      <head>
-        <Script id="classic-store-theme-init" src="/classic-store-theme-init.js" strategy="beforeInteractive" />
-      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <StorefrontThemeProvider>
