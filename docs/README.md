@@ -5,6 +5,7 @@
 **Purpose:** single authoritative location for project documents. V3 is the current project report; V2 is retained as a historical snapshot.
 
 ## المراجع الرئيسية
+- [قرار PO — شريط التنقل السفلي .dn (بديل قرار F2 السابق)](decisions/F2-dn-nav-bar-decision.md)
 
 - [تقرير المشروع V3](reports/CLASSICSTORE_PROJECT_SUMMARY_AND_IMPLEMENTATION_REPORT_V3_2026-11-18.md)
 - [تقرير التحقق V3](reports/V3-verification-report-2026-11-18.md)
