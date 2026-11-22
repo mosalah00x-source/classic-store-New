@@ -4,6 +4,11 @@
 **Canonical documentation branch:** docs/project-reference  
 **Purpose:** single authoritative location for project documents. V3 is the current project report; V2 is retained as a historical snapshot.
 
+## مرجع الإدارة والقرارات المعتمدة
+- [ADMIN-0 — الجرد والتصميم وقرارات PO](project-reference/ADMIN-0.md)
+- [ADM-1 — خطة المصادقة والأدوار وسجل التدقيق (تقرير فقط)](project-reference/ADM-1-plan.md)
+- [فهرس مرجع الإدارة](project-reference/README.md)
+
 ## المراجع الرئيسية
 - [قرار PO — شريط التنقل السفلي .dn (بديل قرار F2 السابق)](decisions/F2-dn-nav-bar-decision.md)
 - [قرار PO — تأجيل شارات الخصم و«جديد» من F4](decisions/F4-badges-deferred.md)
