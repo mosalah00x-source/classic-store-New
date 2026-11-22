@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { FormEvent } from 'react';
 import Image from 'next/image';
 import { useRouter, Link } from '@/i18n/navigation';
@@ -9,7 +9,7 @@ import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } fro
 import { hasMoreCatalogPages, mergeProductItems } from '@/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
 import { formatPrice } from '@/lib/price-format';
-import { CATALOG_CART_ENABLED, CATALOG_PROMOTION_BADGES_ENABLED, readFavoriteIds, saveFavoriteIds, toggleFavoriteId } from '@/lib/catalog-favorites';
+import { CATALOG_CART_ENABLED, CATALOG_PROMOTION_BADGES_ENABLED, getFavoriteIdsSnapshot, getServerFavoriteIdsSnapshot, subscribeFavoriteIds, toggleFavoriteId, updateFavoriteIds } from '@/lib/catalog-favorites';
 
 type Props = { initialPage: ProductPage; categories: CatalogCategory[]; initialFilters: CatalogFilters };
 
@@ -45,9 +45,8 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
+  const favoriteIds = useSyncExternalStore(subscribeFavoriteIds, getFavoriteIdsSnapshot, getServerFavoriteIdsSnapshot);
   const drawerRef = useRef<HTMLElement>(null);
-  useEffect(() => { setFavoriteIds(readFavoriteIds()); }, []);
   const tree = useMemo(() => categoryTree(categories), [categories]);
   const flatCategories = useMemo(() => flattenCategories(tree), [tree]);
   const hasMore = hasMoreCatalogPages(page);
@@ -125,9 +124,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   }
 
   function toggleFavorite(productId: string) {
-    const next = toggleFavoriteId(favoriteIds, productId);
-    setFavoriteIds(next);
-    saveFavoriteIds(next);
+    updateFavoriteIds(toggleFavoriteId(favoriteIds, productId));
   }
 
   function removeFilter(key: keyof CatalogFilters) {

@@ -32,6 +32,45 @@ export function saveFavoriteIds(ids: string[], storage?: FavoriteStorage): void 
   }
 }
 
-export function toggleFavoriteId(ids: string[], productId: string): string[] {
+export function toggleFavoriteId(ids: readonly string[], productId: string): string[] {
   return ids.includes(productId) ? ids.filter((id) => id !== productId) : [...ids, productId];
+}
+
+const EMPTY_FAVORITES: readonly string[] = Object.freeze([]);
+let favoriteSnapshot: readonly string[] | undefined;
+const favoriteListeners = new Set<() => void>();
+
+export function getFavoriteIdsSnapshot(): readonly string[] {
+  if (favoriteSnapshot === undefined) favoriteSnapshot = readFavoriteIds();
+  return favoriteSnapshot;
+}
+
+export function getServerFavoriteIdsSnapshot(): readonly string[] {
+  return EMPTY_FAVORITES;
+}
+
+function notifyFavoriteListeners(): void {
+  favoriteListeners.forEach((listener) => listener());
+}
+
+function handleStorageChange(event: StorageEvent): void {
+  if (event.key === null || event.key === FAVORITES_STORAGE_KEY) {
+    favoriteSnapshot = readFavoriteIds();
+    notifyFavoriteListeners();
+  }
+}
+
+export function subscribeFavoriteIds(listener: () => void): () => void {
+  favoriteListeners.add(listener);
+  if (typeof window !== 'undefined') window.addEventListener('storage', handleStorageChange);
+  return () => {
+    favoriteListeners.delete(listener);
+    if (typeof window !== 'undefined') window.removeEventListener('storage', handleStorageChange);
+  };
+}
+
+export function updateFavoriteIds(ids: readonly string[]): void {
+  favoriteSnapshot = [...new Set(ids)];
+  saveFavoriteIds([...favoriteSnapshot]);
+  notifyFavoriteListeners();
 }
