@@ -94,12 +94,12 @@ export function ProductDetailClient({ product }: { product: ProductDetail }) {
 
             return (
               <>
-                <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} {isAr ? 'ج.م' : 'EGP'}</div>
+                <div className="product-detail-price" aria-live="polite">{formatPrice(selectedVariant.price)} {t('currency')}</div>
                 {hasDiscount && (
                   <div className="product-price-promotion">
                     <span className="product-price-old">
                       <span className="visually-hidden">{priceT('oldPriceLabel')}: </span>
-                      <s aria-hidden="true">{formatPrice(oldRaw)} {isAr ? 'ج.م' : 'EGP'}</s>
+                      <s aria-hidden="true">{formatPrice(oldRaw)} {t('currency')}</s>
                     </span>
                     <span className="product-price-badge">{priceT('discountBadge', { percent })}</span>
                     <span className="product-price-savings">{priceT('savings', { amount: formatPrice(savings) })}</span>
