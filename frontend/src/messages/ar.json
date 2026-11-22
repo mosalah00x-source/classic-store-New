@@ -85,7 +85,8 @@
     "unavailable": "غير متاح حاليًا",
     "chooseOption": "اختر المواصفات",
     "description": "وصف المنتج",
-    "backToAllProducts": "العودة إلى جميع المنتجات"
+    "backToAllProducts": "العودة إلى جميع المنتجات",
+    "currency": "ج.م"
   },
   "ProductPage": {
     "metadataDescription": "تفاصيل {productName} من كلاسيك ستور.",

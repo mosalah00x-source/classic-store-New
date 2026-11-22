@@ -85,7 +85,8 @@
     "unavailable": "Currently unavailable",
     "chooseOption": "Choose an option",
     "description": "Description",
-    "backToAllProducts": "Back to all products"
+    "backToAllProducts": "Back to all products",
+    "currency": "EGP"
   },
   "ProductPage": {
     "metadataDescription": "Details for {productName} from Classic Store.",
