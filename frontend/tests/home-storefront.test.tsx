@@ -70,8 +70,8 @@ test('English Home uses English fallbacks when API names have no English value',
   const productName = getHomeProductName(product, 'en', en.HomePage.productNameUnavailable);
   assert.equal(categoryName, 'Category name unavailable in English');
   assert.equal(productName, 'Product name unavailable in English');
-  assert.doesNotMatch(categoryName, /[\\u0600-\\u06FF]/u);
-  assert.doesNotMatch(productName, /[\\u0600-\\u06FF]/u);
+  assert.doesNotMatch(categoryName, arabicLiteral);
+  assert.doesNotMatch(productName, arabicLiteral);
   assert.equal(getHomeCategoryName(category, 'ar', ar.HomePage.categoryNameUnavailable), 'اسم عربي');
   assert.equal(getHomeProductName(product, 'ar', ar.HomePage.productNameUnavailable), 'اسم عربي');
 });
