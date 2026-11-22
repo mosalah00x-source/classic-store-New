@@ -1,0 +1,391 @@
+# ADM-1 — خطة المصادقة والأدوار وسجل التدقيق (تقرير فقط)
+
+**Repository:** `mosalah00x-source/classic-store-New`  
+**Branch:** `docs/project-reference`  
+**تاريخ الخطة:** 22 نوفمبر 2026  
+**الحالة:** PROPOSAL — لا كود، لا migrations، لا تغيير OpenAPI حتى موافقة PO.
+
+---
+
+## 1. المطلوب من PO قبل التنفيذ
+
+لا يوجد إجراء مطلوب الآن سوى مراجعة هذه الخطة بعد دمج DOC-01. يلزم اعتماد مكتوب على GitHub قبل بدء أي تنفيذ. لا تعتبر هذه الوثيقة موافقة ضمنية.
+
+## 2. نطاق ADM-1
+
+### داخل النطاق
+
+1. إضافة `EDITOR` إلى نموذج الأدوار مع الإبقاء على `ADMIN`, `OPERATIONS`, `WAREHOUSE`, `SUPPORT`.
+2. إضافة نموذج Permission mapping وربطه بالأدوار.
+3. حماية كل مسارات `/admin/**` وعمليات الإدارة حسب الصلاحية.
+4. تصميم Next.js BFF session باستخدام Cookie HttpOnly.
+5. CSRF وCORS وCookie policy لكل بيئة.
+6. Audit Log append-only.
+7. Bootstrap آمن لأول ADMIN، وإجبار تغيير كلمة المرور.
+8. اختبارات إيجابية وسلبية للصلاحيات والمصادقة والتدقيق.
+
+### خارج النطاق
+
+- لا تعديل على أدوار `OPERATIONS`, `WAREHOUSE`, `SUPPORT`.
+- لا Admin UI أو CRUD كامل؛ هذه مراحل ADM-2 وما بعدها.
+- لا رفع صور أو Storage Adapter implementation؛ التصميم موثق في ADMIN-0، والتنفيذ ضمن ADM-6.
+- لا موافقة مدير على تغييرات السعر؛ مؤجل.
+- لا تغيير في قاعدة بيانات الإنتاج أو بيانات حقيقية دون خطة migration وbackup معتمدة.
+- لا تغيير مزود التخزين السحابي.
+- لا JWT في المتصفح أو localStorage.
+
+## 3. Migration plan — النسخة التالية V8
+
+### 3.1 الحالة الحالية [GH]
+
+- migrations الحالية من `V1` إلى `V7`.
+- آخر migration: `V7__integrity_and_reservation_hardening.sql`.
+- `store.user_role` enum الحالي يحتوي `CUSTOMER`, `ADMIN`, `OPERATIONS`, `WAREHOUSE`, `SUPPORT`.
+- المشروع يحتوي `backend/scripts/generate-migrations.py` و`backend/db-source.lock` للتحقق من مصدر قاعدة البيانات وتوليد/تثبيت migrations.
+- CI يتحقق من generated migrations والـ lock، ثم يطبق migrations على PostgreSQL 16 باستخدام Flyway 10.20.1، ويتحقق من idempotency وبعض invariants.
+
+### 3.2 المقترح
+
+`V8__add_editor_role.sql` لإضافة قيمة enum فقط:
+
+```sql
+ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
+```
+
+قواعد الأمان:
+- لا تعيد كتابة V1 أو V7؛ لا تعدل migration مطبقة.
+- لا تستخدم القيمة الجديدة في statement آخر داخل نفس migration؛ افصل إضافة enum عن أي seed/UPDATE يستخدم EDITOR.
+- تحقق من إصدار PostgreSQL الذي يستهدفه المشروع قبل التنفيذ. في الإصدارات الحديثة يمكن إضافة enum value ضمن transaction، لكن لا تعتمد على استخدام القيمة قبل commit.
+- يجب تحديث مصدر schema الأصلي وفق سياسة المشروع، ثم تشغيل generator لتحديث migrations وlock. لا تضف migration يدويًا وتتجاوز آلية `generate-migrations.py`.
+- راجع diff الناتج وhash lock، وشغّل `--check` قبل commit.
+- أضف اختبارًا يثبت وجود EDITOR بعد migrate.
+- لا تغير default التسجيل العام من CUSTOMER.
+
+### 3.3 جداول الصلاحيات المقترحة
+
+التصميم المفضل (يُراجع مع مصدر schema قبل التنفيذ):
+- `store.permissions`: permission_code unique، description.
+- `store.role_permissions`: role + permission FK أو mapping مضبوط، مع unique constraint.
+- لا تجعل أسماء الصلاحيات strings حرة بلا constraint.
+- يمكن أن يكون role enum حاليًا؛ لا تستبدله الآن بنظام roles ديناميكي دون سبب.
+- سجل أي تعديل على role-permission mapping في audit log.
+
+### 3.4 Audit table المقترح
+
+مثال مفاهيمي فقط — ليس migration جاهزًا:
+
+- `id` UUID أو bigint identity.
+- `actor_user_id` FK مناسب مع حفظ أثر actor عند تعطيل المستخدم.
+- `action` ثابت/مقيد.
+- `entity_type`, `entity_id`.
+- `occurred_at` timestamptz.
+- `correlation_id` أو request id.
+- `before_data` و`after_data` JSONB بعد تنقية الحقول الحساسة.
+- `metadata` JSONB محدود ومتحقق منه.
+- فهارس حسب actor/entity/time.
+- لا تخزن passwords أو tokens أو بيانات دفع حساسة.
+
+منع UPDATE/DELETE:
+- لا توجد endpoints للتعديل أو الحذف.
+- صلاحية DB الخاصة بالتطبيق لا تمنح UPDATE/DELETE على الجدول.
+- أضف trigger يمنع UPDATE/DELETE حتى لا يستطيع مسار application عارض تغيير السجل.
+- الاختبارات تثبت أن INSERT ينجح وأن UPDATE/DELETE مرفوضان.
+- احتفظ بآلية retention/legal hold فقط بقرار منفصل؛ لا تضف حذفًا صامتًا.
+
+## 4. Permission model وmethod security
+
+### 4.1 ربط الصلاحيات بالأدوار
+
+| Permission | ADMIN | EDITOR |
+|---|---:|---:|
+| PRODUCT_READ | نعم | نعم |
+| PRODUCT_WRITE | نعم | نعم |
+| PRODUCT_PUBLISH | نعم | نعم |
+| PRODUCT_ARCHIVE | نعم | لا |
+| CATEGORY_WRITE | نعم | نعم |
+| PRICE_WRITE | نعم | نعم |
+| INVENTORY_WRITE | نعم | نعم |
+| USER_MANAGE | نعم | لا |
+| AUDIT_READ | كامل | نطاق إجراءات المحرر/ما يخصه فقط |
+| SETTINGS_WRITE | نعم | لا |
+
+الـ UI ليس حدًا أمنيًا. كل endpoint/service method يفرض الصلاحية من Backend.
+
+### 4.2 Method security
+
+- تفعيل method security في Spring Security.
+- تعريف Permission evaluator أو authorities ثابتة مثل `PERM_PRODUCT_WRITE`.
+- تحويل role-permission mapping إلى GrantedAuthority عند بناء Authentication.
+- استخدام `@PreAuthorize` على service methods الحساسة (أو طبقة application service)، وليس الاعتماد على Controller فقط.
+- فصل صلاحية القراءة عن الكتابة والنشر والأرشفة.
+- تحقق إضافي من ownership/scope على الموارد.
+- أي endpoint غير مصنف يظل محميًا deny-by-default.
+
+### 4.3 سياسة مسارات الإدارة
+
+| المسار/العملية | المطلوب |
+|---|---|
+| `GET /admin/**` | ADMIN أو EDITOR + صلاحية القراءة المقابلة |
+| إنشاء/تعديل منتج | PRODUCT_WRITE |
+| نشر/إلغاء نشر منتج | PRODUCT_PUBLISH |
+| أرشفة/استعادة منتج | PRODUCT_ARCHIVE (ADMIN فقط) |
+| إنشاء/تعديل تصنيف | CATEGORY_WRITE |
+| تغيير السعر | PRICE_WRITE |
+| تغيير المخزون | INVENTORY_WRITE |
+| إدارة المستخدمين/الأدوار | USER_MANAGE (ADMIN فقط) |
+| قراءة Audit Log | ADMIN كامل؛ EDITOR ضمن نطاق عمله فقط |
+| إعدادات الموقع | SETTINGS_WRITE (ADMIN فقط) |
+
+مهم: المسارات المذكورة في OpenAPI لا تثبت وجود Controllers. في التنفيذ يجب عمل inventory فعلي لكل `/admin/**`، ومطابقة OpenAPI مع Controller + service + security test. أي route غير مدرج يجب أن يُمنع افتراضيًا حتى تصنيفه.
+
+## 5. BFF sessions وrefresh وrevocation
+
+### 5.1 التدفق المقترح
+
+1. المتصفح يرسل بيانات الدخول إلى Next.js route handler على نفس origin.
+2. Next.js server يتصل بـ Backend عبر server-to-server channel.
+3. Backend يتحقق من بيانات الدخول ويصدر access/refresh tokens إلى BFF فقط.
+4. BFF ينشئ session id عشوائي opaque، ويحفظ session وtokens في مخزن server-side.
+5. المتصفح يستلم Cookie للجلسة فقط: HttpOnly، Secure حسب البيئة، SameSite=Lax، Path=/، host-only.
+6. كل طلب للمتصفح إلى Next.js يرسل Cookie تلقائيًا؛ BFF يتحقق من session ثم يستدعي Backend.
+7. لا يعاد أي token للمتصفح أو client-side JavaScript.
+
+### 5.2 Refresh rotation
+
+- Access token قصير العمر؛ الإعداد الحالي في Backend access TTL = 15 دقيقة وrefresh TTL = 7 أيام، ويعاد تقييمهما أثناء التنفيذ.
+- BFF يراقب expiry ويستخدم refresh token server-side فقط.
+- تدوير refresh token عند الاستخدام، وتحديثه ذريًا في مخزن الجلسات.
+- اكتشاف reuse للـ refresh token القديم يؤدي إلى إبطال عائلة الجلسة/الجلسات المرتبطة حسب سياسة Backend.
+- لا refresh من المتصفح مباشرة إلى Backend.
+
+### 5.3 الإلغاء الفوري
+
+- Logout يبطل session id في BFF ويستدعي Backend revoke/logout لإبطال refresh token.
+- تعطيل مستخدم أو تغيير كلمة المرور/الدور يبطل الجلسات ذات الصلة.
+- دعم session version أو token family/revocation record؛ لا تعتمد على انتهاء access token وحده.
+- تحقق من revocation في كل طلب حساس، أو بمدة cache قصيرة مع invalidation واضحة.
+- اختبر أن جلسة مستخدم تم تعطيله أو سحب دوره لا تستمر في الوصول.
+
+## 6. CSRF وCORS وCookies
+
+### 6.1 CSRF
+
+لأن Cookie ترسل تلقائيًا:
+- استخدم CSRF token مرتبطًا بالجلسة (Synchronizer token أو signed double-submit) للطلبات mutating.
+- افحص `Origin` و`Referer` عند وجودهما مقابل allowlist.
+- لا تعتمد على SameSite وحده.
+- GET/HEAD/OPTIONS لا تغير حالة.
+- اختبر POST/PUT/PATCH/DELETE من origin غير موثوق وبدون CSRF token؛ يجب أن ترفض.
+- لا تضع CSRF token في HttpOnly cookie وحدها إذا كان العميل يحتاج قراءته؛ يمكن توفيره عبر endpoint أو meta/response آمن.
+
+### 6.2 CORS
+
+- المتصفح يتحدث مع Next.js على نفس origin؛ لذلك لا يحتاج إلى CORS بين المتصفح والـ Backend.
+- اتصال BFF بالـ Backend server-to-server لا يخضع لـ browser CORS.
+- لا تفعّل `allowCredentials=true` على Backend لمجرد استخدام cookies في BFF.
+- إذا ظهر احتياج cross-origin حقيقي، استخدم allowlist دقيقة، لا wildcard، وراجع preflight/credentials.
+- CORS لا يغني عن CSRF ولا المصادقة.
+
+### 6.3 Cookies حسب البيئة
+
+| الخاصية | Local HTTP | Cloud HTTPS |
+|---|---|---|
+| HttpOnly | true | true |
+| Secure | false | true |
+| SameSite | Lax | Lax افتراضيًا |
+| Domain | host-only | host-only مفضّل |
+| Path | / | / |
+| Max-Age | يساوي سياسة session | يساوي سياسة session |
+
+لا تستخدم `SameSite=None` إلا إذا كان هناك تدفق cross-site موثق، ومع Secure=true. لا تشارك cookie على subdomains دون حاجة.
+
+## 7. أول ADMIN والتسجيل العام
+
+- التسجيل العام يحدد role على الخادم `CUSTOMER` بغض النظر عن أي role يرسله العميل.
+- DTO العام لا يقبل role؛ أو يرفض unknown field حسب إعداد Jackson الحالي.
+- Bootstrap لأول ADMIN يتم بأمر one-time محمي أو أداة تشغيل محلية تقرأ secret من stdin/secret env.
+- لا seed لكلمة مرور ثابتة.
+- تخزين hash فقط، وتسجيل event إداري دون كلمة المرور.
+- `must_change_password=true` أو آلية مكافئة تفرض تغيير كلمة المرور عند أول login.
+- اجعل أمر bootstrap يرفض التنفيذ إذا كان ADMIN موجودًا، ويسجل audit event.
+- لا تطبع الأسرار في console/CI logs.
+
+## 8. Audit events المطلوبة مبدئيًا
+
+- Product created/updated/published/unpublished/archived/restored.
+- Category created/updated/archived.
+- Price changed (before/after مع العملة، بعد تنقية البيانات).
+- Inventory adjustment.
+- Role/permission changes.
+- Admin login/logout/session revoke.
+- Settings changes.
+- Upload metadata events عند وصول ADM-6.
+
+لا تسجل payloads كاملة إذا احتوت بيانات شخصية أو أسرار. استخدم allowlist للحقول القابلة للتدقيق.
+
+## 9. الاختبارات المطلوبة
+
+### 9.1 Authentication / Session
+
+- unauthenticated request إلى كل admin route يرجع 401.
+- invalid/expired token يرجع 401.
+- disabled user يرجع 401/403 وفق contract ثابت.
+- refresh rotation ينجح مرة واحدة، وإعادة استخدام refresh القديم تُرفض وتبطل العائلة.
+- logout يبطل الجلسة.
+- تغيير كلمة المرور/تعطيل المستخدم يبطل الجلسات.
+- Cookie لا تحتوي JWT ولا يمكن قراءتها عبر JavaScript؛ HttpOnly صحيح.
+- Secure=false محلي HTTP وtrue في HTTPS config.
+
+### 9.2 Authorization — اختبارات سلبية إلزامية
+
+- CUSTOMER لا يستطيع فتح أي `/admin/**`.
+- EDITOR لا يستطيع أرشفة/استعادة منتج.
+- EDITOR لا يستطيع إدارة مستخدم أو تغيير دور.
+- EDITOR لا يستطيع تعديل إعدادات الموقع.
+- EDITOR لا يستطيع قراءة audit log الكامل لمستخدمين آخرين.
+- OPERATIONS/WAREHOUSE/SUPPORT لا يحصلون تلقائيًا على صلاحيات ADMIN/EDITOR.
+- مستخدم authenticated بلا permission لا ينجح في endpoint محمي.
+- محاولة إرسال role=ADMIN في public registration لا تنشئ ADMIN.
+- route إداري جديد غير مصنف يُمنع افتراضيًا.
+- لا يمكن تجاوز الحماية باستدعاء service method مباشرةً من مسار آخر.
+
+### 9.3 Audit
+
+- العملية الإدارية الناجحة تنتج audit event واحدًا.
+- فشل العملية لا يسجل حدث نجاح زائف.
+- event يحتوي actor/action/entity/time/correlation id.
+- UPDATE/DELETE على audit table يفشلان.
+- لا توجد أسرار أو password/token داخل audit record.
+
+### 9.4 Database / Migration
+
+- clean database: V1..V8 تنفذ بنجاح.
+- upgrade database: V1..V7 ثم V8.
+- rerun Flyway لا يكرر أو يفسد.
+- EDITOR موجود بعد V8.
+- التسجيل العام ما زال CUSTOMER.
+- permissions mapping unique وreferential integrity.
+- DB permissions/trigger تمنع تعديل audit rows.
+
+## 10. ما الذي يعمل في Backend CI فعلًا؟ [GH]
+
+الملف الحالي: `.github/workflows/backend-ci.yml`.
+
+### Triggers
+
+- push إلى `BackendApp` عند تغييرات `backend/**` أو `docs/api/**` (باستثناء Markdown تحت docs/api) أو `redocly.yaml` أو ملف workflow نفسه.
+- pull_request إلى `BackendApp` بنفس path filters.
+- لا يوجد trigger عام على كل فروع التوثيق.
+
+### Jobs
+
+1. `verify-migrations`
+   - PostgreSQL 16 service.
+   - يتحقق من مصدر migrations والـ lock عبر `python backend/scripts/generate-migrations.py --check`.
+   - self-test لكشف العبث بالـ hash.
+   - يطبق كل migrations على PostgreSQL نظيف باستخدام Flyway 10.20.1.
+   - يتحقق من idempotency.
+   - يتحقق من عدد migrations والجداول والأعمدة وcitext invariants (القيم الحالية المتوقعة في workflow هي 7 migrations و32 جدولًا و251 عمودًا).
+2. `api-lint`
+   - Node 22.
+   - Redocly CLI 2.77.0 lint على `docs/api/openapi.yaml`.
+3. `backend`
+   - Java 21 Temurin + Maven cache.
+   - ينتظر نجاح verify-migrations.
+   - يشغل `./mvnw -B verify` داخل backend.
+   - يستخدم Docker/Testcontainers حسب الاختبارات.
+
+**مهم:** هذه هي خطوات CI المعرفة في workflow، وليست إثباتًا أن ADM-1 قد نُفذ أو أن اختبارات ADM-1 موجودة. يجب تحديث أعداد migrations/tables/columns في CI عند إضافة V8 وجداول جديدة.
+
+**فجوة تشغيلية:** workflow الحالي يستهدف `BackendApp` فقط. PR التوثيق الذي يستهدف BackendApp يطلق api-lint فقط إذا غيّر OpenAPI أو redocly config؛ ملفات Markdown وحدها لا تحقق شروط paths. لا تتوقع تشغيل backend job لمجرد إضافة docs markdown.
+
+## 11. تشغيل Backend وقاعدة البيانات محليًا
+
+### 11.1 المتطلبات
+
+- Java 21.
+- Docker Desktop يعمل.
+- Maven Wrapper موجود في `backend/mvnw`.
+- PostgreSQL 16 (باستخدام Docker محليًا).
+- PowerShell على Windows أو Bash على Linux/macOS.
+
+لا يوجد في جرد الملفات الحالي `docker-compose.yml` أو `compose.yaml` موثق؛ لذلك الأوامر التالية تستخدم `docker run` مباشرة.
+
+### 11.2 تشغيل PostgreSQL 16
+
+PowerShell:
+
+```powershell
+docker run --name classic-store-postgres -e POSTGRES_DB=classic_store -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16
+```
+
+إذا كان الحاوي موجودًا ومتوقفًا:
+
+```powershell
+docker start classic-store-postgres
+```
+
+التحقق:
+
+```powershell
+docker exec classic-store-postgres pg_isready -U postgres -d classic_store
+```
+
+> كلمة المرور أعلاه للاستخدام المحلي فقط كما في إعداد التطوير الحالي؛ لا تستخدمها في بيئة مشتركة أو سحابية.
+
+### 11.3 إعداد أسرار التطوير
+
+في PowerShell (نافذة الجلسة الحالية فقط):
+
+```powershell
+$env:JDBC_URL = "jdbc:postgresql://localhost:5432/classic_store"
+$env:JDBC_USER = "postgres"
+$env:JDBC_PASSWORD = "postgres"
+$env:JWT_SECRET_BASE64 = [Convert]::ToBase64String((1..48 | ForEach-Object { Get-Random -Maximum 256 }))
+$env:PASSWORD_RESET_FINGERPRINT_SECRET_BASE64 = [Convert]::ToBase64String((1..48 | ForEach-Object { Get-Random -Maximum 256 }))
+$env:CORS_ALLOWED_ORIGINS = "http://localhost:3000"
+```
+
+هذه مفاتيح تطوير مؤقتة فقط؛ لا تحفظها في Git. في PowerShell يفضل استخدام مولد تشفيري موثوق بدل Get-Random عند إعداد بيئة طويلة العمر؛ لا تستخدم هذا المثال لإنتاج مفاتيح Production.
+
+### 11.4 تشغيل migrations واختبارات Backend
+
+من جذر المستودع:
+
+```powershell
+cd backend
+.\mvnw.cmd -B verify
+```
+
+إذا كان ملف mvnw.cmd غير موجود في الفرع، استخدم wrapper المتاح على النظام أو `./mvnw -B verify` في Git Bash/WSL. تحقق من ملفات wrapper الفعلية قبل التنفيذ؛ backend CI يستخدم `./mvnw`.
+
+### 11.5 تشغيل التطبيق
+
+بعد ضبط متغيرات البيئة:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+Flyway مفعّل في `application.yml`، لذلك يطبق migrations عند بدء التشغيل. افحص health endpoint:
+
+```powershell
+Invoke-RestMethod http://localhost:8080/actuator/health
+```
+
+### 11.6 ملاحظات تشغيل مهمة
+
+- `backend/README.md` في اللقطة الحالية يبدو قديمًا؛ يذكر عدم وجود Flyway/DB driver رغم وجود migrations وFlyway config وPostgreSQL driver ضمن المشروع. يجب تحديث README في مهمة توثيق مستقلة أو ضمن DOC-01 إذا كان النطاق يسمح.
+- لا تنفذ هذه الأوامر على قاعدة بيانات حقيقية دون backup.
+- إذا فشل Docker/Testcontainers، تحقق من Docker Desktop وموارد daemon.
+- لا توجد أوامر مؤكدة حاليًا لتشغيل Next BFF مع Backend؛ توثق لاحقًا بعد بناء BFF في ADM-3.
+
+## 12. التسلسل وبوابات الموافقة
+
+1. إنهاء DOC-01 وفتح PR توثيق Draft.
+2. مراجعة PO للتوثيق والتأكد من القرارات.
+3. موافقة PO الصريحة على GitHub ثم دمج DOC-01 بواسطة PO/بعد الإذن.
+4. تقديم خطة ADM-1 النهائية بعد الدمج، مع أي تعديلات لازمة.
+5. لا يبدأ ADM-1 implementation إلا بموافقة مكتوبة صريحة على الخطة.
+6. لا merge لأي مرحلة لاحقة دون مراجعة PO الموثقة.
+
