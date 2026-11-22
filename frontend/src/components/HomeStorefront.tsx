@@ -15,11 +15,11 @@ type Props = {
   productsError: boolean;
 };
 
-function SectionHeading({ eyebrow, title, note }: { eyebrow: string; title: string; note?: string }) {
+function SectionHeading({ id, eyebrow, title, note }: { id: string; eyebrow: string; title: string; note?: string }) {
   return (
     <div className="home-section-heading">
       <p className="home-eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
+      <h2 id={id}>{title}</h2>
       {note && <p className="home-section-note">{note}</p>}
     </div>
   );
@@ -63,6 +63,11 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
     .slice(0, 8);
   const bestSellers = products.slice(0, 4);
   const newArrivals = products.slice(4, 8);
+  const services = [
+    { title: t('service1Title'), description: t('service1Description') },
+    { title: t('service2Title'), description: t('service2Description') },
+    { title: t('service3Title'), description: t('service3Description') }
+  ];
 
   return (
     <main className="home-shell">
@@ -81,7 +86,7 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
       </section>
 
       <section className="home-section" aria-labelledby="home-categories-title">
-        <SectionHeading eyebrow={t('categoriesEyebrow')} title={t('categoriesTitle')} />
+        <SectionHeading id="home-categories-title" eyebrow={t('categoriesEyebrow')} title={t('categoriesTitle')} />
         {categoriesError ? (
           <ErrorState locale={locale} title={t('categoriesErrorTitle')} messageAr={t('categoriesErrorMessage')} messageEn={t('categoriesErrorMessage')} />
         ) : rootCategories.length === 0 ? (
@@ -104,7 +109,7 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
       </section>
 
       <section className="home-section" aria-labelledby="home-best-sellers-title">
-        <SectionHeading eyebrow={t('bestSellersEyebrow')} title={t('bestSellersTitle')} note={t('bestSellersFallbackNote')} />
+        <SectionHeading id="home-best-sellers-title" eyebrow={t('bestSellersEyebrow')} title={t('bestSellersTitle')} note={t('bestSellersFallbackNote')} />
         {productsError ? (
           <ErrorState locale={locale} title={t('productsErrorTitle')} messageAr={t('productsErrorMessage')} messageEn={t('productsErrorMessage')} />
         ) : bestSellers.length === 0 ? (
@@ -129,7 +134,7 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
       </section>
 
       <section className="home-section" aria-labelledby="home-arrivals-title">
-        <SectionHeading eyebrow={t('newArrivalsEyebrow')} title={t('newArrivalsTitle')} />
+        <SectionHeading id="home-arrivals-title" eyebrow={t('newArrivalsEyebrow')} title={t('newArrivalsTitle')} />
         {productsError ? (
           <ErrorState locale={locale} title={t('productsErrorTitle')} messageAr={t('productsErrorMessage')} messageEn={t('productsErrorMessage')} />
         ) : newArrivals.length === 0 ? (
@@ -142,13 +147,13 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
       </section>
 
       <section className="home-services" aria-labelledby="home-services-title">
-        <SectionHeading eyebrow={t('servicesEyebrow')} title={t('servicesTitle')} />
+        <SectionHeading id="home-services-title" eyebrow={t('servicesEyebrow')} title={t('servicesTitle')} />
         <div className="home-service-grid">
-          {[1, 2, 3].map((number) => (
-            <article className="home-service-card" key={number}>
-              <span className="home-service-number" aria-hidden="true">{String(number).padStart(2, '0')}</span>
-              <h3>{t(`service${number}Title`)}</h3>
-              <p>{t(`service${number}Description`)}</p>
+          {services.map((service, index) => (
+            <article className="home-service-card" key={service.title}>
+              <span className="home-service-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              <h3>{service.title}</h3>
+              <p>{service.description}</p>
             </article>
           ))}
         </div>
