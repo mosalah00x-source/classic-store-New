@@ -76,7 +76,7 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 - يمكن أن يكون role enum حاليًا؛ لا تستبدله الآن بنظام roles ديناميكي دون سبب.
 - سجل أي تعديل على role-permission mapping في audit log.
 
-### 3.5 جداول الصلاحيات المقترح
+### 3.5 Audit table المقترح
 
 مثال مفاهيمي فقط — ليس migration جاهزًا:
 
@@ -97,6 +97,12 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 - أضف trigger يمنع UPDATE/DELETE حتى لا يستطيع مسار application عارض تغيير السجل.
 - الاختبارات تثبت أن INSERT ينجح وأن UPDATE/DELETE مرفوضان.
 - احتفظ بآلية retention/legal hold فقط بقرار منفصل؛ لا تضف حذفًا صامتًا.
+
+### 3.6 Migration V9 المقترحة للصلاحيات والتدقيق
+
+بعد نجاح V8 في بيئة نظيفة وبيئة ترقية، يمكن أن تتضمن V9 جداول permission mapping وجدول audit log append-only. لا تستخدم `EDITOR` في seed أو FK أو بيانات صلاحيات قبل أن تكون V8 قد اكتملت في إصدار سابق.
+
+V9 لا تُكتب قبل حسم شكل الجداول ومصدر schema immutable، ويجب أن تحافظ على hashes V1–V8 وتضيف migration جديدة فقط. أعداد الجداول والأعمدة المتوقعة في CI يعاد احتسابها من PostgreSQL بعد التصميم النهائي، ولا نخمنها هنا.
 
 ## 4. Permission model وmethod security
 
@@ -303,7 +309,7 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 
 **مهم:** هذه هي خطوات CI المعرفة في workflow، وليست إثباتًا أن ADM-1 قد نُفذ أو أن اختبارات ADM-1 موجودة. يجب تحديث أعداد migrations/tables/columns في CI عند إضافة V8 وجداول جديدة.
 
-**فجوة تشغيلية:** workflow الحالي يستهدف `BackendApp` فقط. PR التوثيق الذي يستهدف BackendApp يطلق api-lint فقط إذا غيّر OpenAPI أو redocly config؛ ملفات Markdown وحدها لا تحقق شروط paths. لا تتوقع تشغيل backend job لمجرد إضافة docs markdown.
+**فجوة تشغيلية:** workflow الحالي يستهدف `BackendApp` فقط. PR التوثيق الذي يستهدف BackendApp لا يشغّل backend-ci من أجل Markdown فقط؛ لأن path filters تستثني `docs/api/*.md` ولا تشمل `docs/project-reference/**`. إذا غيّر PR ملف OpenAPI أو `redocly.yaml` قد يعمل api-lint. لا تتوقع تشغيل backend job لمجرد إضافة docs Markdown. لا تتوقع تشغيل backend job لمجرد إضافة docs markdown.
 
 ## 11. تشغيل Backend وقاعدة البيانات محليًا
 
@@ -401,7 +407,7 @@ Invoke-RestMethod http://localhost:8080/actuator/health
 
 ### 11.6 ملاحظات تشغيل مهمة
 
-- `backend/README.md` في اللقطة الحالية يبدو قديمًا؛ يذكر عدم وجود Flyway/DB driver رغم وجود migrations وFlyway config وPostgreSQL driver ضمن المشروع. يجب تحديث README في مهمة توثيق مستقلة أو ضمن DOC-01 إذا كان النطاق يسمح.
+- `backend/README.md` يذكر عدم وجود persistence/Flyway/DB driver، لكن `backend/pom.xml` يحتوي فعليًا `spring-boot-starter-jdbc` و`flyway-core` و`flyway-database-postgresql` وPostgreSQL runtime driver، مع عدم وجود JPA dependency. لذلك وصف README الحالي غير متوافق مع pom والمigrations ويحتاج تحديثًا توثيقيًا منفصلًا.
 - لا تنفذ هذه الأوامر على قاعدة بيانات حقيقية دون backup.
 - إذا فشل Docker/Testcontainers، تحقق من Docker Desktop وموارد daemon.
 - لا توجد أوامر مؤكدة حاليًا لتشغيل Next BFF مع Backend؛ توثق لاحقًا بعد بناء BFF في ADM-3.
