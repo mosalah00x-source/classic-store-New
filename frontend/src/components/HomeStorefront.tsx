@@ -3,7 +3,7 @@ import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/direction';
 import type { CatalogCategory, ProductSummary } from '@/lib/catalog-types';
 import { formatPrice } from '@/lib/price-format';
-import { PRODUCT_IMAGE_PLACEHOLDER, onProductImageError } from '@/lib/product-image';
+import { PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 
@@ -41,7 +41,6 @@ function ProductCard({ product, locale, unavailableLabel, currency }: {
             src={imageUrl}
             alt={name}
             loading="lazy"
-            onError={(event) => onProductImageError(event, name)}
           />
         </div>
         <div className="home-product-copy">
