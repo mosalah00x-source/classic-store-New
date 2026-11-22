@@ -34,9 +34,9 @@ test('all Home UI messages exist in Arabic and English with matching keys', () =
 
 test('Home page and component contain no hard-coded Arabic UI text', () => {
   const files = ['app/[locale]/page.tsx', 'components/HomeStorefront.tsx'];
-  const arabicLiteral = /[\\u0600-\\u06FF]/u;
+  const arabicLiteral = new RegExp('[' + String.fromCharCode(0x0600) + '-' + String.fromCharCode(0x06ff) + ']', 'u');
   const violations = files.flatMap((file) => readFileSync(join(root, file), 'utf8')
-    .split(/\\r?\\n/)
+    .split(String.fromCharCode(10))
     .flatMap((line, index) => arabicLiteral.test(line) ? [`${file}:${index + 1}: ${line.trim()}`] : []));
   assert.deepEqual(violations, []);
 });
