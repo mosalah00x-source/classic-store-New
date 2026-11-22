@@ -133,5 +133,17 @@
     "errorTitle": "Unable to load product details",
     "errorMessage": "There was a problem loading product details. Please try again.",
     "retry": "Try again"
+  },
+  "BottomNav": {
+    "navigation": "Bottom navigation",
+    "collapse": "Collapse navigation",
+    "expand": "Expand navigation",
+    "home": "Home",
+    "products": "Products",
+    "product": "Product details",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "done": "Order confirmation",
+    "comingSoon": "Coming soon"
   }
 }

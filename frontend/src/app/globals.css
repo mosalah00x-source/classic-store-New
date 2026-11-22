@@ -409,3 +409,17 @@ footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--sp
   .home-primary-button,.home-category-card,.home-product-card { transition: none; }
   .home-primary-button:hover,.home-category-card:hover,.home-product-card:hover { transform: none; }
 }
+
+
+/* F2 decision update: persistent storefront bottom navigation */
+body { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+.storefront-bottom-nav { position: fixed; z-index: 40; inset-inline-start: 50%; bottom: env(safe-area-inset-bottom); display: flex; align-items: center; gap: 8px; width: min(960px, calc(100% - 32px)); max-width: calc(100vw - 24px); padding: 9px 12px; transform: translateX(-50%); border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface); color: var(--color-text); box-shadow: 0 8px 30px rgba(0,0,0,.14); direction: inherit; }
+.storefront-bottom-nav-toggle { flex: 0 0 36px; width: 36px; height: 36px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-surface-muted); color: var(--color-text); font: inherit; font-size: 20px; line-height: 1; cursor: pointer; }
+.storefront-bottom-nav-list { display: flex; flex: 1 1 auto; align-items: center; justify-content: space-around; gap: 8px; min-width: 0; margin: 0; padding: 0; overflow-x: auto; list-style: none; scrollbar-width: thin; }
+.storefront-bottom-nav-list[hidden] { display: none; }
+.storefront-bottom-nav-item { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 7px 10px; border-radius: 9px; color: var(--color-text); font-size: .88rem; font-weight: 650; text-decoration: none; white-space: nowrap; }
+.storefront-bottom-nav-item[aria-current="page"] { background: var(--color-primary-soft); color: var(--color-primary); }
+.storefront-bottom-nav-item.is-disabled { color: var(--color-text-muted); opacity: .58; cursor: not-allowed; }
+.storefront-bottom-nav-item small { font-size: .68rem; font-weight: 500; }
+.storefront-bottom-nav a:focus-visible, .storefront-bottom-nav button:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 2px; }
+@media (max-width: 520px) { .storefront-bottom-nav { width: calc(100% - 16px); gap: 5px; padding: 7px; border-radius: 13px; } .storefront-bottom-nav-list { justify-content: flex-start; gap: 4px; } .storefront-bottom-nav-item { gap: 4px; padding: 7px 8px; font-size: .76rem; } .storefront-bottom-nav-item small { font-size: .62rem; } }
