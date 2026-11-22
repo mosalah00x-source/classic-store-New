@@ -1,26 +1,48 @@
+import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { LoadingState } from '@/components/LoadingState';
-import { EmptyState } from '@/components/EmptyState';
-import { ErrorState } from '@/components/ErrorState';
-import { SuccessState } from '@/components/SuccessState';
+import { HomeStorefront } from '@/components/HomeStorefront';
 import type { Locale } from '@/i18n/direction';
+import { getCategories, getProducts } from '@/lib/catalog-api';
 
-export default async function HomePage({ params }: { params: Promise<{ locale: Locale }> }) {
+type PageProps = { params: Promise<{ locale: Locale }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+  return { title: t('metadataTitle'), description: t('metadataDescription') };
+}
+
+async function HomeContent({ locale }: { locale: Locale }) {
+  const [categoriesResult, productsResult] = await Promise.allSettled([
+    getCategories(),
+    getProducts({ sort: 'newest', page: 0, size: 8 })
+  ]);
+
+  return (
+    <HomeStorefront
+      locale={locale}
+      categories={categoriesResult.status === 'fulfilled' ? categoriesResult.value : []}
+      products={productsResult.status === 'fulfilled' ? productsResult.value.content : []}
+      categoriesError={categoriesResult.status === 'rejected'}
+      productsError={productsResult.status === 'rejected'}
+    />
+  );
+}
+
+export default async function HomePage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('HomePage');
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+
   return (
-    <main className="page-shell">
-      <section className="hero">
-        <p className="eyebrow">CLASSIC STORE · FOUNDATION</p>
-        <h1>{t('title')}</h1><p className="hero-copy">{t('subtitle')}</p>
-      </section>
-      <section className="states-grid" aria-label="Shared UI states">
+    <Suspense fallback={
+      <main className="home-shell">
         <LoadingState title={t('loadingTitle')} message={t('loadingMessage')} />
-        <EmptyState title={t('emptyTitle')} message={t('emptyMessage')} />
-        <ErrorState locale={locale} title={t('errorTitle')} messageAr="حدث خطأ أثناء تحميل المحتوى." messageEn="Something went wrong while loading the content." />
-        <SuccessState title={t('successTitle')} message={t('successMessage')} />
-      </section>
-    </main>
+      </main>
+    }>
+      <HomeContent locale={locale} />
+    </Suspense>
   );
 }
