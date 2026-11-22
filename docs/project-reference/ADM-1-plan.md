@@ -44,7 +44,13 @@
 - المشروع يحتوي `backend/scripts/generate-migrations.py` و`backend/db-source.lock` للتحقق من مصدر قاعدة البيانات وتوليد/تثبيت migrations.
 - CI يتحقق من generated migrations والـ lock، ثم يطبق migrations على PostgreSQL 16 باستخدام Flyway 10.20.1، ويتحقق من idempotency وبعض invariants.
 
-### 3.2 المقترح
+### 3.2 قيد مهم في آلية توليد migrations الحالية
+
+الـ generator الحالي مثبت على source commit غير متغير (`0c6e9f1...`) وملف SQL إصدار V1–V7، كما أن قائمة الملفات وعدد transaction blocks وعدد migrations كلها ثابتة عند 7. لذلك لا يمكن إضافة V8 إلى مجلد migrations فقط: سيُرفض ذلك بواسطة `generate-migrations.py --check` لأنه يتوقع بالضبط سبعة ملفات. كذلك لا يجوز تعديل V1–V7 أو تغيير hashes القائمة.
+
+قبل V8 يجب اعتماد تحديث versioned لمصدر schema/generator: إضافة مصدر SQL immutable جديد يتضمن V1–V8 (أو إضافة V8 source fragment immutable منفصل)، ثم تحديث generator ليقرأ المصدر الجديد، ويحافظ على byte-for-byte hashes للـ V1–V7، ويولد V8 وحدها. يتم تحديث `backend/db-source.lock` بناءً على ذلك. هذه خطوة tooling داخل ADM-1 وتحتاج مراجعة مستقلة للـ diff.
+
+### 3.3 Migration V8 المقترحة
 
 `V8__add_editor_role.sql` لإضافة قيمة enum فقط:
 
@@ -61,7 +67,7 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 - أضف اختبارًا يثبت وجود EDITOR بعد migrate.
 - لا تغير default التسجيل العام من CUSTOMER.
 
-### 3.3 جداول الصلاحيات المقترحة
+### 3.4 جداول الصلاحيات المقترحة
 
 التصميم المفضل (يُراجع مع مصدر schema قبل التنفيذ):
 - `store.permissions`: permission_code unique، description.
@@ -70,7 +76,7 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 - يمكن أن يكون role enum حاليًا؛ لا تستبدله الآن بنظام roles ديناميكي دون سبب.
 - سجل أي تعديل على role-permission mapping في audit log.
 
-### 3.4 Audit table المقترح
+### 3.5 جداول الصلاحيات المقترح
 
 مثال مفاهيمي فقط — ليس migration جاهزًا:
 
@@ -106,7 +112,7 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 | PRICE_WRITE | نعم | نعم |
 | INVENTORY_WRITE | نعم | نعم |
 | USER_MANAGE | نعم | لا |
-| AUDIT_READ | كامل | نطاق إجراءات المحرر/ما يخصه فقط |
+| AUDIT_READ | كامل | لا |
 | SETTINGS_WRITE | نعم | لا |
 
 الـ UI ليس حدًا أمنيًا. كل endpoint/service method يفرض الصلاحية من Backend.
@@ -133,7 +139,7 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 | تغيير السعر | PRICE_WRITE |
 | تغيير المخزون | INVENTORY_WRITE |
 | إدارة المستخدمين/الأدوار | USER_MANAGE (ADMIN فقط) |
-| قراءة Audit Log | ADMIN كامل؛ EDITOR ضمن نطاق عمله فقط |
+| قراءة Audit Log | ADMIN فقط؛ EDITOR لا يملك صلاحية القراءة |
 | إعدادات الموقع | SETTINGS_WRITE (ADMIN فقط) |
 
 مهم: المسارات المذكورة في OpenAPI لا تثبت وجود Controllers. في التنفيذ يجب عمل inventory فعلي لكل `/admin/**`، ومطابقة OpenAPI مع Controller + service + security test. أي route غير مدرج يجب أن يُمنع افتراضيًا حتى تصنيفه.
@@ -242,7 +248,7 @@ ALTER TYPE store.user_role ADD VALUE IF NOT EXISTS 'EDITOR';
 - EDITOR لا يستطيع أرشفة/استعادة منتج.
 - EDITOR لا يستطيع إدارة مستخدم أو تغيير دور.
 - EDITOR لا يستطيع تعديل إعدادات الموقع.
-- EDITOR لا يستطيع قراءة audit log الكامل لمستخدمين آخرين.
+- EDITOR لا يستطيع قراءة Audit Log إطلاقًا؛ `AUDIT_READ` للـ ADMIN فقط.
 - OPERATIONS/WAREHOUSE/SUPPORT لا يحصلون تلقائيًا على صلاحيات ADMIN/EDITOR.
 - مستخدم authenticated بلا permission لا ينجح في endpoint محمي.
 - محاولة إرسال role=ADMIN في public registration لا تنشئ ADMIN.
