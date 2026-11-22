@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { FormEvent } from 'react';
 import Image from 'next/image';
 import { useRouter, Link } from '@/i18n/navigation';
@@ -9,6 +9,7 @@ import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } fro
 import { hasMoreCatalogPages, mergeProductItems } from '@/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
 import { formatPrice } from '@/lib/price-format';
+import { CATALOG_CART_ENABLED, CATALOG_PROMOTION_BADGES_ENABLED, getFavoriteIdsSnapshot, getServerFavoriteIdsSnapshot, subscribeFavoriteIds, toggleFavoriteId, updateFavoriteIds } from '@/lib/catalog-favorites';
 
 type Props = { initialPage: ProductPage; categories: CatalogCategory[]; initialFilters: CatalogFilters };
 
@@ -44,6 +45,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const favoriteIds = useSyncExternalStore(subscribeFavoriteIds, getFavoriteIdsSnapshot, getServerFavoriteIdsSnapshot);
   const drawerRef = useRef<HTMLElement>(null);
   const tree = useMemo(() => categoryTree(categories), [categories]);
   const flatCategories = useMemo(() => flattenCategories(tree), [tree]);
@@ -121,6 +123,10 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
     }
   }
 
+  function toggleFavorite(productId: string) {
+    updateFavoriteIds(toggleFavoriteId(favoriteIds, productId));
+  }
+
   function removeFilter(key: keyof CatalogFilters) {
     const next = { ...filters, [key]: undefined, page: 0 };
     if (key === 'q') setQuery('');
@@ -160,7 +166,7 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
         </div></div>
         {error && <p className="catalog-error" role="alert">{error} <button type="button" onClick={() => { setError(''); router.refresh(); }}>{t('retry')}</button></p>}
         {items.length === 0 ? <div className="catalog-state"><h2>{t('emptyTitle')}</h2><p>{t('emptyMessage')}</p></div> :
-          <div className="catalog-grid">{items.map((product, index) => <ProductCard key={product.id} product={product} eager={index < 9} />)}</div>}
+          <div className="catalog-grid">{items.map((product, index) => <ProductCard key={product.id} product={product} eager={index < 9} isFavorite={favoriteIds.includes(product.id)} onToggleFavorite={() => toggleFavorite(product.id)} />)}</div>}
         {loading && <div className="catalog-grid catalog-skeleton-grid" aria-label={t('loading')} aria-busy="true">{Array.from({ length: 4 }, (_, index) => <div className="catalog-skeleton" key={index}><span /><span /><span /></div>)}</div>}
         {hasMore && <button className="catalog-load-more" type="button" disabled={loading} onClick={loadMore}>{loading ? t('loading') : t('loadMore')}</button>}
       </section>
@@ -175,14 +181,25 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
   </main>;
 }
 
-function ProductCard({ product, eager }: { product: ProductSummary; eager: boolean }) {
+function ProductCard({ product, eager, isFavorite, onToggleFavorite }: { product: ProductSummary; eager: boolean; isFavorite: boolean; onToggleFavorite: () => void }) {
   const t = useTranslations('Catalog');
   const locale = useLocale();
   const productName = locale === 'ar' ? product.nameAr : product.nameEn || product.nameAr;
   return <article className="catalog-card">
-    <Link className="catalog-card-link" href={`/products/${encodeURIComponent(product.slug)}`} aria-label={productName}>
-      <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || productName} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || productName)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
-      <div className="catalog-card-copy"><h2>{productName}</h2>{product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}<p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: formatPrice(product.priceFrom) })}</p></div>
-    </Link>
+    <div className="catalog-card-media">
+      <Link className="catalog-card-link" href={`/products/${encodeURIComponent(product.slug)}`} aria-label={productName}>
+        <div className="catalog-card-image"><Image src={product.primaryImage?.imageUrl ?? PRODUCT_IMAGE_PLACEHOLDER} alt={product.primaryImage?.altAr || productName} fill unoptimized loading={eager ? 'eager' : 'lazy'} onError={(event) => onProductImageError(event, product.primaryImage?.altAr || productName)} sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, (max-width: 1600px) 20vw, 11vw" /></div>
+      </Link>
+      <button className="catalog-favorite-button" type="button" aria-pressed={isFavorite} aria-label={isFavorite ? t('removeFromFavorites') : t('addToFavorites')} onClick={onToggleFavorite}>{isFavorite ? '♥' : '♡'}</button>
+    </div>
+    <div className="catalog-card-copy">
+      <Link className="catalog-card-title-link" href={`/products/${encodeURIComponent(product.slug)}`}><h2>{productName}</h2></Link>
+      {product.brand?.name ? <p className="catalog-brand">{product.brand.name}</p> : null}
+      <p className="catalog-price">{product.priceFrom === null ? t('unavailable') : t('priceFrom', { price: formatPrice(product.priceFrom) })}</p>
+    </div>
+    <div className="catalog-card-actions">
+      <button className="catalog-add-cart-button" type="button" disabled={!CATALOG_CART_ENABLED} aria-label={t('cartComingSoon')}>{t('cartComingSoon')}</button>
+    </div>
+    {CATALOG_PROMOTION_BADGES_ENABLED ? <span className="visually-hidden">{t('promotionBadgesUnavailable')}</span> : null}
   </article>;
 }

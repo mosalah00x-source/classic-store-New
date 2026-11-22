@@ -80,7 +80,11 @@
     "close": "إغلاق",
     "metaDescription": "اكتشف منتجاتنا واختر ما يناسبك",
     "breadcrumbLabel": "مسار التنقل",
-    "home": "الرئيسية"
+    "home": "الرئيسية",
+    "addToFavorites": "إضافة إلى المفضلة",
+    "removeFromFavorites": "إزالة من المفضلة",
+    "cartComingSoon": "قريباً",
+    "promotionBadgesUnavailable": "لا توجد شارات عروض في هذه البطاقة"
   },
   "ProductTheme": {
     "switchToDark": "تفعيل الوضع الداكن",
