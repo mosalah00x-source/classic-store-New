@@ -6,6 +6,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { LoadingState } from '../src/components/LoadingState';
 import { EmptyState } from '../src/components/EmptyState';
 import { ErrorState } from '../src/components/ErrorState';
+import { getHomeCategoryName, getHomeProductName } from '../src/lib/home-content';
+import type { CatalogCategory, ProductSummary } from '../src/lib/catalog-types';
 
 type HomeMessages = Record<string, string>;
 
@@ -20,7 +22,8 @@ const requiredKeys = [
   'productsEmptyMessage', 'priceUnavailable', 'promoEyebrow', 'promoTitle', 'promoDescription',
   'promoCta', 'newArrivalsEyebrow', 'newArrivalsTitle', 'arrivalsEmptyTitle', 'arrivalsEmptyMessage',
   'servicesEyebrow', 'servicesTitle', 'service1Title', 'service1Description', 'service2Title',
-  'service2Description', 'service3Title', 'service3Description', 'currency', 'loadingTitle', 'loadingMessage'
+  'service2Description', 'service3Title', 'service3Description', 'currency', 'loadingTitle', 'loadingMessage',
+  'categoryNameUnavailable', 'productNameUnavailable'
 ];
 
 test('all Home UI messages exist in Arabic and English with matching keys', () => {
@@ -57,4 +60,18 @@ test('Home loading, empty and error state components render their accessible sta
   assert.match(empty, /No products available yet/);
   assert.match(error, /role="alert"/);
   assert.match(error, /There was a problem loading products/);
+});
+
+
+test('English Home uses English fallbacks when API names have no English value', () => {
+  const category: CatalogCategory = { id: 'cat-1', parentId: null, nameAr: 'اسم عربي', nameEn: null, slug: 'category', sortOrder: 1 };
+  const product: ProductSummary = { id: 'product-1', slug: 'product', nameAr: 'اسم عربي', nameEn: null, priceFrom: null, currency: 'EGP', primaryImage: null, brand: null, categories: [category] };
+  const categoryName = getHomeCategoryName(category, 'en', en.HomePage.categoryNameUnavailable);
+  const productName = getHomeProductName(product, 'en', en.HomePage.productNameUnavailable);
+  assert.equal(categoryName, 'Category name unavailable in English');
+  assert.equal(productName, 'Product name unavailable in English');
+  assert.doesNotMatch(categoryName, /[\\u0600-\\u06FF]/u);
+  assert.doesNotMatch(productName, /[\\u0600-\\u06FF]/u);
+  assert.equal(getHomeCategoryName(category, 'ar', ar.HomePage.categoryNameUnavailable), 'اسم عربي');
+  assert.equal(getHomeProductName(product, 'ar', ar.HomePage.productNameUnavailable), 'اسم عربي');
 });

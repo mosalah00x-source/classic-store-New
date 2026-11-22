@@ -3,7 +3,9 @@ import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/direction';
 import type { CatalogCategory, ProductSummary } from '@/lib/catalog-types';
 import { formatPrice } from '@/lib/price-format';
+import Image from 'next/image';
 import { PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
+import { getHomeCategoryName, getHomeProductName } from '@/lib/home-content';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 
@@ -25,23 +27,20 @@ function SectionHeading({ id, eyebrow, title, note }: { id: string; eyebrow: str
   );
 }
 
-function ProductCard({ product, locale, unavailableLabel, currency }: {
+function ProductCard({ product, locale, unavailableLabel, currency, nameUnavailable }: {
   product: ProductSummary;
   locale: Locale;
   unavailableLabel: string;
   currency: string;
+  nameUnavailable: string;
 }) {
-  const name = locale === 'ar' ? product.nameAr : product.nameEn || product.nameAr;
+  const name = getHomeProductName(product, locale, nameUnavailable);
   const imageUrl = product.primaryImage?.imageUrl || PRODUCT_IMAGE_PLACEHOLDER;
   return (
     <article className="home-product-card">
-      <Link className="home-product-link" href={`/products/${product.slug}`}>
+      <Link className="home-product-link" href={`/products/${encodeURIComponent(product.slug)}`}>
         <div className="home-product-image">
-          <img
-            src={imageUrl}
-            alt={name}
-            loading="lazy"
-          />
+          <Image src={imageUrl} alt={name} width={600} height={600} unoptimized loading="lazy" />
         </div>
         <div className="home-product-copy">
           <h3>{name}</h3>
@@ -93,11 +92,11 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
         ) : (
           <div className="home-category-grid">
             {rootCategories.map((category) => {
-              const name = locale === 'ar' ? category.nameAr : category.nameEn || category.nameAr;
+              const name = getHomeCategoryName(category, locale, t('categoryNameUnavailable'));
               return (
                 <Link className="home-category-card" href={`/products?categoryId=${encodeURIComponent(category.id)}`} key={category.id}>
                   <span className="home-category-placeholder" aria-hidden="true">
-                    <img src={PRODUCT_IMAGE_PLACEHOLDER} alt="" loading="lazy" />
+                    <Image src={PRODUCT_IMAGE_PLACEHOLDER} alt="" width={300} height={300} unoptimized loading="lazy" />
                   </span>
                   <span className="home-category-name">{name}</span>
                 </Link>
@@ -115,7 +114,7 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
           <EmptyState title={t('productsEmptyTitle')} message={t('productsEmptyMessage')} />
         ) : (
           <div className="home-product-grid">
-            {bestSellers.map((product) => <ProductCard key={product.id} product={product} locale={locale} unavailableLabel={t('priceUnavailable')} currency={t('currency')} />)}
+            {bestSellers.map((product) => <ProductCard key={product.id} product={product} locale={locale} unavailableLabel={t('priceUnavailable')} currency={t('currency')} nameUnavailable={t('productNameUnavailable')} />)}
           </div>
         )}
       </section>
@@ -140,7 +139,7 @@ export async function HomeStorefront({ locale, categories, products, categoriesE
           <EmptyState title={t('arrivalsEmptyTitle')} message={t('arrivalsEmptyMessage')} />
         ) : (
           <div className="home-product-grid">
-            {newArrivals.map((product) => <ProductCard key={product.id} product={product} locale={locale} unavailableLabel={t('priceUnavailable')} currency={t('currency')} />)}
+            {newArrivals.map((product) => <ProductCard key={product.id} product={product} locale={locale} unavailableLabel={t('priceUnavailable')} currency={t('currency')} nameUnavailable={t('productNameUnavailable')} />)}
           </div>
         )}
       </section>

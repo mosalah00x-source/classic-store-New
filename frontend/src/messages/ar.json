@@ -46,7 +46,9 @@
     "categoriesErrorTitle": "تعذر تحميل التصنيفات",
     "categoriesErrorMessage": "حدثت مشكلة أثناء تحميل التصنيفات. حاول مرة أخرى لاحقًا.",
     "categoriesEmptyTitle": "لا توجد تصنيفات متاحة",
-    "categoriesEmptyMessage": "ستظهر التصنيفات هنا عند توفرها."
+    "categoriesEmptyMessage": "ستظهر التصنيفات هنا عند توفرها.",
+    "categoryNameUnavailable": "اسم الفئة غير متاح باللغة الإنجليزية",
+    "productNameUnavailable": "اسم المنتج غير متاح باللغة الإنجليزية"
   },
   "Catalog": {
     "title": "جميع المنتجات",

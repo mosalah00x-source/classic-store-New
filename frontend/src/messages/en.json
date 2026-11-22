@@ -46,7 +46,9 @@
     "categoriesErrorTitle": "Unable to load categories",
     "categoriesErrorMessage": "There was a problem loading categories. Please try again later.",
     "categoriesEmptyTitle": "No categories available",
-    "categoriesEmptyMessage": "Categories will appear here when available."
+    "categoriesEmptyMessage": "Categories will appear here when available.",
+    "categoryNameUnavailable": "Category name unavailable in English",
+    "productNameUnavailable": "Product name unavailable in English"
   },
   "ProductTheme": {
     "switchToDark": "Switch to dark mode",
