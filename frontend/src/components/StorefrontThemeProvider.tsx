@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useMemo, useSyncExternalStore, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useSyncExternalStore, type ReactNode } from 'react';
 import { readThemePreference, writeThemePreference, type ThemePreference } from '@/lib/theme-preference';
 
 type ThemeContextValue = { theme: ThemePreference; toggleTheme: () => void };
@@ -38,6 +38,10 @@ function getServerThemeSnapshot(): ThemePreference {
 
 export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
   const theme = useSyncExternalStore(subscribeToThemeChanges, getThemeSnapshot, getServerThemeSnapshot);
+
+  useLayoutEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   const toggleTheme = useCallback(() => {
     const next: ThemePreference = theme === 'light' ? 'dark' : 'light';
