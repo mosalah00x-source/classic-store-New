@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 
 const STORAGE_KEY = 'classic-store:bottom-nav:v1';
+const CHANGE_EVENT = 'classic-store:bottom-nav-change';
 type NavigationItem = { id: 'home' | 'products' | 'product' | 'cart' | 'checkout' | 'done'; href?: '/' | '/products'; enabled: boolean };
 const items: NavigationItem[] = [
   { id: 'home', href: '/', enabled: true },
@@ -14,31 +15,39 @@ const items: NavigationItem[] = [
   { id: 'done', enabled: false }
 ];
 
+function subscribeToExpandedState(onStoreChange: () => void) {
+  window.addEventListener('storage', onStoreChange);
+  window.addEventListener(CHANGE_EVENT, onStoreChange);
+  return () => {
+    window.removeEventListener('storage', onStoreChange);
+    window.removeEventListener(CHANGE_EVENT, onStoreChange);
+  };
+}
+
+function getExpandedSnapshot() {
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) !== 'collapsed';
+  } catch {
+    return true;
+  }
+}
+
+function getServerExpandedSnapshot() {
+  return true;
+}
+
 export function StorefrontBottomNav() {
   const t = useTranslations('BottomNav');
   const pathname = usePathname();
-  const [expanded, setExpanded] = useState(true);
-
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (stored === 'collapsed') setExpanded(false);
-      if (stored !== 'collapsed' && stored !== 'expanded' && stored !== null) window.localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      setExpanded(true);
-    }
-  }, []);
+  const expanded = useSyncExternalStore(subscribeToExpandedState, getExpandedSnapshot, getServerExpandedSnapshot);
 
   function toggleExpanded() {
-    setExpanded((current) => {
-      const next = !current;
-      try {
-        window.localStorage.setItem(STORAGE_KEY, next ? 'expanded' : 'collapsed');
-      } catch {
-        // Keep the preference in memory for this page view when storage is unavailable.
-      }
-      return next;
-    });
+    try {
+      window.localStorage.setItem(STORAGE_KEY, expanded ? 'collapsed' : 'expanded');
+    } catch {
+      // Keep the current page usable when storage is unavailable.
+    }
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   }
 
   return (
