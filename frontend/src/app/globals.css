@@ -431,6 +431,7 @@ footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--sp
   .catalog-favorite-button { inset-block-start: 7px; inset-inline-end: 7px; width: 34px; height: 34px; }
   .catalog-card-copy h2 { min-height: 40px; font-size: 13px; line-height: 20px; }
   .catalog-price { font-size: 14px; }
+}
 
 /* Storefront bottom navigation — ported from docs/ui-reference/css/pages.css (.dn) */
 body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
