@@ -54,7 +54,7 @@ export function StorefrontBottomNav() {
   }
 
   return (
-    <nav className="storefront-bottom-nav" aria-label={t('navigation')}>
+    <nav className={`storefront-bottom-nav ${expanded ? "is-expanded" : "is-collapsed"}`} aria-label={t('navigation')}>
       <button className="storefront-bottom-nav-toggle" type="button" aria-expanded={expanded}
         aria-label={expanded ? t('collapse') : t('expand')} onClick={toggleExpanded}>
         <span aria-hidden="true">{expanded ? '⌄' : '⌃'}</span>
