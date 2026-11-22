@@ -19,14 +19,14 @@ test('only home and products are active navigation links', () => {
   assert.ok(component.includes("{ id: 'products', href: '/products', enabled: true }"));
   assert.equal(component.split('enabled: false').length - 1, 4);
   assert.ok(component.includes('aria-disabled="true"'));
-  assert.ok(component.includes('tabIndex={-1}'));
+  assert.ok(component.includes('className="storefront-bottom-nav-item is-disabled"'));
   assert.ok(component.includes("t('comingSoon')"));
 });
 
 test('navigation has accessible current-page state and collapsible control', () => {
   assert.ok(component.includes("aria-current={active ? 'page' : undefined}"));
   assert.ok(component.includes('aria-expanded={expanded}'));
-  assert.ok(component.includes('hidden={!expanded}'));
+  assert.ok(component.includes("expanded ? '' : ' min'"));
   assert.ok(component.includes("aria-label={expanded ? t('collapse') : t('expand')}"));
 });
 
