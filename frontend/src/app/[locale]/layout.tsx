@@ -9,6 +9,7 @@ import { getCategories } from '@/lib/catalog-api';
 import { StorefrontThemeProvider } from '@/components/StorefrontThemeProvider';
 import { StorefrontHeader } from '@/components/StorefrontHeader';
 import { StorefrontFooter } from '@/components/StorefrontFooter';
+import { StorefrontBottomNav } from '@/components/StorefrontBottomNav';
 import '../globals.css';
 
 const cairo = Cairo({ subsets: ['arabic', 'latin'], variable: '--font-arabic', display: 'swap' });
@@ -34,6 +35,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
             <StorefrontHeader categories={categories} />
             {children}
             <StorefrontFooter />
+            <StorefrontBottomNav />
           </StorefrontThemeProvider>
         </NextIntlClientProvider>
       </body>
