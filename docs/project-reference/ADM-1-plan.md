@@ -335,36 +335,56 @@ docker exec classic-store-postgres pg_isready -U postgres -d classic_store
 
 ### 11.3 إعداد أسرار التطوير
 
-في PowerShell (نافذة الجلسة الحالية فقط):
+في PowerShell (نافذة الجلسة الحالية فقط)، ولتوليد مفاتيح عشوائية تشفيرياً:
 
 ```powershell
 $env:JDBC_URL = "jdbc:postgresql://localhost:5432/classic_store"
 $env:JDBC_USER = "postgres"
 $env:JDBC_PASSWORD = "postgres"
-$env:JWT_SECRET_BASE64 = [Convert]::ToBase64String((1..48 | ForEach-Object { Get-Random -Maximum 256 }))
-$env:PASSWORD_RESET_FINGERPRINT_SECRET_BASE64 = [Convert]::ToBase64String((1..48 | ForEach-Object { Get-Random -Maximum 256 }))
+
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$bytes = New-Object byte[] 48
+$rng.GetBytes($bytes)
+$env:JWT_SECRET_BASE64 = [Convert]::ToBase64String($bytes)
+$rng.GetBytes($bytes)
+$env:PASSWORD_RESET_FINGERPRINT_SECRET_BASE64 = [Convert]::ToBase64String($bytes)
+$rng.Dispose()
+
 $env:CORS_ALLOWED_ORIGINS = "http://localhost:3000"
 ```
 
-هذه مفاتيح تطوير مؤقتة فقط؛ لا تحفظها في Git. في PowerShell يفضل استخدام مولد تشفيري موثوق بدل Get-Random عند إعداد بيئة طويلة العمر؛ لا تستخدم هذا المثال لإنتاج مفاتيح Production.
+هذه مفاتيح تطوير محلية مؤقتة؛ لا تحفظها في Git ولا تشاركها. استخدم Secret Manager أو آلية secrets الخاصة ببيئة التشغيل للإنتاج.
 
 ### 11.4 تشغيل migrations واختبارات Backend
 
-من جذر المستودع:
+من جذر المستودع في Windows PowerShell، استخدم Git Bash إذا كان متاحًا:
 
 ```powershell
 cd backend
-.\mvnw.cmd -B verify
+bash ./mvnw -B verify
 ```
 
-إذا كان ملف mvnw.cmd غير موجود في الفرع، استخدم wrapper المتاح على النظام أو `./mvnw -B verify` في Git Bash/WSL. تحقق من ملفات wrapper الفعلية قبل التنفيذ؛ backend CI يستخدم `./mvnw`.
+أو من داخل Git Bash/WSL:
+
+```bash
+cd backend
+./mvnw -B verify
+```
+
+اللقطة الحالية تحتوي `backend/mvnw` ولا يظهر فيها `mvnw.cmd`؛ لذلك لا تستخدم `./mvnw.cmd` ما لم تتم إضافته لاحقًا. backend CI يستخدم `./mvnw -B verify`.
 
 ### 11.5 تشغيل التطبيق
 
-بعد ضبط متغيرات البيئة:
+بعد ضبط متغيرات البيئة، من PowerShell مع Git Bash:
 
 ```powershell
-.\mvnw.cmd spring-boot:run
+bash ./mvnw spring-boot:run
+```
+
+أو من Git Bash/WSL:
+
+```bash
+./mvnw spring-boot:run
 ```
 
 Flyway مفعّل في `application.yml`، لذلك يطبق migrations عند بدء التشغيل. افحص health endpoint:
