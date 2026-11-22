@@ -409,3 +409,25 @@ footer { color: var(--color-text-muted); padding-block: var(--space-12) var(--sp
   .home-primary-button,.home-category-card,.home-product-card { transition: none; }
   .home-primary-button:hover,.home-category-card:hover,.home-product-card:hover { transform: none; }
 }
+
+
+/* F4 product card actions */
+.catalog-card { display: flex; flex-direction: column; min-width: 0; }
+.catalog-card-media { position: relative; min-width: 0; }
+.catalog-card-image { width: 100%; aspect-ratio: 183 / 273; }
+.catalog-card-image img { object-fit: cover; }
+.catalog-card-copy { min-width: 0; }
+.catalog-card-title-link { color: var(--text); text-decoration: none; }
+.catalog-card-copy h2 { display: -webkit-box; min-height: 44px; overflow: hidden; margin: 10px 4px 0; color: var(--text); font-size: 14px; font-weight: 400; line-height: 22px; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.catalog-price { margin: 12px 4px 10px; color: var(--text); font-size: 16px; font-weight: 800; }
+.catalog-favorite-button { position: absolute; inset-block-start: 10px; inset-inline-end: 10px; display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--bd); border-radius: 50%; background: var(--surf); color: var(--org); font-size: 22px; line-height: 1; cursor: pointer; }
+.catalog-favorite-button[aria-pressed="true"] { color: var(--org); }
+.catalog-card-actions { display: flex; padding-inline: 4px; margin-top: auto; }
+.catalog-add-cart-button { width: 100%; min-height: 38px; border: 1px solid var(--bd); border-radius: 9px; background: var(--bg); color: var(--muted); font: inherit; font-size: 12px; font-weight: 750; cursor: not-allowed; }
+.catalog-add-cart-button:disabled { opacity: 1; }
+@media (max-width: 560px) {
+  .catalog-card { padding-block: 6px 10px; padding-inline: 6px; }
+  .catalog-favorite-button { inset-block-start: 7px; inset-inline-end: 7px; width: 34px; height: 34px; }
+  .catalog-card-copy h2 { min-height: 40px; font-size: 13px; line-height: 20px; }
+  .catalog-price { font-size: 14px; }
+}

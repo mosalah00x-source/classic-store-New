@@ -108,7 +108,11 @@
     "close": "Close",
     "metaDescription": "Discover our products and find what suits you.",
     "breadcrumbLabel": "Breadcrumb",
-    "home": "Home"
+    "home": "Home",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "cartComingSoon": "Coming soon",
+    "promotionBadgesUnavailable": "No promotion badges on this card"
   },
   "ProductDetail": {
     "breadcrumbLabel": "Breadcrumb",
