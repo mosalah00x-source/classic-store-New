@@ -1,5 +1,4 @@
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { CatalogRequestError } from '@/lib/catalog-types';
 import { CatalogClient } from '@/components/CatalogClient';
@@ -14,12 +13,9 @@ export async function generateMetadata() {
   return { title: t('title'), description: t('metaDescription') };
 }
 
-export default async function ProductsPage({ params, searchParams }: {
-  params: Promise<{ locale: string }>;
+export default async function ProductsPage({ searchParams }: {
   searchParams: Promise<Search>;
 }) {
-  const { locale } = await params;
-  if (locale !== 'ar') redirect('/ar/products');
   const search = await searchParams;
   const filters = parseCatalogFilters(search);
   const t = await getTranslations('Catalog');
@@ -30,7 +26,7 @@ export default async function ProductsPage({ params, searchParams }: {
     [page, categories] = await Promise.all([getProducts(filters), getCategories()]);
   } catch (error) {
     const message = error instanceof CatalogRequestError && error.status === 400 ? t('invalidFilters') : t('errorMessage');
-    return <main className="catalog-shell"><h1>{t('title')}</h1><section className="catalog-state" role="alert"><h2>{t('errorTitle')}</h2><p>{message}</p><Link href="/ar/products">{t('retry')}</Link></section></main>;
+    return <main className="catalog-shell"><h1>{t('title')}</h1><section className="catalog-state" role="alert"><h2>{t('errorTitle')}</h2><p>{message}</p><Link href="/products">{t('retry')}</Link></section></main>;
   }
   return <CatalogClient key={JSON.stringify({ filters, ids: page.content.map((product) => product.id) })} initialPage={page} categories={categories} initialFilters={filters} />;
 }
