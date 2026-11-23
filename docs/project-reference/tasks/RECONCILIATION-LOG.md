@@ -339,3 +339,13 @@ The earlier DOC-03 log entry recorded Run #133 as in progress at that point in t
 - SHA match was checked between the PR Head recorded for this pre-correction state and Run #195's `head_sha`.
 - **Important limitation:** this evidence describes only the Head before this correction. It does not validate the commit(s) that add this entry or the other documentation corrections. A new workflow run matching the updated PR Head is required.
 - PR #33 remained Draft; it was not converted to Ready and was not merged.
+
+
+## 2026-11-23 — DOC-03 exact-Head CI checkpoint before this commit [GH]
+
+- This entry records PR #33 Head SHA **before the commit that adds this entry and updates REGISTER.md**: `65be272bccc20a6c8450c9db937e40a751a05090`.
+- GitHub Actions Run #197 / [45179434573](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45179434573) was associated with that exact Head SHA.
+- All three jobs completed successfully on that SHA: `verify migrations` — Success; `api-lint` — Success; `backend` — Success (3/3).
+- The run's `head_sha` matches the PR #33 Head SHA recorded for this pre-commit checkpoint.
+- **Important limitation:** this entry describes only the PR Head before this commit. It does not validate the commit that adds this entry or updates REGISTER.md. A new workflow run matching the resulting PR Head is required before claiming CI success for the new Head.
+- PR #33 remains Draft; it was not converted to Ready and was not merged.
