@@ -25,7 +25,7 @@
 | #27 | Home / F3 | feat/frontend-home-storefront | 779b7a5 | 896fe55 | 45024248858 PASS | [UNV] | نعم؛ [تعليق الموافقة](https://github.com/mosalah00x-source/classic-store-New/pull/27#issuecomment-7079714545) |
 | #28 | Bottom navigation | feat/frontend-dn-nav-bar | 6bde906 | 8cb4928 | 45032252636 PASS | [UNV] | [UNV] |
 | #29 | Catalog Product Card / F4 | feat/frontend-catalog-card | 68496de | a5d722e | 45036694118 PASS | [UNV] | [UNV] |
-| #30 | Mega Menu + Favorite SVG | fix/frontend-mega-menu | 0f6da6c | 666dd21 | 45040249741 PASS | Check frontend موثق PASS؛ كل contexts [UNV] | [UNV] |
+| #30 | Mega Menu + Favorite SVG | fix/frontend-mega-menu | 0f6da6c | 666dd21 | 45040249741 PASS | [UNV] | [UNV] |
 
 السجل التفصيلي لكل PR موجود في docs/tasks/PR-22.md إلى PR-30.md. كل Run ID أعلاه مرتبط بطلب قراءة بيانات ذلك الـ Head SHA؛ لا يُعامل كدليل على Merge CI.
 
@@ -75,7 +75,7 @@
 - F4: لقطات Catalog Product Card بعد PR #29 غير مثبتة.
 - PR #30: لقطات Mega Menu وFavorite heart في Light/Dark و390px مطلوبة.
 - F7/F8/F10: مذكورة في V4 كعناصر مفتوحة؛ حالتها الحالية [UNV] حتى إعادة فحص التنفيذ.
-- CI-01: PR #32 ينتظر مراجعة ودمج PO يدويًا؛ لم يثبت Merge SHA أو push run بعد.
+- CI-01: PR #32 مدمج؛ Merge SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`، وPush Run #110 / `45154657899` ناجح 3/3 على SHA الدمج. الإصلاح مؤقت والدَين المعماري OPS-002 ما زال مفتوحًا.
 - ENV-01: ملف frontend/.env.example غير موجود بعد؛ PR مستقل بعد DOC-01.
 - Theme flash في F1: قياسه غير مثبت [UNV].
 - backend/README.md يحتاج تحديثًا منفصلًا ليتطابق مع pom/Flyway الفعليين.
@@ -93,3 +93,11 @@
 - ADM-8: Hardening and acceptance.
 
 لا يبدأ ADM-1 implementation قبل دمج DOC-01 وموافقة PO المكتوبة على خطة ADM-1. لا merge تلقائي ولا force push.
+
+
+## تحديث تدقيق حي — 23 نوفمبر 2026 (DOC-02)
+
+- GitHub يؤكد أن PR #22–#30 جميعها Merged؛ Head CI لكل PR ناجح على Head SHA المحدد في جدول القسم 2. لا يوجد دليل Merge-SHA CI لهذه الواجهات ضمن نتائج البحث الحي الحالية؛ تظل Merge CI [UNV].
+- PR #32 مدمج على Merge SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`. Push Run #110 / `45154657899` نجح على SHA الدمج، والوظائف الثلاث api-lint وverify migrations وbackend نجحت.
+- PR #31 قبل DOC-02 كان على Head `96c8648ab5b7f3143149297e0b6f0ffae70b99af`؛ Run #115 / `45155049507` نجح 3/3 على ذلك الـ Head. هذا لا يثبت CI على Head DOC-02 الجديد.
+- سجل REGISTER وRECONCILIATION-LOG هو المرجع الأحدث لتفاصيل PRs #22–#32، ومصفوفة الأدلة والموافقات. لا تُرفع حالة أي مهمة إلى Done دون بواباتها.
