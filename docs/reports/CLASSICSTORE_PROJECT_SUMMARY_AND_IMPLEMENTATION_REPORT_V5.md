@@ -101,3 +101,12 @@
 - PR #32 مدمج على Merge SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`. Push Run #110 / `45154657899` نجح على SHA الدمج، والوظائف الثلاث api-lint وverify migrations وbackend نجحت.
 - PR #31 قبل DOC-02 كان على Head `96c8648ab5b7f3143149297e0b6f0ffae70b99af`؛ Run #115 / `45155049507` نجح 3/3 على ذلك الـ Head. هذا لا يثبت CI على Head DOC-02 الجديد.
 - سجل REGISTER وRECONCILIATION-LOG هو المرجع الأحدث لتفاصيل PRs #22–#32، ومصفوفة الأدلة والموافقات. لا تُرفع حالة أي مهمة إلى Done دون بواباتها.
+
+
+## تحديث DOC-02 — 23 نوفمبر 2026
+
+- سجل المهام الموحد أصبح في [tasks/README.md](../project-reference/tasks/README.md)، والسجل حسب المجالات في [REGISTER.md](../project-reference/tasks/REGISTER.md)، والمقارنة الحية في [RECONCILIATION-LOG.md](../project-reference/tasks/RECONCILIATION-LOG.md).
+- ملفات تفصيلية جديدة توثق PR #22–#30 وPR #31/DOC-01 وPR #32/CI-01، إضافة إلى سجل migrations V1–V7 وADM Epic. السجلات القديمة تحت `docs/tasks/` باقية كمراجع تاريخية.
+- PR #31 تقدم بعد Head `96c8648...` الذي نجح Run #115 عليه 3/3. عند بداية DOC-02 كان Head `5da1c20...` وRun #116 قد أكمل `api-lint` و`verify migrations` بنجاح بينما `backend` ما زال قيد التشغيل. يلزم تحقق جديد على آخر Head بعد جميع commits؛ لا تُنقل نتيجة Run #115 إلى SHA أحدث.
+- PR #32 Merge-SHA push Run #110 ناجح 3/3 على Merge SHA الدقيق. CI-01 لا يزال يحمل دينًا معماريًا منفصلًا.
+- لا تزال مراجعات Visual QA لـ F3 وBN وF4 وPR #30 مفتوحة؛ لا يُستنتج القبول من نجاح CI.
