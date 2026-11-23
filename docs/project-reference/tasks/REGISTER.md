@@ -26,7 +26,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | FE-012 | F10 / V7 | Unify theme key/behavior across app | Planned | — | — | — | Pending | — | FE-005 | Planned; no task file yet | 2026-11-23 |
 | FE-013 | F1c | Brand filter | Planned | — | — | — | Pending | — | Contract | Planned; no task file yet | 2026-11-23 |
 | FE-014 | FE-MM2 | Second-level store category navigation | Deferred | — | — | — | Pending | — | ADM-2 | Planned; no task file yet | 2026-11-23 |
-| FE-015 | F4 badges | Discount/compare-at/New badges | Deferred | — | — | — | Not required until scope reopens | [PO](../decisions/F4-badges-deferred.md) | Approved backend contract | Planned; no task file yet | 2026-11-23 |
+| FE-015 | F4 badges | Discount/compare-at/New badges | Deferred | — | — | — | Not required until scope reopens | [PO](../../decisions/F4-badges-deferred.md) | Approved backend contract | Planned; no task file yet | 2026-11-23 |
 | FE-016 | F5 | Product detail quantity, notes, favorites and cart | Planned | — | — | — | Pending | — | BE-B1 | Planned; no task file yet | 2026-11-23 |
 | FE-017 | C1–C4 | Cart, checkout, confirmation and tracking UI | Planned | — | — | — | Pending | — | BE-B1–B5 | Planned; no task file yet | 2026-11-23 |
 | FE-018 | F9 | Customer account pages | Planned | — | — | — | Pending | — | T-07/API readiness | Planned; no task file yet | 2026-11-23 |
