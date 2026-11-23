@@ -16,7 +16,7 @@
 | Head SHA at initial review | `5da1c20a265c527375c932a9aa29241b9d4eac0b` |
 | Merge SHA | Not merged |
 | Merged at / by / method | Not applicable |
-| Head CI | Run #116 / `45156874912` — 2 jobs passed, backend still running at first check |
+| Historical Head CI: Run #115 / `45155049507` — success 3/3 on exact `96c8648ab5b7f3143149297e0b6f0ffae70b99af`; Run #116 / `45156874912` was started on `5da1c20a265c527375c932a9aa29241b9d4eac0b` and was still in progress at the first recorded check. Current DOC-02 Head requires a fresh run. |
 | Merge-SHA CI | Not applicable |
 | PO approval | Not approved; PR remains Draft |
 
@@ -26,8 +26,8 @@ Create the canonical task system at `docs/project-reference/tasks/`: README, gro
 
 ## Implemented
 
-- Created the canonical task system and detailed records for PRs #22–#30 and #32.
-- Added PR #31 / DOC-01 and DOC-02 task records, plus ADM Epic record.
+- Added the cross-domain register, template and append-only reconciliation protocol; verified and retained the existing canonical task records PR-22.md through PR-30.md.
+- Retained the existing PR-31-DOC-01.md, DOC-002-tasks-system.md and ADM-EPIC.md records; added PR-32.md and PR-04-migrations.md.
 - Recorded all known task Head/Merge SHAs, changed files, Head CI runs, and explicit evidence gaps.
 - Registered planned work by domain, including B1–B7 as named in V4, V1–V7 migration inventory, ADM roadmap, CI/OPS, security, QA and DOC work.
 - Recorded initial reconciliation and corrected stale CI-01 / PR #31 validation claims.
@@ -58,7 +58,7 @@ None.
 
 | Test / workflow | Result | Exact SHA / Run |
 |---|---|---|
-| Backend CI | Pending final head check | Head SHA after final DOC-02 commits / run to be recorded |
+| Backend CI | Pending final head check | Latest DOC-02 Head / run to be recorded after final commit |
 
 ## Visual QA
 
@@ -68,7 +68,7 @@ None.
 
 ## Issues and lessons
 
-The repository already had task records in `docs/tasks/` and partial records in `docs/project-reference/tasks/`, but no canonical grouped register or reconciliation protocol. The prior open-items/tech-debt text also contained stale CI run status and did not reflect the latest verified Run #115 and Merge-SHA Run #110. Reconciliation must explicitly record and correct such drift.
+The repository already had detailed canonical task records in `docs/project-reference/tasks/` and compatibility records in `docs/tasks/`, but no cross-domain grouped register or append-only reconciliation protocol. The prior open-items/tech-debt text also contained stale CI run status and did not reflect the latest verified Run #115 and Merge-SHA Run #110. Reconciliation must explicitly record and correct such drift.
 
 ## Open items and follow-up tasks
 
