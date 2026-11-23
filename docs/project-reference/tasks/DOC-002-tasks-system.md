@@ -16,6 +16,7 @@
 | Head SHA | [LIVE PLACEHOLDER — read current PR #31 metadata; do not persist a self-referential final Head] |
 
 | Merge SHA | [NOT MERGED — DOC-03 will record after merge] |
+| Merged by / method | [NOT MERGED — DOC-03 will record the Timeline actor and merge strategy after merge] |
 | State | Open, Draft |
 | Head CI | [LIVE PLACEHOLDER — exact-current-Head check must be read after the final DOC-02 commit] |
 | Merge-SHA CI | Not applicable |
