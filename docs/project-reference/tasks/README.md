@@ -1,7 +1,8 @@
 # Task register system
 
 **Repository:** `mosalah00x-source/classic-store-New`  
-**Canonical documentation branch:** `docs/project-reference`  
+**Canonical documentation base:** `BackendApp`  
+**Legacy merged docs branch:** `docs/project-reference` (retained pending PO deletion decision)  
 **PR #31 base:** `BackendApp`  
 **Application PR bases:** frontend work targets `FrontendApp`; backend/database work targets `BackendApp`.
 
@@ -11,7 +12,7 @@
 
 `docs/tasks/` is a compatibility-only path. Its README and PR-22…PR-30 files are short redirects to the canonical records; they must not contain independently maintained task status or evidence. V4/V5 reports remain historical snapshots, not status sources.
 
-The documentation PR targets `BackendApp` because the project-reference docs are maintained there and the backend workflow checks are configured for documentation changes targeting that base. Frontend implementation PRs target `FrontendApp`; backend/database PRs target `BackendApp`.
+The canonical task records are maintained on `BackendApp`. Frontend implementation PRs target `FrontendApp`; however, updates to frontend task records are documentation-only PRs created from the latest `BackendApp` and merged back into `BackendApp`. Backend/database implementation PRs also target `BackendApp`. Use a new short-lived docs branch for each documentation update; do not continue development on a stale merged docs branch.
 
 ## Folder structure and canonical files
 
@@ -20,11 +21,14 @@ The documentation PR targets `BackendApp` because the project-reference docs are
 - [_TEMPLATE.md](./_TEMPLATE.md) — detailed task-record template.
 - [PR-04-migrations.md](./PR-04-migrations.md) — DB migration inventory V1–V7.
 - [PR-22.md](./PR-22.md), [PR-23.md](./PR-23.md), [PR-24.md](./PR-24.md), [PR-25.md](./PR-25.md), [PR-26.md](./PR-26.md), [PR-27.md](./PR-27.md), [PR-28.md](./PR-28.md), [PR-29.md](./PR-29.md), [PR-30.md](./PR-30.md) — frontend PR task records.
-- [PR-31-DOC-01.md](./PR-31-DOC-01.md) — self-referential PR #31 task record; intentionally has no final Head SHA or Merge SHA.
+- [PR-31-DOC-01.md](./PR-31-DOC-01.md) — PR #31 close-out record with final Head/Merge SHAs and exact CI evidence.
+- [DOC-03-close-pr31.md](./DOC-03-close-pr31.md) — DOC-03 close-out and report-only documentation-branch lifecycle assessment.
+- [ENV-01.md](./ENV-01.md) — ENV-01 frontend environment example PR #34.
+- [F8-safe-api-json.md](./F8-safe-api-json.md) — F8 safe API JSON handling PR #35.
 - [PR-32.md](./PR-32.md) — merged CI-01 workflow path-filter fix.
 - [ADM-EPIC.md](./ADM-EPIC.md) — cross-domain ADM-0 through ADM-8 roadmap.
 - [DOC-002-tasks-system.md](./DOC-002-tasks-system.md) — DOC-02 task-system implementation and compliance matrix.
-- DOC-03 — planned post-merge close-out of PR #31; its task record will be created in the small follow-up documentation PR after #31 merges.
+- DOC-03 — post-merge close-out of PR #31; tracked in [DOC-03-close-pr31.md](./DOC-03-close-pr31.md).
 
 ## Naming convention
 

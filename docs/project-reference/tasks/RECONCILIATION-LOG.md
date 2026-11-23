@@ -283,3 +283,69 @@ At comparison time the canonical records included the expanded evidence sections
 
 - Canonical task records: [PR-22.md](./PR-22.md) and [PR-23.md](./PR-23.md), each updated with the observed order, rationale, graph evidence and limitations.
 - No Visual QA status or PO approval status was changed by this chronology correction.
+
+
+## 2026-11-23 — DOC-03: PR #31 merge close-out and documentation branch assessment
+
+### PR #31 final evidence [GH]
+
+- PR #31 merged into `BackendApp` at 2026-11-23 11:52:05 UTC. Merge SHA: `67dbd343185742c30ecb5d65eca939bd0efb9d68`; [direct merged Timeline event 37003224078](https://github.com/mosalah00x-source/classic-store-New/issues/events/37003224078). Merged actor: `mosalah00x-source`.
+- Final pre-merge Head SHA: `4ecba73a4a403ce8ef41342c87267a9ce1ea8060`; Head CI Run #185 / [45168530591](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45168530591), 3/3 success.
+- Exact Merge-SHA push CI Run #186 / [45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) has `head_sha` equal to the Merge SHA above. Rechecked all three jobs and every listed step: `verify migrations`, `api-lint`, `backend` all completed/success (3/3).
+- Merge strategy is [UNV]; the inspected PR metadata and Timeline event do not expose merge/squash/rebase.
+
+### Approval and Visual QA state [GH]
+
+- A fresh PR #31 discussion lookup returned zero issue comments; the submitted-review lookup returned zero reviews. No PO approval artifact was found at DOC-03 execution time.
+- DOC-001 and DOC-002 are updated to `Merged`, not `Done`. Their PO approval gate remains pending. The merge event is not approval.
+- F3, BN, F4 and #30 Visual QA remain Pending until the PO posts the specified comment and evidence links. The mobile-only BN scope must not be generalized to desktop.
+
+### Documentation branch inventory [GH]
+
+- `docs/project-reference` still exists as a branch after PR #31 merge. `BackendApp` points to the Merge SHA above.
+- The task README and REGISTER now identify `BackendApp` as the canonical docs base and `docs/project-reference` as the legacy merged branch. PR-31-DOC-01 retains the original task-branch fact. Canonical docs now exist on `BackendApp`.
+- `.github/workflows/backend-ci.yml` contains `docs/project-reference/**` in push and pull_request path filters. This is a repository path filter, not a dependency on a branch ref named `docs/project-reference`.
+- GitHub exact-path code search returned zero matches but marked the result incomplete; therefore it is not evidence that no other references exist. No workflow dependency on this branch name was established by the available search. No deletion was attempted.
+- Recommendation: after a complete reference review and explicit PO approval, delete the merged long-lived docs branch and use short-lived docs branches from current `BackendApp`. This reduces branch drift and sync work. Deletion remains unauthorized and is not part of DOC-03.
+
+### Additional open follow-ups
+
+- FE-home-categories-limit: eight-card cap is the proposed retained design; “عرض كل التصنيفات” link to `/products` remains description-only until explicit PO confirmation.
+- A11Y-input-borders: report-only audit; measure all input/control borders in light/dark and recommend a dedicated ≥3:1 token while retaining subtle decorative card borders.
+- BN-desktop-verify: desktop viewport remains unverified; do not extend mobile-only evidence.
+- DOC-BRANCH: branch lifecycle recommendation only; no deletion.
+
+### Documentation maintenance rule
+
+Frontend task records are updated through documentation-only PRs from short-lived branches based on the latest `BackendApp`, targeting `BackendApp`. Frontend application changes continue to target `FrontendApp`.
+
+
+### 2026-11-23 — ENV-01 and F8 started as separate FrontendApp PRs
+
+- ENV-01 PR #34 is Draft on `FrontendApp`, Head `19667498fe74fadbad33fd697400c7385572aa0e`. Frontend CI Run #130 / [45170312530](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170312530) passed its frontend job and every step. `frontend/.gitignore` already contains the `.env*` ignore and `!.env.example` exception; the new file is present in PR changed files.
+- F8 PR #35 is Draft on `FrontendApp`, current Head `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0`. Run #132 failed TypeScript because the test assigned to readonly `process.env.NODE_ENV`; the test helper was corrected by removing that assignment. New final-Head Run #133 / [45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) was in progress at this log entry. Earlier failures are not represented as current success.
+- Both tasks are tracked in REGISTER as `In review` with canonical task records. No PR is marked Ready or merged.
+
+
+### Correction — F8 final Head CI completion [GH] (2026-11-23)
+
+The earlier DOC-03 log entry recorded Run #133 as in progress at that point in time. Run #133 / [45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) subsequently completed successfully on exact F8 Head SHA `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0`. The frontend job and every step completed/success, including Install dependencies, Lint, Typecheck, Unit tests, Production build and cleanup. No additional F8 source changes were made after this successful run.
+
+## 2026-11-23 — DOC-03 pre-correction Head CI recorded; documentation correction follows [GH]
+
+- This entry records the DOC-03 PR Head **before this documentation correction**: `ac0d4d97464881d17e0d2a7c860600916dfeec35`.
+- GitHub Actions Run #195 / [45171119082](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45171119082) was associated with that exact Head SHA.
+- All three jobs completed successfully on that SHA: `api-lint` — Success; `verify migrations` — Success; `backend` — Success (3/3).
+- SHA match was checked between the PR Head recorded for this pre-correction state and Run #195's `head_sha`.
+- **Important limitation:** this evidence describes only the Head before this correction. It does not validate the commit(s) that add this entry or the other documentation corrections. A new workflow run matching the updated PR Head is required.
+- PR #33 remained Draft; it was not converted to Ready and was not merged.
+
+
+## 2026-11-23 — DOC-03 exact-Head CI checkpoint before this commit [GH]
+
+- This entry records PR #33 Head SHA **before the commit that adds this entry and updates REGISTER.md**: `65be272bccc20a6c8450c9db937e40a751a05090`.
+- GitHub Actions Run #197 / [45179434573](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45179434573) was associated with that exact Head SHA.
+- All three jobs completed successfully on that SHA: `verify migrations` — Success; `api-lint` — Success; `backend` — Success (3/3).
+- The run's `head_sha` matches the PR #33 Head SHA recorded for this pre-commit checkpoint.
+- **Important limitation:** this entry describes only the PR Head before this commit. It does not validate the commit that adds this entry or updates REGISTER.md. A new workflow run matching the resulting PR Head is required before claiming CI success for the new Head.
+- PR #33 remains Draft; it was not converted to Ready and was not merged.

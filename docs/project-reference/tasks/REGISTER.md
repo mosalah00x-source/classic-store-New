@@ -1,7 +1,8 @@
 # Task register — Classic Store
 
 **Repository:** mosalah00x-source/classic-store-New  
-**Canonical documentation branch:** docs/project-reference  
+**Canonical documentation base:** `BackendApp`  
+**Legacy merged docs branch:** `docs/project-reference` (retained pending PO deletion decision)  
 **Last live reconciliation:** 2026-11-23
 
 ## Status and field rules
@@ -22,7 +23,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | FE-008 | F4 | Catalog product card and local favorites | Merged | [#29](https://github.com/mosalah00x-source/classic-store-New/pull/29) | a5d722ec74170ab02b7e121a37619f51bf6c7782 | [Run ID 45038732812](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45038732812) — success on exact Merge SHA | Pending | No explicit PO approval artifact found | FE-001 | [PR-29.md](./PR-29.md) | 2026-11-23 |
 | FE-009 | FIX-MM | Mega Menu and SVG favorite heart | Merged | [#30](https://github.com/mosalah00x-source/classic-store-New/pull/30) | 666dd2151172b56f57e10b4446c63a58f5d9d7a2 | [Run ID 45041317755](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45041317755) — success on exact Merge SHA | Pending | No explicit PO approval artifact found | FE-005, FE-008 | [PR-30.md](./PR-30.md) | 2026-11-23 |
 | FE-010 | F7 | Remove duplicate logo CSS variables | Planned | — | — | — | Pending | — | — | Planned; no task file yet | 2026-11-23 |
-| FE-011 | F8 | Handle empty JSON in catalog-api.ts | Planned | — | — | — | Pending | — | — | Planned; no task file yet | 2026-11-23 |
+| FE-011 | F8 | Classify empty/invalid JSON and network failures in catalog and product-detail APIs | In review | [#35](https://github.com/mosalah00x-source/classic-store-New/pull/35) | — | Not merged; final Head CI [Run #133 / 45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) success on exact Head `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0` | Pending | — | FE-001 | [F8-safe-api-json.md](./F8-safe-api-json.md) | 2026-11-23 |
 | FE-012 | F10 / V7 | Unify theme key/behavior across app | Planned | — | — | — | Pending | — | FE-005 | Planned; no task file yet | 2026-11-23 |
 | FE-013 | F1c | Brand filter | Planned | — | — | — | Pending | — | Contract | Planned; no task file yet | 2026-11-23 |
 | FE-014 | FE-MM2 | Second-level store category navigation | Deferred | — | — | — | Pending | — | ADM-2 | Planned; no task file yet | 2026-11-23 |
@@ -83,7 +84,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | OPS-004 | Local stack | Repeatable local Backend + PostgreSQL startup/health/migration flow | Planned | — | — | — | Not required | — | — | Planned; no file | 2026-11-23 |
 | OPS-005 | Cloud release | Hosting after local completion and acceptance | Deferred | — | — | — | Not required | — | Local acceptance + Q4 | Planned; no file | 2026-11-23 |
 | OPS-006 | Backup/monitoring | Production backup, restore drill and monitoring | Deferred | — | — | — | Not required | — | OPS-005 | Planned; no file | 2026-11-23 |
-| OPS-007 | ENV-01 | Add frontend/.env.example and verify .gitignore exception | Planned | — | — | — | Not required | — | Verify actual env variables; separate PR after DOC-01 | Planned; no file | 2026-11-23 |
+| OPS-007 | ENV-01 | Add frontend/.env.example and verify .gitignore exception | In review | [#34](https://github.com/mosalah00x-source/classic-store-New/pull/34) | — | Not merged; Head CI [Run #130 / 45170312530](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170312530) success on exact Head `19667498fe74fadbad33fd697400c7385572aa0e` | Not required | — | DOC-001 merged | [ENV-01.md](./ENV-01.md) | 2026-11-23 |
 | OPS-008 | Image storage | Local-first upload/storage adapter; cloud provider choice deferred | Planned | — | — | — | Not required | — | ADM-6 | [ADM-EPIC.md](./ADM-EPIC.md) | 2026-11-23 |
 
 ## Security (SEC)
@@ -110,18 +111,19 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Pending PO review | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
-| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Pending PO review | DOC-001 | [DOC-002-tasks-system.md](./DOC-002-tasks-system.md) | 2026-11-23 |
-| DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Design decisions approved; PR #31 pending | — | [ADMIN-0.md](../ADMIN-0.md) | 2026-11-23 |
-| DOC-004 | ADM-1-plan | Report-only ADM-1 plan | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Implementation not authorized | DOC-001 + written PO authorization | [ADM-1-plan.md](../ADM-1-plan.md) | 2026-11-23 |
-| DOC-005 | DOC-03 | Post-merge close-out: update PR #31 self-record with final Merge SHA, Merge-SHA CI and PO approval evidence | Planned | Follow-up docs PR after #31 merges | — | — | Not required | Explicit PO approval required | DOC-001 merge | Created in DOC-03 follow-up PR | 2026-11-23 |
+| DOC-001 | DOC-01 | Project reference and completion audit | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Pending — no direct PO comment/review found | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
+| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Pending — no direct PO comment/review found | DOC-001 | [DOC-002-tasks-system.md](./DOC-002-tasks-system.md) | 2026-11-23 |
+| DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Design decisions approved; PR merged; task close-out gate tracked separately | — | [ADMIN-0.md](../ADMIN-0.md) | 2026-11-23 |
+| DOC-004 | ADM-1-plan | Report-only ADM-1 plan | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Plan merged; implementation not authorized | DOC-001 + separate written PO implementation approval | [ADM-1-plan.md](../ADM-1-plan.md) | 2026-11-23 |
+| DOC-005 | DOC-03 | Close out PR #31 evidence; report-only documentation branch lifecycle assessment | In review | [#33](https://github.com/mosalah00x-source/classic-store-New/pull/33) | — | Run #197 / 45179434573 — 3/3 Success on exact Head SHA 65be272bccc20a6c8450c9db937e40a751a05090 | Not required | Pending — PO comment/review not found on #31 | DOC-001 merge | [DOC-03-close-pr31.md](./DOC-03-close-pr31.md) | 2026-11-23 |
 
 ## Rules
 
 - PR #22–#30 are merged to `FrontendApp`. Each now has a verified `frontend-ci` push run on its exact Merge SHA; Run IDs are recorded in the matching FE row and detailed PR record.
 - PR #32 Merge-SHA push Run #110 / ID `45154657899` passed all three jobs on exact SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`.
-- PR #31 remains Draft/open/unmerged. Its self-record intentionally contains no final Head SHA or Merge SHA; read live PR metadata and exact-Head CI at review time.
-- DOC-03 is the planned small post-merge documentation PR to close out the self-referential PR #31 record.
+- PR #31 merged to `BackendApp` with Merge SHA `67dbd343185742c30ecb5d65eca939bd0efb9d68`; exact Merge-SHA push Run #186 / 45169011839 passed all 3 jobs. Final Head SHA and Head Run #185 are recorded in its canonical task record.
+- DOC-01 and DOC-02 remain `Merged`, not `Done`, because the explicit PO comment/review artifact has not been found.
+- DOC-03 Run #195 / 45171119082 passed 3/3 on exact pre-correction Head `ac0d4d97464881d17e0d2a7c860600916dfeec35`; it does not validate the commits that add this correction. A fresh run matching the new final PR Head is required.
 - Never mark Done based on merge or Head CI alone. Update this register after every merge.
 
 
@@ -130,3 +132,11 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 - **Visual QA vocabulary:** Not required / Pending / Passed / Failed. For FE-006 (F3), only the PO-conceded subset is covered; remaining screenshots stay Pending. FE-007 (BN), FE-008 (F4) and FE-009 (#30) remain Pending.
 - **PR #31 validation:** current Head and matching CI must be read live from GitHub at the point of review; do not copy historical Head SHA or CI results into the self-record.
 - **Task detail links:** all started PR task rows link to their canonical files. Planned tasks without a detailed file remain register-only until work starts. PR #4 migration, PR #22–#32, ADM Epic and DOC-01/DOC-02 records are linked from their rows and the task README.
+
+
+## Open follow-ups — tracked, not authorized for implementation
+
+- **FE-home-categories-limit:** retain the eight-category cap as a proposed decision; prepare only a PR description for a “عرض كل التصنيفات” link to `/products`. No code change until explicit PO confirmation.
+- **A11Y-input-borders:** report-only contrast measurements for all input/control borders in light and dark themes; recommend a dedicated token at ≥3:1 while keeping decorative card borders subtle. No CSS change in DOC-03.
+- **BN-desktop-verify:** desktop viewport verification remains open; do not generalize mobile-only acceptance to desktop.
+- **DOC-BRANCH:** report-only assessment of the merged `docs/project-reference` branch. No deletion without explicit written PO approval.
