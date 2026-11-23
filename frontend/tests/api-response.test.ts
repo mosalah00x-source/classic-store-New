@@ -149,3 +149,16 @@ test('product detail API preserves a normal successful JSON response', async () 
     );
   });
 });
+
+test('catalog API keeps the showcase mock scenario local and unchanged', async () => {
+  await withMockFetch(async () => { throw new Error('showcase mock must not call fetch'); }, async () => {
+    process.env.API_MOCKING = 'true';
+    process.env.API_MOCK_SCENARIO = 'showcase';
+
+    const page = await getProducts();
+    assert.equal(page.size, 10);
+    assert.equal(page.totalElements, 18);
+    const { getCategories } = await import('../src/lib/catalog-api');
+    assert.equal((await getCategories()).length, 9);
+  });
+});
