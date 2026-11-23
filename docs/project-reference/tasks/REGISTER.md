@@ -23,7 +23,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | FE-008 | F4 | Catalog product card and local favorites | Merged | [#29](https://github.com/mosalah00x-source/classic-store-New/pull/29) | a5d722ec74170ab02b7e121a37619f51bf6c7782 | [Run ID 45038732812](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45038732812) — success on exact Merge SHA | Pending | No explicit PO approval artifact found | FE-001 | [PR-29.md](./PR-29.md) | 2026-11-23 |
 | FE-009 | FIX-MM | Mega Menu and SVG favorite heart | Merged | [#30](https://github.com/mosalah00x-source/classic-store-New/pull/30) | 666dd2151172b56f57e10b4446c63a58f5d9d7a2 | [Run ID 45041317755](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45041317755) — success on exact Merge SHA | Pending | No explicit PO approval artifact found | FE-005, FE-008 | [PR-30.md](./PR-30.md) | 2026-11-23 |
 | FE-010 | F7 | Remove duplicate logo CSS variables | Planned | — | — | — | Pending | — | — | Planned; no task file yet | 2026-11-23 |
-| FE-011 | F8 | Handle empty JSON in catalog-api.ts | Planned | — | — | — | Pending | — | — | Planned; no task file yet | 2026-11-23 |
+| FE-011 | F8 | Classify empty/invalid JSON and network failures in catalog and product-detail APIs | In review | [#35](https://github.com/mosalah00x-source/classic-store-New/pull/35) | — | Not merged; final Head CI [Run #133 / 45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) in progress on `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0` | Pending | — | FE-001 | [F8-safe-api-json.md](./F8-safe-api-json.md) | 2026-11-23 |
 | FE-012 | F10 / V7 | Unify theme key/behavior across app | Planned | — | — | — | Pending | — | FE-005 | Planned; no task file yet | 2026-11-23 |
 | FE-013 | F1c | Brand filter | Planned | — | — | — | Pending | — | Contract | Planned; no task file yet | 2026-11-23 |
 | FE-014 | FE-MM2 | Second-level store category navigation | Deferred | — | — | — | Pending | — | ADM-2 | Planned; no task file yet | 2026-11-23 |
@@ -84,7 +84,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | OPS-004 | Local stack | Repeatable local Backend + PostgreSQL startup/health/migration flow | Planned | — | — | — | Not required | — | — | Planned; no file | 2026-11-23 |
 | OPS-005 | Cloud release | Hosting after local completion and acceptance | Deferred | — | — | — | Not required | — | Local acceptance + Q4 | Planned; no file | 2026-11-23 |
 | OPS-006 | Backup/monitoring | Production backup, restore drill and monitoring | Deferred | — | — | — | Not required | — | OPS-005 | Planned; no file | 2026-11-23 |
-| OPS-007 | ENV-01 | Add frontend/.env.example and verify .gitignore exception | Planned | — | — | — | Not required | — | Verify actual env variables; separate PR after DOC-01 | Planned; no file | 2026-11-23 |
+| OPS-007 | ENV-01 | Add frontend/.env.example and verify .gitignore exception | In review | [#34](https://github.com/mosalah00x-source/classic-store-New/pull/34) | — | Not merged; Head CI [Run #130 / 45170312530](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170312530) success on exact Head `19667498fe74fadbad33fd697400c7385572aa0e` | Not required | — | DOC-001 merged | [ENV-01.md](./ENV-01.md) | 2026-11-23 |
 | OPS-008 | Image storage | Local-first upload/storage adapter; cloud provider choice deferred | Planned | — | — | — | Not required | — | ADM-6 | [ADM-EPIC.md](./ADM-EPIC.md) | 2026-11-23 |
 
 ## Security (SEC)
