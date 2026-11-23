@@ -13,30 +13,30 @@
 |---|---|
 | PR | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) |
 | Task branch / base | `docs/project-reference` / `BackendApp` |
-| Head before DOC-02 | `96c8648ab5b7f3143149297e0b6f0ffae70b99af` |
-| DOC-02 Head at reconciliation checkpoint | `82c4f11898b5201eb012ab1021966605baf28e93` |
+| Audit-start Head SHA | `5da1c20a265c527375c932a9aa29241b9d4eac0b` |
+| Latest checkpoint before this record update | `fb727a2281b3c68c01bfd59c739ed0cb2af98de7` |
 | Merge SHA | Not merged |
-| Merge SHA | Not merged |
-| State | Open, Draft, unmerged; latest metadata returned mergeable=false. Compare reports ahead 93 / behind 0; exact reason for mergeable=false remains [UNV] |
-| Earlier Head CI | Run #115 / `45155049507` — success 3/3 on exact `96c8648...`. Run #116 / `45156874912` was started on `5da1c20...` and was still in progress at first check. No PR-triggered run was returned for the DOC-02 checkpoint Head 82c4f1…; current Head CI remains pending/[UNV] |
+| State | Open, Draft; not merged |
+| Head CI at audit-start | Run #116 / `45156874912` — two jobs passed; backend was running |
+| Latest checkpoint CI | Run #135 / `45158132139` — queued/in progress on exact checkpoint SHA when inspected; api-lint passed, verify-migrations was running |
 | Merge-SHA CI | Not applicable until merged |
 | PO approval | Not approved; PR must remain Draft |
 
 ## Goal and scope
 
-- **Implemented:** ADMIN-0 inventory/decisions, ADM-1 report-only plan, project-reference docs, V5 report, local visual review guide, open-items and tech-debt records, CI-01 workflow synchronization and task-register expansion under this DOC-02 work.
+- **Implemented:** ADMIN-0 inventory/decisions, ADM-1 report-only plan, project-reference docs, V5 report, local visual review guide, open-items and tech-debt records, CI-01 workflow synchronization and canonical task-register expansion under DOC-02.
 - **Not implemented:** Backend/admin code, schema/migrations, dependencies, frontend environment file ENV-01, cloud deployment, visual screenshot capture or PO approval.
-- **Scope guard:** docs-only task-register additions; PR #31 already contains its previously approved workflow path-filter synchronization. No application source changes are authorized.
+- **Scope guard:** documentation-only additions/updates under `docs/`; the single workflow path-filter sync was already part of DOC-01's original scope. No application source changes are authorized.
 
 ## Decisions
 
-- PR #31 base remains BackendApp to run required backend documentation checks; application PRs retain their own FrontendApp/BackendApp bases.
-- PR remains Draft until the PO reviews the canonical task files and explicitly approves a state change.
+- PR #31 base remains BackendApp to run required backend documentation checks; frontend implementation PRs target FrontendApp.
+- PR remains Draft until PO reviews the canonical task files and explicitly approves any state change.
 - ADM-1 remains a plan only.
 
 ## Changed files
 
-See the live PR #31 changed-file list. The DOC-02 register/template/reconciliation system is included in the same Draft PR.
+See the live PR #31 changed-file list. This record is included in that list; its own commit necessarily advances the PR Head, so the final CI result must be read from live GitHub after the last documentation commit.
 
 ## Database / API
 
@@ -46,24 +46,21 @@ No database migrations, tables, seeds, OpenAPI paths or API fields are changed b
 
 | Test / workflow | Result | Exact SHA / Run |
 |---|---|---|
-| Backend CI | In progress at audit start | `5da1c20…` / Run #116 / `45156874912` |
+| Backend CI | Pending final Head check | Current latest Head and matching workflow run must be confirmed after this record update |
 
 ## Visual QA
 
 - **Status:** Not required for documentation-only work; separate storefront visual gates remain open in FE records.
 - **Captured:** None as part of this documentation PR.
 - **Not captured:** Not applicable to docs content.
-- **Acceptance evidence:** Not required.
 
 ## Issues and lessons
 
-Previous records existed under `docs/tasks/`, but this task creates the canonical system under `docs/project-reference/tasks/`. Older notes are retained as historical/source records and are not silently deleted.
+The repository had legacy task notes under `docs/tasks/` and a partial register in this directory. DOC-02 expands the existing register, creates canonical detailed records for started tasks and keeps legacy notes without deleting them.
 
 ## Open items and follow-up tasks
 
-- Finish DOC-02 register/reconciliation.
-- Recheck CI on the final PR Head after all commits.
-- Investigate why latest PR metadata reports mergeable=false before any Ready/merge consideration; do not force-update or retarget the branch.
+- Recheck 3/3 CI on the final PR Head after the last documentation commit.
 - PO review required before Ready or merge.
 - ENV-01 remains a separate follow-up.
 
@@ -71,13 +68,11 @@ Previous records existed under `docs/tasks/`, but this task creates the canonica
 
 | Claim | Evidence | Tag | Verified date |
 |---|---|---|---|
-| PR open/Draft/base/head | Live PR #31 metadata | [GH] | 2026-11-23 |
-| Run #115 passed 3/3 on 96c8648 | Live workflow run and jobs on exact Head SHA | [GH] | 2026-11-23 |
-| DOC-02 checkpoint Head has no returned PR run | Exact-SHA workflow lookup returned empty for 82c4f1… | [UNV] | 2026-11-23 |
-| mergeable=false cause | Compare reports ahead 93/behind 0; cause not established | [UNV] | 2026-11-23 |
+| PR open/Draft/base and checkpoint Head | Live PR #31 metadata | [GH] | 2026-11-23 |
+| Run #135 state and job progress | Live workflow run/jobs on exact checkpoint SHA | [GH] | 2026-11-23 |
 | PO approval/state transition | No approval supplied | [UNV] | 2026-11-23 |
 
 ## Review stamps
 
-- Reviewed by ChatGPT on 2026-11-23 against live PR #31 metadata, changed-file list and Run #116; result: still Draft/open; previous 96c8648 Head passed 3/3, DOC-02 checkpoint Head has no returned run; mergeable=false needs investigation.
+- Reviewed by ChatGPT on 2026-11-23 against live PR #31 metadata, changed-file list and Run #135; result: still Draft/open, final 3/3 on the eventual final Head remains to be confirmed.
 - Approved by PO: [UNV].
