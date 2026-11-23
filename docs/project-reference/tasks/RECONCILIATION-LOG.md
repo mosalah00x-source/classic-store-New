@@ -263,3 +263,23 @@ At comparison time the canonical records included the expanded evidence sections
 - PR #4's description contains text approving the source conversion/generated migration hashes. That is source/implementation decision context, but it is not an explicit PO approval comment or submitted review for merge.
 - No direct PO approval comment/review URL was found in the inspected PR #4 evidence. Therefore PR-04-migrations.md and REGISTER DB-001…DB-007 now state that explicit PO merge approval is not found; the description text is not counted as a merge approval artifact.
 - The PR #4 Merge SHA, merged actor, Timeline event and exact Merge-SHA push Run #12 / 42821341163 remain verified. This correction changes only the approval classification.
+
+
+## 2026-11-23 — PR #22 / #23 merge chronology verified
+
+### Verified GitHub facts [GH]
+
+- PR #23, `feat(frontend): add theme-aware CSS mask for ClassicStore logo`, merged at **2026-11-17 14:07:15 UTC**. The GitHub Timeline merged event identifies `mosalah00x-source` as actor: [direct event 36413198507](https://github.com/mosalah00x-source/classic-store-New/issues/events/36413198507). Merge SHA: `c3734268fa3a76ff63bc20f504665198063560c7`; exact Merge-SHA push CI: [Run 44099650247](https://github.com/mosalah00x-source/classic-store-New/actions/runs/44099650247).
+- PR #22, `feat(frontend): align catalog and product detail UI`, merged at **2026-11-17 15:46:48 UTC**; GitHub PR metadata identifies `mosalah00x-source` as `merged_by`: [PR #22](https://github.com/mosalah00x-source/classic-store-New/pull/22). Merge SHA: `c21a089e69477bf033c0e149835ce1d6b474754a`; exact Merge-SHA push CI: [Run 44118235141](https://github.com/mosalah00x-source/classic-store-New/actions/runs/44118235141).
+- Actual sequence was **#23 then #22**, separated by 1 hour, 39 minutes, 33 seconds. This reverses the intended order (#22 before #23), originally chosen to reduce overlap risk in the shared files `frontend/src/app/globals.css` and `frontend/src/app/[locale]/page.tsx`.
+
+### Merge graph / impact assessment [GH]
+
+- The #22 merge commit's parent is exactly #23's merge SHA `c3734268fa3a76ff63bc20f504665198063560c7`. This proves #23 was already in `FrontendApp` when #22 landed.
+- The available GitHub metadata does not prove whether the #22 source branch was separately updated before merge. No conflict-resolution event is present in the inspected evidence. The inspected records do not evidence a technical conflict or regression; absence of such evidence is not proof that no conflict occurred.
+- The Run ID order reflects the same actual sequence: #23 Run `44099650247` at 14:07:18 UTC, then #22 Run `44118235141` at 15:46:51 UTC. The run ordering is consistent with, but is not a substitute for, the merge timestamps above.
+
+### Documentation references
+
+- Canonical task records: [PR-22.md](./PR-22.md) and [PR-23.md](./PR-23.md), each updated with the observed order, rationale, graph evidence and limitations.
+- No Visual QA status or PO approval status was changed by this chronology correction.
