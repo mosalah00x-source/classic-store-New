@@ -2,10 +2,10 @@ name: backend-ci
 on:
   push:
     branches: [BackendApp]
-    paths: ['backend/**', 'docs/api/**', '!docs/api/*.md', 'redocly.yaml', '.github/workflows/backend-ci.yml']
+    paths: ['backend/**', 'docs/api/**', '!docs/api/*.md', 'redocly.yaml', '.github/workflows/backend-ci.yml', 'docs/project-reference/**', 'docs/README.md']
   pull_request:
     branches: [BackendApp]
-    paths: ['backend/**', 'docs/api/**', '!docs/api/*.md', 'redocly.yaml', '.github/workflows/backend-ci.yml']
+    paths: ['backend/**', 'docs/api/**', '!docs/api/*.md', 'redocly.yaml', '.github/workflows/backend-ci.yml', 'docs/project-reference/**', 'docs/README.md']
 
 permissions:
   contents: read
