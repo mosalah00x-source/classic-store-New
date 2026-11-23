@@ -166,3 +166,10 @@ This DOC-02 extension changes documentation files only. PR #31 remains Draft and
 - A final rule review found the existing `ADM-EPIC.md` and `REGISTER.md` labeled ADM-0 / DOC-003 “Done as decision record only”.
 - This conflicts with DOC-02's fixed rule that `Done` requires a merged PR, Merge-SHA CI, complete documentation, explicit PO approval link and Visual QA `Not required` or `Passed`.
 - Corrected ADM-0 and DOC-003 to `In review` because their documentation is still inside unmerged Draft PR #31. The underlying PO design decisions remain approved; the documentation task is not complete until its PR gates close.
+
+
+## 2026-11-23 — PR #31 Head CI completion
+
+- PR #31 Head `ba2dbc9a734f7cdfc153059b57eede5df3dc3a1d` completed backend-ci Run #144 / `45158457372` with overall conclusion `success`.
+- Exact-SHA jobs: `api-lint` completed/success; `verify migrations` completed/success; `backend` completed/success.
+- The PR was still Open, Draft and unmerged. The task-record/register update that records Run #144 will itself advance the Head, so a new run on the resulting final Head is required before claiming the updated branch is 3/3.
