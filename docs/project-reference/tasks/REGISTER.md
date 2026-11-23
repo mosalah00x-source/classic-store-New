@@ -65,6 +65,11 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | DB-005 | V5 | Payments/refunds/shipping/returns/outbox | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | DB-004 | PR-04-migrations.md | 2026-11-23 |
 | DB-006 | V6 | Distance and warehouse allocation functions | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | DB-005 | PR-04-migrations.md | 2026-11-23 |
 | DB-007 | V7 | Reservation uniqueness and order-item integrity guards | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | DB-006 | PR-04-migrations.md | 2026-11-23 |
+| DB-008 | ADM-1 | Add EDITOR role to store.user_role safely through Flyway | Planned | — | — | — | Not required | — | ADM-1 approval | Planned; no task file | 2026-11-23 |
+| DB-009 | ADM-1 | Append-only audit_log table and DB-enforced no-update/no-delete controls | Planned | — | — | — | Not required | — | ADM-1 approval | Planned; no task file | 2026-11-23 |
+| DB-010 | ADM-2 / categories | Enforce max category depth of two and prevent cycles; archive constraints | Planned | — | — | — | Not required | — | ADM-2; ADMIN-0 decisions | Planned; no task file | 2026-11-23 |
+| DB-011 | Category seed | Seed 15 parent + 9 child categories from reference HTML only | Planned | — | — | — | Not required | — | HTML source validation; DB-010 | Planned; no task file | 2026-11-23 |
+| DB-012 | ADM-6 | Store image metadata with relative storage key/path; no absolute path or localhost URL | Planned | — | — | — | Not required | — | Storage adapter design | Planned; no task file | 2026-11-23 |
 
 ## Operations / CI / hosting (OPS)
 
