@@ -19,8 +19,9 @@
 بعد دمج PR #32، تمت مزامنة النسخة المطابقة من `.github/workflows/backend-ci.yml` من `BackendApp` إلى فرع `docs/project-reference` في commit `19476ad4582e898f9f561bb25c78baf98d9d391e`. هذه مزامنة للملف المطلوب فقط، وليست ادعاءً بأن فرع التوثيق دُمج بالكامل مع `BackendApp`.
 
 - PR #31: [DOC-01](https://github.com/mosalah00x-source/classic-store-New/pull/31)
-- Head SHA بعد المزامنة: `19476ad4582e898f9f561bb25c78baf98d9d391e`
-- CI على Head الجديد: [UNV] حتى التحقق من اكتمال Workflow runs المطلوبة.
+- أول Head بعد مزامنة workflow: `19476ad4582e898f9f561bb25c78baf98d9d391e` — backend-ci Run #111 / `45154819810` بدأ، و`api-lint` نجح بينما `verify migrations` كان لا يزال يعمل عند آخر فحص.
+- Head الحالي لـ PR #31: `33bc2216103ebb69114502deb062a6cfbf614262` — backend-ci Run #113 / `45154884360` قيد التشغيل؛ `api-lint` نجح، و`verify migrations` ما زال يطبق migrations، و`backend` ينتظر نجاحه.
+- لا تُسجل هذه النتائج كنجاح كامل قبل اكتمال الوظائف الثلاث على Head الحالي.
 - PR #31 ما زال Draft وغير مدمج؛ لا يُحوّل إلى Ready ولا يُدمج دون مراجعة PO وإذنه الصريح.
 
 ### تحسين معماري لاحق — غير منفذ
