@@ -149,3 +149,13 @@ This DOC-02 extension changes documentation files only. PR #31 remains Draft and
 - Exact-SHA lookup returned no PR-triggered workflow run for the checkpoint Head. The earlier Run #115 remains verified success 3/3 on the older Head `96c8648ab5b7f3143149297e0b6f0ffae70b99af`; it does not validate DOC-02. Current Head CI is pending/[UNV].
 - The final PR file comparison contains documentation paths plus the already-scoped workflow path-filter synchronization; no application source, migrations, dependencies or environment files were added by DOC-02.
 - PR remains Draft. No Ready transition, merge, force push, base retarget or ADM-1 implementation was performed.
+
+
+## 2026-11-23 — Final DOC-02 checkpoint before CI revalidation
+
+- PR #31 remains Open, Draft and unmerged; base is `BackendApp`.
+- Checkpoint Head `fb727a2281b3c68c01bfd59c739ed0cb2af98de7` had Run #135 / `45158132139`. At inspection, `api-lint` had passed, `verify migrations` was running, and the run was not yet 3/3.
+- Two further task-record updates followed that checkpoint, so Run #135 is not the final Head validation.
+- The task register, PR #31 task record, DOC-02 task record, open-items, tech-debt and V5 report now distinguish historical Head Run #115, audit-start Run #116, checkpoint Run #135, and the need for a final exact-Head run.
+- The PR #31 self-referential Head SHA/CI field is treated as a live GitHub fact: the final SHA and run must be reported from PR metadata/workflow after the last documentation commit, not copied from an earlier checkpoint.
+- No PR state transition, approval, merge, force push, or application-code change was made.
