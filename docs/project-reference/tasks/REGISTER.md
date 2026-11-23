@@ -110,18 +110,19 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Pending PO review | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
-| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Pending PO review | DOC-001 | [DOC-002-tasks-system.md](./DOC-002-tasks-system.md) | 2026-11-23 |
+| DOC-001 | DOC-01 | Project reference and completion audit | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Pending — no direct PO comment/review found | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
+| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Pending — no direct PO comment/review found | DOC-001 | [DOC-002-tasks-system.md](./DOC-002-tasks-system.md) | 2026-11-23 |
 | DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Design decisions approved; PR #31 pending | — | [ADMIN-0.md](../ADMIN-0.md) | 2026-11-23 |
 | DOC-004 | ADM-1-plan | Report-only ADM-1 plan | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Not merged — Head CI is separate; read live PR checks | Not required | Implementation not authorized | DOC-001 + written PO authorization | [ADM-1-plan.md](../ADM-1-plan.md) | 2026-11-23 |
-| DOC-005 | DOC-03 | Post-merge close-out: update PR #31 self-record with final Merge SHA, Merge-SHA CI and PO approval evidence | Planned | Follow-up docs PR after #31 merges | — | — | Not required | Explicit PO approval required | DOC-001 merge | Created in DOC-03 follow-up PR | 2026-11-23 |
+| DOC-005 | DOC-03 | Close out PR #31 evidence; report-only documentation branch lifecycle assessment | In review | Follow-up PR (this branch) | — | Pending — check exact PR Head after final docs commit | Not required | Pending — PO comment/review not found on #31 | DOC-001 merge | [DOC-03-close-pr31.md](./DOC-03-close-pr31.md) | 2026-11-23 |
 
 ## Rules
 
 - PR #22–#30 are merged to `FrontendApp`. Each now has a verified `frontend-ci` push run on its exact Merge SHA; Run IDs are recorded in the matching FE row and detailed PR record.
 - PR #32 Merge-SHA push Run #110 / ID `45154657899` passed all three jobs on exact SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`.
-- PR #31 remains Draft/open/unmerged. Its self-record intentionally contains no final Head SHA or Merge SHA; read live PR metadata and exact-Head CI at review time.
-- DOC-03 is the planned small post-merge documentation PR to close out the self-referential PR #31 record.
+- PR #31 merged to `BackendApp` with Merge SHA `67dbd343185742c30ecb5d65eca939bd0efb9d68`; exact Merge-SHA push Run #186 / 45169011839 passed all 3 jobs. Final Head SHA and Head Run #185 are recorded in its canonical task record.
+- DOC-01 and DOC-02 remain `Merged`, not `Done`, because the explicit PO comment/review artifact has not been found.
+- DOC-03 is the current follow-up PR; its exact Head CI must be checked after the final documentation commit.
 - Never mark Done based on merge or Head CI alone. Update this register after every merge.
 
 
@@ -130,3 +131,11 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 - **Visual QA vocabulary:** Not required / Pending / Passed / Failed. For FE-006 (F3), only the PO-conceded subset is covered; remaining screenshots stay Pending. FE-007 (BN), FE-008 (F4) and FE-009 (#30) remain Pending.
 - **PR #31 validation:** current Head and matching CI must be read live from GitHub at the point of review; do not copy historical Head SHA or CI results into the self-record.
 - **Task detail links:** all started PR task rows link to their canonical files. Planned tasks without a detailed file remain register-only until work starts. PR #4 migration, PR #22–#32, ADM Epic and DOC-01/DOC-02 records are linked from their rows and the task README.
+
+
+## Open follow-ups — tracked, not authorized for implementation
+
+- **FE-home-categories-limit:** retain the eight-category cap as a proposed decision; prepare only a PR description for a “عرض كل التصنيفات” link to `/products`. No code change until explicit PO confirmation.
+- **A11Y-input-borders:** report-only contrast measurements for all input/control borders in light and dark themes; recommend a dedicated token at ≥3:1 while keeping decorative card borders subtle. No CSS change in DOC-03.
+- **BN-desktop-verify:** desktop viewport verification remains open; do not generalize mobile-only acceptance to desktop.
+- **DOC-BRANCH:** report-only assessment of the merged `docs/project-reference` branch. No deletion without explicit written PO approval.
