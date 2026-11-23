@@ -47,7 +47,7 @@ A task may become `Done` only when all are true:
 1. Its PR is merged.
 2. CI succeeded on the exact Merge SHA (not merely the PR Head SHA).
 3. The task documentation is complete and all required links resolve.
-4. Explicit PO approval is recorded with a direct link to the approval artifact; a merge event or later user confirmation is not approval.
+4. Explicit PO approval is recorded with a direct link to the PO's approval comment or submitted review; a PR description, merge event or later user confirmation is not approval.
 5. Visual QA is `Not required` or `Passed`. `Passed` requires PO-provided screenshot evidence and the recorded URL, locale, theme, viewport, DPR and zoom.
 
 Otherwise retain `Merged`, even if implementation is merged and Head/Merge CI passed. Never mark a task `Done` while its Visual QA is `Pending`.
