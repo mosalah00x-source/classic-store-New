@@ -34,7 +34,8 @@ Run #186 jobs and steps were rechecked after completion:
 
 ## PO approval and Visual QA
 
-- **PO approval:** Pending / [UNV]. At the DOC-03 review, PR #31 had no issue comments and no submitted reviews. The merge event is not treated as PO approval.
+- **PO approval for F3 (PR #27):** Explicit PO merge approval exists in [comment 7079714545](https://github.com/mosalah00x-source/classic-store-New/pull/27#issuecomment-7079714545). It accepts visual verification only for Home العربية 1440 Light/Dark، Home العربية 390 Light، and Home الإنجليزية 1440 Light; it explicitly excludes **Home الإنجليزية Dark، Home الإنجليزية 390، Home العربية 390 Dark** from visual verification. This PR #27 approval is separate from PR #31 and does not approve PR #31.
+- **PO approval for PR #31:** Pending / [UNV]. At the DOC-03 review, PR #31 had no issue comments and no submitted reviews. The merge event is not treated as PO approval.
 - **Visual QA:** Pending. The PO-provided visual states are not transcribed as Passed until the PO posts the specified comment and links the evidence on PR #31.
 - **Status remains `Merged`, not `Done`**, because the explicit PO approval artifact and recorded Visual QA gates are not yet present.
 
