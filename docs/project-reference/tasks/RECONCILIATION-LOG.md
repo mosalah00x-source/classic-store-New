@@ -325,3 +325,8 @@ Frontend task records are updated through documentation-only PRs from short-live
 - ENV-01 PR #34 is Draft on `FrontendApp`, Head `19667498fe74fadbad33fd697400c7385572aa0e`. Frontend CI Run #130 / [45170312530](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170312530) passed its frontend job and every step. `frontend/.gitignore` already contains the `.env*` ignore and `!.env.example` exception; the new file is present in PR changed files.
 - F8 PR #35 is Draft on `FrontendApp`, current Head `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0`. Run #132 failed TypeScript because the test assigned to readonly `process.env.NODE_ENV`; the test helper was corrected by removing that assignment. New final-Head Run #133 / [45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) was in progress at this log entry. Earlier failures are not represented as current success.
 - Both tasks are tracked in REGISTER as `In review` with canonical task records. No PR is marked Ready or merged.
+
+
+### Correction — F8 final Head CI completion [GH] (2026-11-23)
+
+The earlier DOC-03 log entry recorded Run #133 as in progress at that point in time. Run #133 / [45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) subsequently completed successfully on exact F8 Head SHA `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0`. The frontend job and every step completed/success, including Install dependencies, Lint, Typecheck, Unit tests, Production build and cleanup. No additional F8 source changes were made after this successful run.
