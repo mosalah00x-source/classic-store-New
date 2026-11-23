@@ -1,7 +1,8 @@
 # Task register — Classic Store
 
 **Repository:** mosalah00x-source/classic-store-New  
-**Canonical documentation branch:** docs/project-reference  
+**Canonical documentation base:** `BackendApp`  
+**Legacy merged docs branch:** `docs/project-reference` (retained pending PO deletion decision)  
 **Last live reconciliation:** 2026-11-23
 
 ## Status and field rules
