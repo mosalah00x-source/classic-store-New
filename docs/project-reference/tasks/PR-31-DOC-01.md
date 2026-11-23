@@ -13,10 +13,12 @@
 |---|---|
 | PR | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) |
 | Task branch / base | `docs/project-reference` / `BackendApp` |
-| Current Head SHA at audit start | `5da1c20a265c527375c932a9aa29241b9d4eac0b` |
+| Head before DOC-02 | `96c8648ab5b7f3143149297e0b6f0ffae70b99af` |
+| DOC-02 Head at reconciliation checkpoint | `458c7c2bed68c1acd1f755f4f051a7c134bb7ab9` |
 | Merge SHA | Not merged |
-| State | Open, Draft, mergeable |
-| Head CI | Run #116 / `45156874912` — started on exact Head SHA; two jobs passed while `backend` was still running at last check |
+| Merge SHA | Not merged |
+| State | Open, Draft, unmerged; latest metadata returned mergeable=false. Compare reports ahead 93 / behind 0; exact reason for mergeable=false remains [UNV] |
+| Earlier Head CI | Run #115 / `45155049507` — success 3/3 on exact `96c8648...`. Run #116 / `45156874912` was started on `5da1c20...` and was still in progress at first check. No PR-triggered run was returned for the DOC-02 checkpoint Head; current Head CI remains pending/[UNV] |
 | Merge-SHA CI | Not applicable until merged |
 | PO approval | Not approved; PR must remain Draft |
 
@@ -34,7 +36,7 @@
 
 ## Changed files
 
-See live PR #31 changed-file list. This task record is part of the current PR branch and will be refreshed after final DOC-02 commit.
+See the live PR #31 changed-file list. The DOC-02 register/template/reconciliation system is included in the same Draft PR.
 
 ## Database / API
 
@@ -61,6 +63,7 @@ Previous records existed under `docs/tasks/`, but this task creates the canonica
 
 - Finish DOC-02 register/reconciliation.
 - Recheck CI on the final PR Head after all commits.
+- Investigate why latest PR metadata reports mergeable=false before any Ready/merge consideration; do not force-update or retarget the branch.
 - PO review required before Ready or merge.
 - ENV-01 remains a separate follow-up.
 
@@ -69,10 +72,12 @@ Previous records existed under `docs/tasks/`, but this task creates the canonica
 | Claim | Evidence | Tag | Verified date |
 |---|---|---|---|
 | PR open/Draft/base/head | Live PR #31 metadata | [GH] | 2026-11-23 |
-| Run #116 and two successful jobs / backend in progress | Live workflow run and job data on exact Head SHA | [GH] | 2026-11-23 |
+| Run #115 passed 3/3 on 96c8648 | Live workflow run and jobs on exact Head SHA | [GH] | 2026-11-23 |
+| DOC-02 checkpoint Head has no returned PR run | Exact-SHA workflow lookup returned empty | [UNV] | 2026-11-23 |
+| mergeable=false cause | Compare reports ahead 93/behind 0; cause not established | [UNV] | 2026-11-23 |
 | PO approval/state transition | No approval supplied | [UNV] | 2026-11-23 |
 
 ## Review stamps
 
-- Reviewed by ChatGPT on 2026-11-23 against live PR #31 metadata, changed-file list and Run #116; result: still Draft/open, CI not yet 3/3 at time of check.
+- Reviewed by ChatGPT on 2026-11-23 against live PR #31 metadata, changed-file list and Run #116; result: still Draft/open; previous 96c8648 Head passed 3/3, DOC-02 checkpoint Head has no returned run; mergeable=false needs investigation.
 - Approved by PO: [UNV].
