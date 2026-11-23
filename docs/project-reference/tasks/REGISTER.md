@@ -115,7 +115,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Pending — no direct PO comment/review found | DOC-001 | [DOC-002-tasks-system.md](./DOC-002-tasks-system.md) | 2026-11-23 |
 | DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Design decisions approved; PR merged; task close-out gate tracked separately | — | [ADMIN-0.md](../ADMIN-0.md) | 2026-11-23 |
 | DOC-004 | ADM-1-plan | Report-only ADM-1 plan | Merged | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) — 3/3 success on exact Merge SHA | Not required | Plan merged; implementation not authorized | DOC-001 + separate written PO implementation approval | [ADM-1-plan.md](../ADM-1-plan.md) | 2026-11-23 |
-| DOC-005 | DOC-03 | Close out PR #31 evidence; report-only documentation branch lifecycle assessment | In review | [#33](https://github.com/mosalah00x-source/classic-store-New/pull/33) | — | Pending — check exact PR Head after final docs commit | Not required | Pending — PO comment/review not found on #31 | DOC-001 merge | [DOC-03-close-pr31.md](./DOC-03-close-pr31.md) | 2026-11-23 |
+| DOC-005 | DOC-03 | Close out PR #31 evidence; report-only documentation branch lifecycle assessment | In review | [#33](https://github.com/mosalah00x-source/classic-store-New/pull/33) | — | Run #195 / 45171119082 — 3/3 Success on exact Head SHA `ac0d4d97464881d17e0d2a7c860600916dfeec35` (pre-correction Head only; not valid for this update's new Head) | Not required | Pending — PO comment/review not found on #31 | DOC-001 merge | [DOC-03-close-pr31.md](./DOC-03-close-pr31.md) | 2026-11-23 |
 
 ## Rules
 
@@ -123,7 +123,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 - PR #32 Merge-SHA push Run #110 / ID `45154657899` passed all three jobs on exact SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`.
 - PR #31 merged to `BackendApp` with Merge SHA `67dbd343185742c30ecb5d65eca939bd0efb9d68`; exact Merge-SHA push Run #186 / 45169011839 passed all 3 jobs. Final Head SHA and Head Run #185 are recorded in its canonical task record.
 - DOC-01 and DOC-02 remain `Merged`, not `Done`, because the explicit PO comment/review artifact has not been found.
-- DOC-03 is the current follow-up PR; its exact Head CI must be checked after the final documentation commit.
+- DOC-03 Run #195 / 45171119082 passed 3/3 on exact pre-correction Head `ac0d4d97464881d17e0d2a7c860600916dfeec35`; it does not validate the commits that add this correction. A fresh run matching the new final PR Head is required.
 - Never mark Done based on merge or Head CI alone. Update this register after every merge.
 
 
