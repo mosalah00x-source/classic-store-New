@@ -16,6 +16,7 @@
 - [نظام سجل المهام](./tasks/README.md)
 - [السجل الرئيسي حسب المجالات](./tasks/REGISTER.md)
 - [سجل المطابقة مع GitHub](./tasks/RECONCILIATION-LOG.md)
+- [Epic الإدارة ADM-0..ADM-8](./tasks/ADM-EPIC.md)
 - [تقرير المشروع V5 — الحالة الحالية](../reports/CLASSICSTORE_PROJECT_SUMMARY_AND_IMPLEMENTATION_REPORT_V5.md)
 
 ## ترتيب القراءة
