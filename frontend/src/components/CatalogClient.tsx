@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter, Link } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import type { CatalogCategory, CatalogFilters, ProductPage, ProductSummary } from '@/lib/catalog-types';
+import { readJsonResponse } from '@/lib/safe-json';
 import { hasMoreCatalogPages, mergeProductItems } from '@/lib/catalog-filters';
 import { onProductImageError, PRODUCT_IMAGE_PLACEHOLDER } from '@/lib/product-image';
 import { formatPrice } from '@/lib/price-format';
@@ -108,12 +109,12 @@ export function CatalogClient({ initialPage, categories, initialFilters }: Props
     });
     try {
       const response = await fetch(`/api/catalog/products?${params.toString()}`, { headers: { Accept: 'application/json' } });
-      const payload = await response.json();
-      if (!response.ok) {
+      const payload = await readJsonResponse<ProductPage>(response);
+      if (!response.ok || !payload || !Array.isArray(payload.content)) {
         setError(response.status === 400 ? t('invalidFilters') : t('errorMessage'));
         return;
       }
-      const next = payload as ProductPage;
+      const next = payload;
       setItems((current) => mergeProductItems(current, next.content));
       setPage(next);
     } catch {

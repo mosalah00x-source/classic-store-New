@@ -1,5 +1,6 @@
 import { handleCatalogMock, isCatalogMockEnabled } from './catalog-mock-handlers';
 import type { ProductPage } from './catalog-types';
+import { readJsonResponse } from './safe-json';
 
 export type ProductDetailBrand = { id: string; name: string; slug: string };
 export type ProductDetailCategory = {
@@ -138,7 +139,7 @@ async function getShowcaseProductDetail(slug: string): Promise<ProductDetail> {
 
 function apiBaseUrl(): string {
   const value = process.env.API_BASE_URL;
-  if (!value) throw new Error('API_BASE_URL must be configured on the server');
+  if (!value) throw new ProductDetailRequestError('تعذر تحميل تفاصيل المنتج.', 0);
   return value.replace(/\/$/, '');
 }
 
@@ -153,15 +154,22 @@ export async function getProductDetail(
     return mocked;
   }
 
-  const baseUrl = environment.API_BASE_URL?.replace(/\/$/, '') ?? apiBaseUrl();
-  const response = await fetch(`${baseUrl}/products/${encodeURIComponent(slug)}`, {
-    method: 'GET',
-    headers: { Accept: 'application/json' },
-    cache: 'no-store'
-  });
+  const configuredBaseUrl = environment.API_BASE_URL?.trim();
+  const baseUrl = configuredBaseUrl ? configuredBaseUrl.replace(/\/$/, '') : apiBaseUrl();
+
+  let response: Response;
+  try {
+    response = await fetch(`${baseUrl}/products/${encodeURIComponent(slug)}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store'
+    });
+  } catch {
+    throw new ProductDetailRequestError('تعذر تحميل تفاصيل المنتج.', 0);
+  }
 
   if (!response.ok) {
-    const payload = (await response.json().catch(() => undefined)) as ProductDetailApiError | undefined;
+    const payload = await readJsonResponse<ProductDetailApiError>(response);
     throw new ProductDetailRequestError(
       payload?.messageAr ?? (response.status === 404 ? 'المنتج غير موجود.' : 'تعذر تحميل تفاصيل المنتج.'),
       response.status,
@@ -169,5 +177,9 @@ export async function getProductDetail(
     );
   }
 
-  return (await response.json()) as ProductDetail;
+  const product = await readJsonResponse<ProductDetail>(response);
+  if (product === undefined || product === null) {
+    throw new ProductDetailRequestError('تعذر تحميل تفاصيل المنتج.', response.status);
+  }
+  return product;
 }
