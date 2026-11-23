@@ -95,7 +95,7 @@ The branch contained legacy task notes under `docs/tasks/` and an existing parti
 | 6 | Close-out protocol | `README.md` § Close-out protocol after every merge | Present | Requires a small docs PR, fresh live metadata/Timeline/CI review, follow-up rows and Merged until every Done gate closes. |
 | 7 | Periodic reconciliation | `README.md` § Periodic reconciliation protocol; `RECONCILIATION-LOG.md` | Present | Append-only discrepancy/correction log; reconcile after every merge and on PO request. |
 | 8 | Initial seed/population | `README.md` § Seed / initial population; `REGISTER.md` domain tables; PR-04, PR-22…PR-32 and ADM Epic records | Present | Seeds existing PR history, V1–V7, ADM roadmap and planned FE/BE/DB/OPS/SEC/QA/DOC rows; planned tasks remain rows until started. |
-| 9 | PR #31-specific requirements | `PR-31-DOC-01.md`; live PR #31 metadata/Files changed; `README.md` self-record rule | Partially present | PR remains Draft/open; self-record has Head/Merge placeholders; no application source or ADM-1 implementation. Final exact-Head CI must be rechecked after this final commit and PO review is still pending. |
+| 9 | PR #31-specific requirements | `PR-31-DOC-01.md`; live PR #31 metadata/Files changed; `README.md` self-record rule | Partially present | PR remains Draft/open; self-record has Head/Merge placeholders; no application source or ADM-1 implementation. CI is verified from the live PR Head at each review rather than copied into the self-record; PO review/approval remains pending. |
 
 The matrix reports evidence as it exists on this branch; it does not imply PO acceptance or completion of PR #31.
 
@@ -114,5 +114,5 @@ The matrix reports evidence as it exists on this branch; it does not imply PO ac
 
 ## Review stamps
 
-- Reviewed by ChatGPT on 2026-11-23 against live GitHub PR metadata, changed-file lists and workflow runs; result: canonical task system and redirects implemented; PR #31 final exact-Head CI and PO review remain pending.
+- Reviewed by ChatGPT on 2026-11-23 against live GitHub PR metadata, changed-file lists and workflow runs; result: canonical task system and redirects implemented; PR #31 remains Draft and PO review/approval is pending. Current Head CI is reported from live GitHub at review time.
 - Approved by PO: [UNV].
