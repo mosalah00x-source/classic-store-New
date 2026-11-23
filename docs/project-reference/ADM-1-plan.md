@@ -311,24 +311,9 @@ V9 لا تُكتب قبل حسم شكل الجداول ومصدر schema immutab
 
 **فجوة تشغيلية:** workflow الحالي يستهدف `BackendApp` فقط. PR التوثيق الذي يستهدف BackendApp لا يشغّل backend-ci من أجل Markdown فقط؛ لأن path filters تستثني `docs/api/*.md` ولا تشمل `docs/project-reference/**`. إذا غيّر PR ملف OpenAPI أو `redocly.yaml` قد يعمل api-lint. لا تتوقع تشغيل backend job لمجرد إضافة docs Markdown. لا تتوقع تشغيل backend job لمجرد إضافة docs markdown.
 
-## CI-01 — تشغيل الفحوص المطلوبة مع PRs التوثيق [TECHNICAL DEBT]
+## 10.1 إحالة إلى الدَين التقني
 
-### المشكلة
-يستخدم `.github/workflows/backend-ci.yml` مرشحات `paths` على مستوى `push` و`pull_request`. قبل إصلاح CI-01، كانت هذه المرشحات لا تشمل `docs/project-reference/**` أو `docs/README.md`. لذلك PR توثيق يستهدف `BackendApp` ولا يغيّر مسارًا مشمولًا لا ينشئ Workflow run أصلًا؛ وتظل الفحوص المطلوبة في Branch Protection بحالة `Expected — Waiting for status to be reported` بدل أن تفشل أو تنجح.
-
-### الحل المؤقت المعتمد في PR الإصلاح
-إضافة المسارين التاليين فقط إلى قائمتي `paths` في كل من `push` و`pull_request`:
-- `docs/project-reference/**`
-- `docs/README.md`
-
-يظل الاستثناء `!docs/api/*.md` كما هو، ولا تتغير أسماء jobs المطلوبة (`verify migrations` و`api-lint` و`backend`)، ولا إعدادات Branch Protection أو خطوات jobs أو Dependencies أو Actions الخارجية. نتيجة ذلك أن PRs التوثيق التي تستهدف `BackendApp` ستشغّل اختبارات Backend والتحقق من migrations وAPI lint أيضًا؛ وهذه تكلفة CI إضافية مقبولة مؤقتًا.
-
-### البدائل الأنظف لاحقًا — غير منفذة
-1. إزالة فلتر المسارات من مستوى الـ workflow، والإبقاء على trigger للـ PR، ثم وضع شروط داخلية على مستوى كل job بحيث تُنفذ الوظائف المطلوبة بحسب الملفات المتغيرة. يجب الحفاظ على أسماء check contexts المطلوبة والتحقق عمليًا من أن job المتخطية بشرط تُسجل نجاحًا مقبولًا في Branch Protection.
-2. Workflow مكمّل لمسارات التوثيق يبلّغ بنفس أسماء الـ jobs المطلوبة، مع ضمان عدم وجود تعارض أو check contexts مكررة أو غموض في مصدر الحالة. يجب اختبار سلوك Branch Protection قبل اعتماده.
-
-### الحالة
-CI-01 **دَين تقني مسجل وغير منفذ كتحسين معماري**. التعديل المؤقت في workflow منفصل عن هذا المستند ويحتاج PR وموافقة دمج مستقلة. لا تعتبر هذه الوثيقة دليلًا على نجاح الفحوص؛ حالة التشغيل والـ Run IDs والـ Head SHAs تُثبت من GitHub Actions لكل PR على حدة.
+سجل CI-01 وتاريخه التشغيلي موجود في [`tech-debt.md`](./tech-debt.md). لا يغيّر هذا سجل خطة ADM-1 أو يجيز بدء تنفيذها.
 
 ---
  
