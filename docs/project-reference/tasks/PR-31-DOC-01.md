@@ -14,11 +14,11 @@
 | PR | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) |
 | Task branch / base | `docs/project-reference` / `BackendApp` |
 | Audit-start Head SHA | `5da1c20a265c527375c932a9aa29241b9d4eac0b` |
-| Latest checkpoint before this record update | `fb727a2281b3c68c01bfd59c739ed0cb2af98de7` |
+| Latest validated Head before this record update | `ba2dbc9a734f7cdfc153059b57eede5df3dc3a1d` |
 | Merge SHA | Not merged |
 | State | Open, Draft; not merged |
 | Head CI at audit-start | Run #116 / `45156874912` — two jobs passed; backend was running |
-| Latest checkpoint CI | Run #135 / `45158132139` — queued/in progress on exact checkpoint SHA when inspected; api-lint passed, verify-migrations was running |
+| Latest validated CI | Run #144 / `45158457372` — success 3/3 on exact Head `ba2dbc9a734f7cdfc153059b57eede5df3dc3a1d`; api-lint, verify migrations and backend all passed |
 | Merge-SHA CI | Not applicable until merged |
 | PO approval | Not approved; PR must remain Draft |
 
@@ -46,7 +46,7 @@ No database migrations, tables, seeds, OpenAPI paths or API fields are changed b
 
 | Test / workflow | Result | Exact SHA / Run |
 |---|---|---|
-| Backend CI | Pending final Head check | Current latest Head and matching workflow run must be confirmed after this record update |
+| Backend CI | New Head check required after this record update | Current latest Head and matching workflow run must be confirmed after this record update |
 
 ## Visual QA
 
