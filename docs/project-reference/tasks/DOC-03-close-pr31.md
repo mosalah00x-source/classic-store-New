@@ -40,9 +40,11 @@ At the time of this review, PR #31 has no issue comments and no submitted review
 
 - The branch `docs/project-reference` still exists after PR #31 merged.
 - PR #31 was merged into `BackendApp`; the current `BackendApp` ref points to Merge SHA `67dbd343185742c30ecb5d65eca939bd0efb9d68`.
-- The task-system README calls `docs/project-reference` the canonical documentation branch. The register header and the PR #31 task record also refer to it.
+- The task-system README and REGISTER now identify `BackendApp` as the canonical documentation base and label `docs/project-reference` as the legacy merged branch retained pending the PO decision. PR-31-DOC-01 records it as the original task branch.
 - The canonical task files are now present on `BackendApp`; DOC-03 and later documentation changes can use short-lived branches created from current `BackendApp`.
-- A GitHub code-search query for the exact branch path returned zero results but was marked incomplete. This is not proof that no additional references exist. No workflow dependency on the branch name has been established by this search.
+- `.github/workflows/backend-ci.yml` contains `docs/project-reference/**` in both push and pull_request path filters. This is a repository-path filter, not a branch-ref dependency; deleting the Git branch does not itself remove the path-based CI trigger.
+- Known documentation references include the former canonical-branch labels in the task README/register (now corrected), the PR-31 original-branch field, and this DOC-03 audit. The append-only reconciliation log also records the branch name.
+- GitHub exact-path code search returned zero matches but was marked incomplete, so the inventory cannot be certified exhaustive. No other workflow branch-ref dependency was found in the inspected workflow.
 
 ### Trade-offs
 
