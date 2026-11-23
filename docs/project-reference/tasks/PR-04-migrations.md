@@ -16,7 +16,7 @@
 - Merged at: 2026-11-10 13:05:24 UTC.
 - Merged by / method: `mosalah00x-source` (GitHub merged_by and [Timeline merged event](https://github.com/mosalah00x-source/classic-store-New/issues/events/35682975123)); merge strategy [UNV] because the event does not expose it.
 - PR body cites Run 42811449596 success on the exact Head SHA. Merge-SHA push CI: [Run #12 / 42821341163](https://github.com/mosalah00x-source/classic-store-New/actions/runs/42821341163) — success on exact Merge SHA; both available jobs (`verify migrations`, `backend`) completed/success.
-- PO approval: explicit source-conversion/hash approval is recorded in the [PR #4 description](https://github.com/mosalah00x-source/classic-store-New/pull/4); no separate review/comment URL was captured.
+- PO approval: Not found — no explicit PO approval comment/review URL was captured. The PR description mentions source/hash approval, but it is not a comment/review artifact.
 
 ## Migration inventory — files inspected on BackendApp
 
@@ -61,4 +61,4 @@ Any migration/source lock/hash change requires new explicit PO approval. Merge S
 ## Review stamps
 
 - Reviewed by ChatGPT on 2026-11-23 against live PR #4 metadata, changed-file list and BackendApp migration files; migration inventory recorded, Merge SHA/actor/method/merge-CI remain [UNV].
-- Approved by PO: explicit source/hash approval in [PR #4 description](https://github.com/mosalah00x-source/classic-store-New/pull/4); no separate comment/review URL captured.
+- Approved by PO: Not found; no explicit PO approval comment/review URL. The PR description contains source/hash text but is not counted as a comment/review approval.
