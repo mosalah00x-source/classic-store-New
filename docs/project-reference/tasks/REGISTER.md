@@ -58,7 +58,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DB-001 | V1 | Baseline schema, extensions, identity/users, addresses/settings | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | — | PR-04-migrations.md | 2026-11-23 |
+| DB-001 | V1 | Baseline schema, extensions, identity/users, addresses/settings | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | [UNV] | [UNV] | Not required | Hash approval stated in PR #4 body | — | PR-04-migrations.md | 2026-11-23 |
 | DB-002 | V2 | Brands/categories/products/variants/images/coupons | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | DB-001 | PR-04-migrations.md | 2026-11-23 |
 | DB-003 | V3 | Warehouses/inventory/movements | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | DB-002 | PR-04-migrations.md | 2026-11-23 |
 | DB-004 | V4 | Carts/orders/order items/fulfillment/reservations | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | DB-003 | PR-04-migrations.md | 2026-11-23 |
@@ -74,7 +74,10 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | OPS-002 | CI architecture | Replace workflow-level filters safely while preserving required contexts | Deferred | — | — | — | Not required | — | OPS-001 | Planned; no file | 2026-11-23 |
 | OPS-003 | Branch protection | Document/verify required check contexts | Planned | — | — | — | Not required | — | CI architecture | Planned; no file | 2026-11-23 |
 | OPS-004 | Local stack | Repeatable local Backend + PostgreSQL startup/health/migration flow | Planned | — | — | — | Not required | — | — | Planned; no file | 2026-11-23 |
-| OPS-005 | Cloud release | Hosting, backup, monitoring and restore after local acceptance | Deferred | — | — | — | Not required | — | Local acceptance + Q4 | Planned; no file | 2026-11-23 |
+| OPS-005 | Cloud release | Hosting after local completion and acceptance | Deferred | — | — | — | Not required | — | Local acceptance + Q4 | Planned; no file | 2026-11-23 |
+| OPS-006 | Backup/monitoring | Production backup, restore drill and monitoring | Deferred | — | — | — | Not required | — | OPS-005 | Planned; no file | 2026-11-23 |
+| OPS-007 | ENV-01 | Add frontend/.env.example and verify .gitignore exception | Planned | — | — | — | Not required | — | Verify actual env variables; separate PR after DOC-01 | Planned; no file | 2026-11-23 |
+| OPS-008 | Image storage | Local-first upload/storage adapter; cloud provider choice deferred | Planned | — | — | — | Not required | — | ADM-6 | ADM-EPIC.md | 2026-11-23 |
 
 ## Security (SEC)
 
@@ -100,8 +103,8 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Pre-DOC-02 Head 96c8648 / Run #115 success 3/3; new Head pending | Not required | Pending PO review | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
-| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In progress | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Pending | DOC-001 | [DOC-02.md](./DOC-02.md) | 2026-11-23 |
+| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Head 5da1c20 / Run #116 in progress (2 jobs passed; backend running); final-head recheck pending | Not required | Pending PO review | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
+| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In progress | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Pending | DOC-001 | [DOC-02.md](./DOC-002-tasks-system.md) | 2026-11-23 |
 | DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Design decisions approved; PR #31 pending | — | ../ADMIN-0.md | 2026-11-23 |
 | DOC-004 | ADM-1-plan | Report-only ADM-1 plan | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Implementation not authorized | DOC-001 + written PO authorization | ../ADM-1-plan.md | 2026-11-23 |
 
@@ -111,3 +114,10 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 - PR #32 Merge-SHA push Run #110 is success with all three jobs on exact SHA 4303bfe….
 - PR #31 remains Draft/unmerged. The previous Head 96c8648… had Run #115 success 3/3; DOC-02 requires a new Head run.
 - Never mark Done based on merge or Head CI alone. Update this register after every merge.
+
+
+## Additional task-register controls
+
+- **Visual QA vocabulary:** Not required / Pending / Passed / Failed. For FE-006 (F3), only the PO-conceded subset is covered; remaining screenshots stay Pending. FE-007 (BN), FE-008 (F4) and FE-009 (#30) remain Pending.
+- **PR #31 validation:** the earlier Head `96c8648…` Run #115 (3/3) is historical. Current audit-start Head `5da1c20…` Run #116 had `verify migrations` and `api-lint` pass while `backend` was still running; recheck the final Head after the last DOC-02 commit.
+- **Task detail links:** PR #22–#30 and #32 are in this directory; PR #4 migration record remains PR-04-migrations.md; PR #31 and DOC-02 use the exact filenames linked in the DOC table.
