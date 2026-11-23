@@ -50,6 +50,8 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | BE-010 | ADM-6 | Image upload/storage adapter and homepage content | Planned | — | — | — | Not required | — | ADM-1, ADM-2 | ADMIN-0 roadmap | 2026-11-23 |
 | BE-011 | ADM-7 | Orders/users/settings administration | Planned | — | — | — | Not required | — | Cart/checkout, ADM | ADMIN-0 roadmap | 2026-11-23 |
 | BE-015 | ADM-8 | Admin hardening and acceptance APIs/security | Planned | — | — | — | Not required | — | ADM-1–ADM-7 | ADMIN-0 roadmap | 2026-11-23 |
+| BE-016 | Price contract | Define compareAtPrice, backend-derived discountPercent and isNew in OpenAPI/API and tests | Planned | — | — | — | Not required | — | ADM-5; PO decisions | Planned; no task file | 2026-11-23 |
+| BE-017 | First Admin bootstrap | One-time protected first-admin creation, forced password change; public signup CUSTOMER-only | Planned | — | — | — | Not required | — | ADM-1 approval | Planned; no task file | 2026-11-23 |
 | BE-014 | ADM-5 | Product/variant/price management API | Planned | — | — | — | Not required | — | ADM-2 | ADMIN-0 roadmap | 2026-11-23 |
 | BE-013 | ADM-4 | Category management API and lifecycle rules | Planned | — | — | — | Not required | — | ADM-2 | ADMIN-0 roadmap | 2026-11-23 |
 | BE-012 | ADM-3 | Admin frontend shell and Next.js BFF session | Planned | — | — | — | Not required | — | ADM-1 | ADMIN-0 roadmap | 2026-11-23 |
