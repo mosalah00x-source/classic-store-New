@@ -140,3 +140,12 @@ This correction is appended rather than silently rewriting the original observat
 ### No workflow or application changes
 
 This DOC-02 extension changes documentation files only. PR #31 remains Draft and unmerged; no Ready transition, merge, or ADM-1 implementation was performed.
+
+
+## 2026-11-23 — PR #31 final DOC-02 checkpoint
+
+- Live PR metadata: #31 remains open, Draft and unmerged; base BackendApp; head at checkpoint `b53db4b442c7df0c24c5257fcf4ed1d18cd57458`.
+- GitHub returned `mergeable=false` at this checkpoint. Compare metadata reports `ahead_by=93`, `behind_by=0`, status `ahead`; this does not establish the reason for the false mergeable flag. The cause is [UNV] and must be investigated before any Ready/merge consideration.
+- Exact-SHA lookup returned no PR-triggered workflow run for the checkpoint Head. The earlier Run #115 remains verified success 3/3 on the older Head `96c8648ab5b7f3143149297e0b6f0ffae70b99af`; it does not validate DOC-02. Current Head CI is pending/[UNV].
+- The final PR file comparison contains documentation paths plus the already-scoped workflow path-filter synchronization; no application source, migrations, dependencies or environment files were added by DOC-02.
+- PR remains Draft. No Ready transition, merge, force push, base retarget or ADM-1 implementation was performed.
