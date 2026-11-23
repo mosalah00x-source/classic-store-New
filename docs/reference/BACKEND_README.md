@@ -1,0 +1,18 @@
+> نسخة مرجعية من الفرع BackendApp (المسار الأصلي: backend/README.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
+> **Central documentation copy**
+>
+> Original source: `BackendApp/backend/README.md`  
+> Source blob: `6d200ee15b406b78d51ba8710e2e786c405697a4`  
+> Content preserved from the source branch.
+
+---
+
+# Classic Store Backend Skeleton
+
+- Java: 21
+- Spring Boot: 3.4.2
+- Build: `./mvnw -B verify`
+
+This task intentionally contains no persistence layer, JPA, Flyway, or database driver.
+The correlation filter is installed inside the Spring Security chain so trace IDs are available for authentication failures as well as controller responses.

@@ -1,3 +1,5 @@
+> نسخة مرجعية من الفرع BackendApp (المسار الأصلي: docs/decisions/T-07-identity-derived-contracts.md). المصدر المعتمد: docs/project-reference. تاريخ النسخ: 19 نوفمبر 2026.
+
 # T-07 Identity — Derived Contract Decisions
 
 Status: implementation decisions authorized by Product Owner on 11 November 2026. This document does not amend SRS v1.1.1 or introduce endpoints.
