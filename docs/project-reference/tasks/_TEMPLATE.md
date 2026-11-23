@@ -16,9 +16,9 @@
 | Task branch / base branch | [UNV] |
 | Head SHA / Merge SHA | [UNV] |
 | Merged at (UTC) | [UNV] |
-| Merged by / method | [UNV] — verify Timeline; do not infer |
-| Head CI Run ID / result | [UNV] |
-| Merge-SHA CI Run ID / result | [UNV] |
+| Merged by / method | [UNV] — verify PR Timeline; do not infer |
+| Head CI Run ID / result | [UNV] — exact Head SHA required |
+| Merge-SHA CI Run ID / result | [UNV] — exact Merge SHA required |
 | PO approval | [UNV] — explicit approval link required |
 
 ## Goal and scope
@@ -59,11 +59,11 @@
 
 ## Issues and lessons
 
-- 
+-
 
 ## Open items and follow-up tasks
 
-- 
+-
 
 ## Claim verification
 
