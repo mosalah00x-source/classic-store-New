@@ -20,8 +20,8 @@
 
 - PR #31: [DOC-01](https://github.com/mosalah00x-source/classic-store-New/pull/31)
 - أول Head بعد مزامنة workflow: `19476ad4582e898f9f561bb25c78baf98d9d391e` — backend-ci Run #111 / `45154819810` بدأ، و`api-lint` نجح بينما `verify migrations` كان لا يزال يعمل عند آخر فحص.
-- Head الحالي لـ PR #31: `33bc2216103ebb69114502deb062a6cfbf614262` — backend-ci Run #113 / `45154884360` قيد التشغيل؛ `api-lint` نجح، و`verify migrations` ما زال يطبق migrations، و`backend` ينتظر نجاحه.
-- لا تُسجل هذه النتائج كنجاح كامل قبل اكتمال الوظائف الثلاث على Head الحالي.
+- Head الذي بدأ عليه Run #113: `33bc2216103ebb69114502deb062a6cfbf614262` — backend-ci Run #113 / `45154884360` كان قيد التشغيل عند آخر فحص؛ `api-lint` نجح، و`verify migrations` كان يطبق migrations، و`backend` ينتظر نجاحه.
+- بعد تسجيل هذه الحالة، تقدمت تحديثات سجل التدقيق على فرع PR #31 إلى Head `92cae568ddc791d668b2886fbf481242467188d9`. لا يوجد حتى الآن Run موثق على هذا الـ Head الأحدث؛ لذلك CI النهائي على PR #31 [UNV].
 - PR #31 ما زال Draft وغير مدمج؛ لا يُحوّل إلى Ready ولا يُدمج دون مراجعة PO وإذنه الصريح.
 
 ### تحسين معماري لاحق — غير منفذ
