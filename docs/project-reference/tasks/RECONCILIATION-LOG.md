@@ -237,3 +237,22 @@ This supersedes the earlier [UNV] Merge-SHA CI claims for PR #22–#30. These ar
 - FE-006 (F3), FE-007 (BN), FE-008 (F4) and FE-009 (Mega Menu/#30) remain `Merged` with Visual QA `Pending`; none is marked `Done` or `Passed`.
 - No task row is marked `Done`.
 - PR #31 remains `In review` / Draft; DOC-03 is `Planned`.
+
+
+### Legacy/canonical blob comparison snapshot [GH]
+
+The following blob SHAs were captured from the two directories before the legacy files were replaced with redirects. A different SHA confirms the files were distinct versions; it does not by itself describe semantic differences.
+
+| PR | Original legacy blob SHA (`docs/tasks`) | Canonical blob SHA at comparison (`docs/project-reference/tasks`) | Difference |
+|---:|---|---|---|
+| #22 | `359d45a06ff50484d8657326fecc2d0f4f03dc39` | `34c99e5a6d6227f6f2f9000405e019a23b94460f` | Different legacy compact Arabic note vs standardized canonical task record |
+| #23 | `5dd8bbfeae65fe8cb8db44636a61f11362f6b626` | `6a7a61237e03b9015bfa2564e6611463c454056a` | Different legacy compact Arabic note vs standardized canonical task record |
+| #24 | `4fcf0e457e978160ac5930c064aad0994d5afbcf` | `05f7be2c256dffb70147d40d255c74ad0fc40a15` | Different legacy compact Arabic note vs standardized canonical task record |
+| #25 | `525c9e5c709b0488a796f4794e6373c0d31f5bd8` | `5e13dfaab939e5e915680c1f55bdbea8c0efdd35` | Different legacy compact Arabic note vs standardized canonical task record |
+| #26 | `18f7dde0a27ee3d0565a84e19567ea440f129a66` | `d6a72ff7c50097e263f179b22572d87b6bf7fab8` | Different legacy compact Arabic note vs standardized canonical task record |
+| #27 | `a307e57c3735695180a2faef317555b7dd3603d1` | `944683c34729dbc93d995eb53ed0501ed30807d0` | Different legacy compact Arabic note vs standardized canonical task record |
+| #28 | `5ac7e234dc0efbe7aa569bf9991176b150590aed` | `26cd4c8edd0ab87623776c905b88babf9e4bab8d` | Different legacy compact Arabic note vs standardized canonical task record |
+| #29 | `6d17e4ccf440971d8712dae04c25f9c8c6eab234` | `f4170e5365d83f4136d51eec02bd976cd070f1d5` | Different legacy compact Arabic note vs standardized canonical task record |
+| #30 | `0c094fe7f2acf3c97622e9b67cd97811375c7708` | `fdb88cf20ce6e22d0e50350f07b7899f404452de` | Different legacy compact Arabic note vs standardized canonical task record |
+
+At comparison time the canonical records included the expanded evidence sections (Head CI, Merge-SHA CI, approvals, Visual QA, claim verification and review stamps); the legacy versions had earlier/shorter summaries. Current legacy paths now contain redirects only, so future edits must be made exclusively in the canonical directory.
