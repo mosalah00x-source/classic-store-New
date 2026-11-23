@@ -159,3 +159,10 @@ This DOC-02 extension changes documentation files only. PR #31 remains Draft and
 - The task register, PR #31 task record, DOC-02 task record, open-items, tech-debt and V5 report now distinguish historical Head Run #115, audit-start Run #116, checkpoint Run #135, and the need for a final exact-Head run.
 - The PR #31 self-referential Head SHA/CI field is treated as a live GitHub fact: the final SHA and run must be reported from PR metadata/workflow after the last documentation commit, not copied from an earlier checkpoint.
 - No PR state transition, approval, merge, force push, or application-code change was made.
+
+
+## 2026-11-23 — Status-vocabulary correction
+
+- A final rule review found the existing `ADM-EPIC.md` and `REGISTER.md` labeled ADM-0 / DOC-003 “Done as decision record only”.
+- This conflicts with DOC-02's fixed rule that `Done` requires a merged PR, Merge-SHA CI, complete documentation, explicit PO approval link and Visual QA `Not required` or `Passed`.
+- Corrected ADM-0 and DOC-003 to `In review` because their documentation is still inside unmerged Draft PR #31. The underlying PO design decisions remain approved; the documentation task is not complete until its PR gates close.
