@@ -5,8 +5,10 @@
 - **Domain:** Documentation
 - **Status:** In review
 - **Repository:** mosalah00x-source/classic-store-New
+- **PR:** [#33](https://github.com/mosalah00x-source/classic-store-New/pull/33)
 - **Branch:** `docs/doc-03-close-pr31`
 - **Base:** `BackendApp`
+- **Initial PR Head SHA:** `725f21791be36745d56108fc87e1fdf0b77c69ae` (subsequent documentation commits may advance it; use live PR metadata for final CI)
 
 ## Goal and scope
 
