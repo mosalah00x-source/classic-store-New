@@ -21,7 +21,8 @@
 - PR #31 ما زال Open وDraft وغير مدمج، ويستهدف `BackendApp`.
 - Head سابق قبل DOC-02: `96c8648ab5b7f3143149297e0b6f0ffae70b99af`; Run #115 / `45155049507` — success، 3/3 على SHA نفسه.
 - Head وقت بدء DOC-02 audit: `5da1c20a265c527375c932a9aa29241b9d4eac0b`; Run #116 / `45156874912` — `verify migrations` و`api-lint` نجحا، بينما `backend` كان لا يزال قيد التنفيذ عند آخر قراءة.
-- **لا يُنقل نجاح Run #115 إلى Head جديد.** يلزم إعادة فحص Run على أحدث Head بعد اكتمال كل commits الخاصة بـ DOC-02، وتسجيل 3/3 فقط عند اكتمال الوظائف على SHA مطابق.
+- Checkpoint لاحق: `fb727a2281b3c68c01bfd59c739ed0cb2af98de7`; Run #135 / `45158132139` — `api-lint` نجح و`verify migrations` كان قيد التشغيل وقت الفحص. تلاه تحديثان لسجلي المهام.
+- **لا يُنقل نجاح Run #115 أو أي Run على Head سابق إلى Head جديد.** يلزم إعادة فحص Run على أحدث Head بعد اكتمال كل commits الخاصة بـ DOC-02، وتسجيل 3/3 فقط عند اكتمال الوظائف على SHA مطابق.
 - مزامنة workflow من BackendApp إلى فرع التوثيق في commit `19476ad4582e898f9f561bb25c78baf98d9d391e` كانت مزامنة ملف واحد، وليست merge كاملًا لفرع BackendApp.
 - PR #31 يبقى Draft ولا يتحول إلى Ready ولا يدمج دون مراجعة PO وإذنه الصريح.
 
