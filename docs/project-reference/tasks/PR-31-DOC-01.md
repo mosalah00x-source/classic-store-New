@@ -14,11 +14,11 @@
 | PR | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) |
 | Task branch / base | `docs/project-reference` / `BackendApp` |
 | Head before DOC-02 | `96c8648ab5b7f3143149297e0b6f0ffae70b99af` |
-| DOC-02 Head at reconciliation checkpoint | `458c7c2bed68c1acd1f755f4f051a7c134bb7ab9` |
+| DOC-02 Head at reconciliation checkpoint | `82c4f11898b5201eb012ab1021966605baf28e93` |
 | Merge SHA | Not merged |
 | Merge SHA | Not merged |
 | State | Open, Draft, unmerged; latest metadata returned mergeable=false. Compare reports ahead 93 / behind 0; exact reason for mergeable=false remains [UNV] |
-| Earlier Head CI | Run #115 / `45155049507` — success 3/3 on exact `96c8648...`. Run #116 / `45156874912` was started on `5da1c20...` and was still in progress at first check. No PR-triggered run was returned for the DOC-02 checkpoint Head; current Head CI remains pending/[UNV] |
+| Earlier Head CI | Run #115 / `45155049507` — success 3/3 on exact `96c8648...`. Run #116 / `45156874912` was started on `5da1c20...` and was still in progress at first check. No PR-triggered run was returned for the DOC-02 checkpoint Head 82c4f1…; current Head CI remains pending/[UNV] |
 | Merge-SHA CI | Not applicable until merged |
 | PO approval | Not approved; PR must remain Draft |
 
@@ -73,7 +73,7 @@ Previous records existed under `docs/tasks/`, but this task creates the canonica
 |---|---|---|---|
 | PR open/Draft/base/head | Live PR #31 metadata | [GH] | 2026-11-23 |
 | Run #115 passed 3/3 on 96c8648 | Live workflow run and jobs on exact Head SHA | [GH] | 2026-11-23 |
-| DOC-02 checkpoint Head has no returned PR run | Exact-SHA workflow lookup returned empty | [UNV] | 2026-11-23 |
+| DOC-02 checkpoint Head has no returned PR run | Exact-SHA workflow lookup returned empty for 82c4f1… | [UNV] | 2026-11-23 |
 | mergeable=false cause | Compare reports ahead 93/behind 0; cause not established | [UNV] | 2026-11-23 |
 | PO approval/state transition | No approval supplied | [UNV] | 2026-11-23 |
 
