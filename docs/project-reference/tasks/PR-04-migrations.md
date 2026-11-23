@@ -14,8 +14,8 @@
 - Head SHA: cc360e6cbc0fea7e815199c0c5b0d0e491475810.
 - Merge SHA: `2e7ce2ab281c62b9af3f66512d2a579eaf045b42`.
 - Merged at: 2026-11-10 13:05:24 UTC.
-- Merged by / method: `mosalah00x-source` (GitHub merged_by and [Timeline merged event](https://github.com/${repo}/issues/events/)); merge strategy [UNV] because the event does not expose it.
-- PR body cites Run 42811449596 success on the exact Head SHA. Merge-SHA push CI: [Run #12 / 42821341163](https://github.com/${repo}/actions/runs/42821341163) — success on exact Merge SHA; both available jobs (`verify migrations`, `backend`) completed/success.
+- Merged by / method: `mosalah00x-source` (GitHub merged_by and [Timeline merged event](https://github.com/mosalah00x-source/classic-store-New/issues/events/35682975123)); merge strategy [UNV] because the event does not expose it.
+- PR body cites Run 42811449596 success on the exact Head SHA. Merge-SHA push CI: [Run #12 / 42821341163](https://github.com/mosalah00x-source/classic-store-New/actions/runs/42821341163) — success on exact Merge SHA; both available jobs (`verify migrations`, `backend`) completed/success.
 - PO approval: PR body records explicit approval of source conversion and seven generated hashes; exact underlying approval artifact URL was not captured.
 
 ## Migration inventory — files inspected on BackendApp
@@ -45,7 +45,7 @@
 
 ## Follow-up
 
-Any migration/source lock/hash change requires new explicit PO approval. Confirm Merge SHA, actor/method and Merge-SHA CI during a future reconciliation.
+Any migration/source lock/hash change requires new explicit PO approval. Merge SHA, merged actor and Merge-SHA push CI are verified; merge strategy remains [UNV].
 
 ## Claim verification
 
