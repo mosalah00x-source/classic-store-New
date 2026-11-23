@@ -102,3 +102,41 @@ These are Head runs, not Merge-SHA runs.
 The initial DOC-02 entry #5 was imprecise about where the existing task records lived. A follow-up live fetch confirmed that the canonical records PR-22.md through PR-30.md already exist under docs/project-reference/tasks/ and contain the standard evidence sections. They were not newly recreated. The older docs/tasks/ directory is a compatibility copy; its README now points to the canonical task system. The new work adds REGISTER.md, _TEMPLATE.md, RECONCILIATION-LOG.md, DOC-02.md, PR-31-DOC-01.md linkage, PR-32.md and PR-04-migrations.md, plus index and status corrections.
 
 This correction is appended rather than silently rewriting the original observation.
+
+
+## 2026-11-23 — DOC-02 canonical task system extension
+
+### Additional live checks [GH]
+
+- Rechecked PR #31 metadata: open, Draft, base `BackendApp`, current Head at the start of this extension `5da1c20a265c527375c932a9aa29241b9d4eac0b`; not merged.
+- Rechecked PR #31 Run #116 / `45156874912` on that exact Head: `verify migrations` and `api-lint` completed successfully; `backend` was still in progress at the time of inspection. This is **not** a 3/3 pass.
+- PR #32 Run #110 / `45154657899` was checked as a `push` run on exact Merge SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`; `api-lint`, `verify migrations`, and `backend` all completed successfully.
+- For PRs #22–#30 and #32, the live changed-file lists were fetched. Detailed task records list the exact changed paths or identify the full returned set.
+- The PR #22–#30 Head runs were fetched by exact Head SHA: #22 Run 71, #23 Run 69, #24 Run 79, #25 Run 82, #26 Run 97, #27 Run 107, #28 Run 121, #29 Run 125, #30 Run 128; all completed/success. PR #32 Head Run #109 also completed/success.
+
+### New records and canonical path
+
+- Created detailed records under `docs/project-reference/tasks/` for PR #22–#30 and PR #31/DOC-01; refreshed PR #32/CI-01 with the exact Merge-SHA Run #110 evidence.
+- Added ADM Epic and DOC-02 task records, standardized the template, expanded the task README, and linked the canonical task register from both documentation indexes.
+- Existing `docs/tasks/PR-22.md` through `PR-30.md` remain in place as historical/source notes. They were not deleted. The canonical register and task records now live under `docs/project-reference/tasks/`.
+
+### Corrections to the preceding reconciliation entry
+
+1. The earlier entry said no cross-domain register existed. A live fetch during this extension found an existing partial `docs/project-reference/tasks/REGISTER.md` already present in the branch. That statement was too broad. The file existed, but needed updated task detail links, current CI evidence, additional OPS rows, and reconciliation of migration Merge-SHA uncertainty. It has now been updated rather than replaced.
+2. The prior register's DB-001 row contained `2e7ce2ab281c62b9af3f66512d2a579eaf045b42` in the Merge SHA column. The PR #4 detailed task record explicitly marks the migration PR Merge SHA [UNV], and no live PR #4 Merge SHA was captured in this reconciliation. The register was corrected to [UNV] instead of retaining an unsupported SHA.
+3. The register previously linked DOC-001 and DOC-002 to filenames that did not match the new canonical record names. Those links now point to `PR-31-DOC-01.md` and `DOC-002-tasks-system.md`.
+4. The earlier PR #31 validation on Head `96c8648…` / Run #115 remains valid for that SHA only. PR #31 subsequently advanced to Head `5da1c20…`; Run #116 was still in progress at the last job inspection. Do not call the current PR Head 3/3 until a run on the final exact Head completes successfully.
+
+### Remaining gaps
+
+- PR #31 final Head CI after all DOC-02 commits: pending.
+- Merge-SHA CI for PRs #22–#30: [UNV].
+- Merge actor/method for PRs #22–#30 and #32: [UNV] where Timeline events were not independently captured.
+- Explicit PO merge approval remains [UNV] for PRs #22–#26 and #28–#30, except PR #27's explicit approval comment; PR #32 merge was user-confirmed [USER].
+- Visual QA remains Pending for F3, BN, F4 and #30; PR #26 has only a limited concession, not a full visual pass.
+- PR #4 Merge SHA/actor/method/Merge-SHA CI remain [UNV].
+- ENV-01 remains separate and unimplemented; ADM-1 remains plan-only and unauthorized for implementation.
+
+### No workflow or application changes
+
+This DOC-02 extension changes documentation files only. PR #31 remains Draft and unmerged; no Ready transition, merge, or ADM-1 implementation was performed.
