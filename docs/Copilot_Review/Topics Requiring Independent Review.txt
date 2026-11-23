@@ -1,0 +1,2068 @@
+# CLAUDE REVIEW PACKAGE
+## Part 1 — Executive Summary & Current State Assessment
+
+# Project Information
+
+Project: Classic Store
+
+Repository:
+mosalah00x-source/classic-store-New
+
+Canonical Documentation Branch:
+docs/project-reference
+
+Review Objective:
+Independent assessment of implementation status, architecture maturity, delivery risks, and execution roadmap.
+
+---
+
+# Purpose
+
+This document provides an external reviewer with an evidence-based summary of:
+
+- Current implementation status
+- Implemented features
+- Architectural direction
+- Security posture
+- Product readiness
+- Known gaps
+- Delivery risks
+
+Important rule:
+
+The documentation explicitly states that:
+
+> Presence of SRS, OpenAPI contracts, database schema, migrations, or design documentation must not be treated as proof of runtime implementation.
+
+This rule must be respected throughout the review.
+
+---
+
+# Evidence Sources
+
+Primary reviewed artifacts:
+
+- README Documentation Index
+- ADMIN-0
+- ADM-1 Plan
+- T06 OpenAPI Acceptance Report
+- T-07 Identity Contract Decisions
+- F2 Bottom Navigation Decision
+- F4 Badges Deferred Decision
+- Local Development & Visual Review Guide
+- PR-22 through PR-30 task records
+
+---
+
+# Executive Summary
+
+Classic Store currently consists of:
+
+1. Frontend Storefront Implementation
+2. Backend Architectural Design
+3. OpenAPI Contract Definition
+4. Security Design Documentation
+5. Administration Platform Design
+6. Governance & Audit Documentation
+
+The project contains a significantly stronger architecture and documentation layer than its currently verified runtime implementation.
+
+The largest implementation strengths are:
+
+- Documentation quality
+- OpenAPI design
+- Security planning
+- Frontend feature delivery
+- Governance processes
+
+The largest implementation gaps are:
+
+- Administration runtime implementation
+- RBAC implementation
+- Audit logging implementation
+- Cart workflow
+- Checkout workflow
+- Order processing workflow
+- Final visual verification
+
+---
+
+# Current State Overview
+
+## Frontend Stream
+
+Implemented Features
+
+FE-001
+Catalog and Product Detail alignment.
+
+FE-002
+Theme-aware logo implementation.
+
+FE-003
+Product Detail theme toggle.
+
+FE-004
+Conditional old price and discount presentation.
+
+FE-005
+Shared Storefront Shell.
+
+FE-006
+Storefront Home.
+
+FE-007
+Persistent Bottom Navigation.
+
+FE-008
+Catalog Product Card.
+
+FE-009
+Mega Menu and Favorite Icon improvements.
+
+Status:
+
+All tasks above are documented as merged.
+
+However:
+
+Visual approval remains incomplete in multiple areas and several records contain UNV markers for screenshots and post-merge visual verification.
+
+---
+
+## Backend Stream
+
+Documented Backend Capabilities
+
+- Identity
+- Authentication
+- Profile Management
+- Address Management
+- Cart Domain
+- Checkout Domain
+- Orders Domain
+- Returns Domain
+- Inventory Domain
+- Administration Domain
+- Reporting Domain
+
+OpenAPI Scope
+
+69 operations.
+
+Important:
+
+OpenAPI presence must not be interpreted as proof of implemented Controllers or Services.
+
+The project documentation explicitly warns against this assumption.
+
+---
+
+## Administration Stream
+
+Administration design is documented extensively.
+
+Current inventory states:
+
+- No proven completed Admin Controller set.
+- No proven completed Admin Service layer.
+- No completed Audit Log implementation.
+- No proven Administration Dashboard implementation.
+
+Administration therefore exists primarily as documented architecture and planning.
+
+---
+
+## Security Stream
+
+Current verified state:
+
+- JWT Authentication exists.
+- Password hashing exists.
+- Security configuration exists.
+- Flyway migrations exist.
+- Backend CI exists.
+
+Future Security Roadmap:
+
+ADM-1 defines:
+
+- EDITOR role
+- Permission mapping
+- Method-level authorization
+- Audit logging
+- Next.js BFF
+- Session security
+- CSRF protection
+
+ADM-1 is currently documented as Proposal and not yet approved for implementation.
+
+---
+
+## Product Status
+
+Implemented:
+
+- Catalog browsing
+- Product viewing
+- Favorites
+- Home experience
+- Category navigation
+
+Not yet proven operational:
+
+- Cart workflow
+- Checkout workflow
+- Order confirmation workflow
+
+OpenAPI contracts exist for these domains.
+
+Runtime implementation is not proven by currently reviewed evidence.
+
+---
+
+## Product Decisions
+
+Decision F2
+
+Bottom Navigation approved.
+
+Home and Products remain active.
+
+Product Details, Cart, Checkout, and Order Confirmation remain disabled until implementation.
+
+Decision F4
+
+Discount Badge and New Badge deferred.
+
+The project explicitly blocks implementation of badges until a Backend contract formally defines the required fields and behavior.
+
+---
+
+# Documentation Quality
+
+Documentation is currently one of the strongest areas of the project.
+
+Observed strengths:
+
+- Architecture records
+- Product decisions
+- Governance rules
+- OpenAPI verification
+- Security planning
+- Migration planning
+- Visual QA procedures
+
+The repository establishes a clear distinction between:
+
+- Implemented
+- Planned
+- Proposed
+- Unverified
+
+This distinction should be preserved during all future reviews.
+
+---
+
+# Key Review Questions
+
+Before proceeding to architecture review, the following questions require verification:
+
+1. Which OpenAPI operations are actually implemented?
+2. Which Admin APIs exist at runtime?
+3. Which security controls are implemented versus planned?
+4. Is Cart operational?
+5. Is Checkout operational?
+6. Is Order creation operational?
+7. Which visual approvals remain open?
+8. Which Merge-SHA builds have been verified?
+
+These questions drive the risk analysis presented in Part 2.
+
+## Architecture Verification Questions
+
+1. Is migration from stateless JWT to BFF sessions justified?
+
+2. Should ADM-1 be implemented before Cart and Checkout?
+
+3. Is role-permission mapping over-engineered for the current project size?
+
+4. Would introducing EDITOR require revisiting existing JWT claims?
+
+5. Are audit log requirements sufficient for future compliance needs?
+
+6. Is there a simpler security model that should be considered?
+
+7. Should OpenAPI be reduced before runtime implementation begins?
+
+8. Are there hidden coupling risks between FrontendApp and BackendApp?
+
+
+# CLAUDE REVIEW PACKAGE
+## Part 2 of 4
+## Architecture Review, Security Review, Backend Assessment
+
+---
+
+# Architecture Review Method
+
+This review intentionally distinguishes between:
+
+| Status | Meaning |
+|----------|----------|
+| Implemented | Verified by inventory or implementation records |
+| Documented | Defined in specifications or reference documents |
+| Proposed | Planned but not approved for implementation |
+| Unverified | Evidence insufficient to confirm |
+
+Project governance explicitly states that:
+
+> SRS, OpenAPI, database schema, migrations, and documentation must not be treated as proof of runtime implementation.
+
+All observations below follow that rule.
+
+---
+
+# Architecture Overview
+
+The reviewed documentation describes a system consisting of:
+
+1. Frontend Storefront
+2. Backend APIs
+3. Identity System
+4. Product Catalog
+5. Categories
+6. Inventory
+7. Cart
+8. Checkout
+9. Orders
+10. Administration
+11. Reporting
+
+The architecture appears intentionally modular and domain-oriented.
+
+However, reviewed evidence indicates that implementation maturity differs significantly by domain.
+
+---
+
+# Backend Architecture Assessment
+
+## What Is Verified
+
+The backend documentation and inventory confirm the existence of:
+
+- PostgreSQL database schema.
+- Flyway migrations through V7.
+- Backend build pipeline.
+- JWT-based authentication.
+- Security configuration.
+- OpenAPI contract documentation.
+- Identity domain design.
+
+Verified through project inventory and technical documentation. 
+
+---
+
+## What Is Not Automatically Proven
+
+The following cannot be assumed solely from documentation:
+
+- Runtime controller implementation.
+- Runtime service implementation.
+- Endpoint availability.
+- Security enforcement.
+- Operational workflows.
+
+The documentation repeatedly warns against treating contracts as implementation evidence. 
+
+---
+
+# OpenAPI Assessment
+
+## Verified Facts
+
+The OpenAPI acceptance report documents:
+
+- 69 operations.
+- 58 path definitions.
+- Identity APIs.
+- Cart APIs.
+- Checkout APIs.
+- Order APIs.
+- Admin APIs.
+- Inventory APIs.
+- Reporting APIs.
+
+The OpenAPI review itself was verified through CI validation. 
+
+---
+
+## Important Limitation
+
+The OpenAPI draft remains documented as:
+
+```text
+Draft PR only
+No merge
+```
+
+Therefore:
+
+- Contract quality can be reviewed.
+- API shape can be reviewed.
+- Runtime implementation cannot be inferred.
+
+
+
+---
+
+# Administration Architecture Review
+
+## What Is Documented
+
+ADMIN-0 defines a future administration platform containing:
+
+- Role management
+- Product administration
+- Category administration
+- Inventory management
+- Audit logging
+- User management
+- Settings management
+
+It also defines ADM-1 through ADM-8 implementation phases. 
+
+---
+
+## What Is Verified Today
+
+The reviewed inventory explicitly states:
+
+- No proven completed Admin Controller set.
+- No proven completed Admin Service implementation.
+- No audit log implementation.
+- No complete administration dashboard implementation.
+
+The administration capability therefore exists primarily as architecture and planning. 
+
+---
+
+# Identity Architecture Review
+
+## Current Verified Direction
+
+Documents confirm:
+
+- JWT authentication exists.
+- JWT filter exists.
+- Token service exists.
+- Password hashing exists.
+- Registration produces CUSTOMER role only.
+
+
+
+---
+
+## Future Direction
+
+ADM-1 proposes:
+
+- BFF authentication model.
+- Session-based architecture.
+- HttpOnly cookies.
+- Session revocation.
+- Refresh rotation.
+- CSRF protection.
+
+ADM-1 is clearly marked as:
+
+```text
+PROPOSAL
+No implementation
+No migration
+No code
+```
+
+
+
+---
+
+# Architectural Tension Identified
+
+## Current Identity Model
+
+T-07 describes:
+
+- Stateless JWT.
+- Refresh JWT.
+- No server-side revocation.
+- Direct token-based authentication.
+
+
+
+---
+
+## ADM-1 Future Model
+
+ADM-1 proposes:
+
+- Session storage.
+- BFF architecture.
+- Session invalidation.
+- Refresh rotation.
+- Revocation support.
+
+
+
+---
+
+## Review Observation
+
+These are not contradictory designs.
+
+However, they represent two different authentication architectures.
+
+The project should explicitly define:
+
+- Migration strategy.
+- Compatibility approach.
+- Refresh token behavior during migration.
+- Session invalidation model.
+
+Current documentation identifies the destination architecture but does not yet include a transition plan.
+
+
+
+---
+
+# Authorization Review
+
+## Current Verified State
+
+Inventory indicates:
+
+- Most authenticated routes currently depend on authenticated access.
+- Fine-grained method-level security is not documented as implemented.
+- Role-permission mapping is not documented as implemented.
+
+
+
+---
+
+## Planned State
+
+ADM-1 proposes:
+
+- Permission catalog.
+- Role-permission mapping.
+- Method-level authorization.
+- Deny-by-default protection.
+- Admin route classification.
+
+
+
+---
+
+## Review Observation
+
+Authorization architecture is significantly more mature in documentation than in verified runtime evidence.
+
+The documented direction is reasonable and internally consistent.
+
+Implementation status remains unverified.
+
+
+
+---
+
+# Audit Architecture Review
+
+## Current State
+
+ADMIN-0 explicitly states:
+
+- No audit log table.
+- No append-only audit implementation.
+- No documented audit infrastructure in current migrations.
+
+
+
+---
+
+## Planned State
+
+ADM-1 defines:
+
+- Append-only model.
+- Actor tracking.
+- Before/after state.
+- Correlation IDs.
+- Trigger-based protection.
+- Database-level protection against UPDATE and DELETE.
+
+
+
+---
+
+## Review Observation
+
+Audit capability should be considered a planned security requirement rather than an implemented feature.
+
+No contradiction was found between planning documents.
+
+
+
+---
+
+# Commerce Architecture Review
+
+## Cart
+
+Verified:
+
+- Cart endpoints exist in OpenAPI.
+- Frontend routes remain disabled or coming soon.
+- Product cards intentionally keep Add-to-Cart disabled.
+
+Runtime cart implementation is not demonstrated.
+
+
+
+---
+
+## Checkout
+
+Verified:
+
+- Checkout APIs exist in OpenAPI.
+- Checkout remains disabled in storefront navigation.
+- Checkout implementation is not demonstrated.
+
+
+
+---
+
+## Orders
+
+Verified:
+
+- Order APIs exist in OpenAPI.
+- Order-related paths exist.
+- End-to-end buying workflow is not demonstrated.
+
+
+
+---
+
+# Product Domain Review
+
+## Current Product Contract
+
+Inventory notes:
+
+Public product contracts currently expose fields such as:
+
+- nameAr
+- nameEn
+- priceFrom
+- primaryImage
+- brand
+- categories
+
+The reviewed contract does not expose:
+
+- discountPercent
+- compareAtPrice
+- createdAt
+
+within current product summaries.
+
+
+
+---
+
+## Badge Architecture
+
+PO decision explicitly deferred:
+
+- Discount badge.
+- New badge.
+
+Until a dedicated backend contract defines required fields and behavior.
+
+Therefore badge implementation should be considered intentionally postponed.
+
+
+
+---
+
+# Frontend Architecture Review
+
+## Storefront Shell
+
+Verified storefront shell functionality includes:
+
+- Shared Header
+- Shared Footer
+- Theme Provider
+- Mega Menu
+- Localization support
+
+
+
+---
+
+## Theme System
+
+Verified:
+
+- Product Detail theme toggle exists.
+- Storefront shell introduces a centralized theme provider.
+
+Remaining issue:
+
+Theme Flash remains unresolved and documented as unverified.
+
+
+
+---
+
+# Verification & Delivery Controls
+
+## Strengths
+
+Project governance includes:
+
+- Explicit verification terminology.
+- UNV tracking.
+- CI separation.
+- Merge SHA warnings.
+- Visual review requirements.
+
+These controls reduce accidental overstatement of implementation status.
+
+
+
+---
+
+## Identified Delivery Risk
+
+Many frontend records show:
+
+```text
+Head CI Success
+Merge SHA Unverified
+Visual Review Pending
+```
+
+This does not indicate failure.
+
+However, it indicates that final acceptance evidence remains incomplete for multiple areas.
+
+
+
+---
+
+# Architecture Review Questions For Claude
+
+Please assess the following:
+
+1. Is migration from stateless JWT to BFF sessions justified?
+2. Is ADM-1 sequencing appropriate?
+3. Should RBAC be implemented before Commerce completion?
+4. Is the proposed permission model suitable for project size?
+5. Are audit requirements sufficient?
+6. Is the OpenAPI scope too large relative to current implementation evidence?
+7. Should administration be split into additional phases?
+8. Are there hidden risks in the proposed BFF design?
+9. Does the project need additional non-functional requirements?
+10. What architectural changes would be recommended before production release?
+
+---
+
+# Preliminary Conclusion
+
+The architecture documentation is substantially more mature than the verified runtime evidence.
+
+The strongest architectural assets are:
+
+- OpenAPI design
+- Identity planning
+- Security planning
+- Administration planning
+- Governance processes
+
+The greatest review focus should be:
+
+- Runtime implementation coverage
+- Security model transition
+- Authorization rollout
+- Audit logging rollout
+- Commerce workflow execution
+
+All other conclusions should remain evidence-based and avoid assuming implementation from design artifacts alone.
+
+
+## Independent Review Focus
+
+1. Which documented capabilities should be considered critical before production?
+
+2. Are ADM-1 through ADM-8 phases sequenced correctly?
+
+3. Should administrative infrastructure be implemented before commerce completion?
+
+4. Is there an excessive dependency between future BFF adoption and RBAC rollout?
+
+5. Which documented capabilities represent the highest delivery risk?
+
+6. Which roadmap dependencies can be safely deferred?
+
+7. What additional evidence would be required before declaring production readiness?
+
+8. Which gaps are genuinely critical versus merely undocumented?
+
+
+# CLAUDE REVIEW PACKAGE
+## Part 3 of 4
+## Verified Gaps, Risks, Dependencies, and Readiness Assessment
+
+---
+
+# Purpose of This Section
+
+This section identifies:
+
+- Verified gaps
+- Unverified capabilities
+- Delivery risks
+- Dependency risks
+- Readiness blockers
+- Areas requiring additional evidence
+
+Important:
+
+This section intentionally avoids assumptions.
+
+A capability is only considered implemented when supported by reviewed evidence.
+
+The existence of:
+
+- OpenAPI
+- SRS
+- Database schema
+- Migrations
+- Architecture plans
+
+does not by itself prove runtime implementation.
+
+---
+
+# Classification Model
+
+The following terminology is used throughout this review.
+
+| Classification | Meaning |
+|----------|----------|
+| Verified | Supported by reviewed evidence |
+| Documented | Described in specifications or plans |
+| Proposed | Planned but not approved for implementation |
+| Unverified | Insufficient evidence available |
+| Deferred | Explicitly postponed by product decision |
+
+---
+
+# Verified Gap Inventory
+
+## GAP-01
+### Administration Runtime Coverage
+
+### Verified Facts
+
+Current inventory confirms:
+
+- No proven Admin Controller implementation.
+- No proven Admin Service implementation.
+- No proven Admin CRUD implementation.
+- Administrative functionality is primarily documented.
+
+### Impact
+
+The project contains administrative designs and OpenAPI definitions.
+
+However, operational administration capability cannot currently be verified.
+
+### Classification
+
+Verified Gap
+
+### Validation Required
+
+- Controller inventory
+- Service inventory
+- Runtime endpoint inventory
+- Security coverage inventory
+
+---
+
+## GAP-02
+### Audit Logging Runtime Coverage
+
+### Verified Facts
+
+Current inventory explicitly states:
+
+- No audit table identified.
+- No append-only audit implementation identified.
+- Audit capability is documented as a future requirement.
+
+### Impact
+
+Administrative actions cannot currently be confirmed as audit-tracked.
+
+### Classification
+
+Verified Gap
+
+---
+
+## GAP-03
+### EDITOR Role Absence
+
+### Verified Facts
+
+Current role model contains:
+
+- CUSTOMER
+- ADMIN
+- OPERATIONS
+- WAREHOUSE
+- SUPPORT
+
+EDITOR is documented as a future addition under ADM-1.
+
+### Impact
+
+Fine-grained administrative delegation is not currently documented as operational.
+
+### Classification
+
+Verified Gap
+
+---
+
+## GAP-04
+### Permission Mapping Runtime Coverage
+
+### Verified Facts
+
+Permission architecture exists in ADM-1.
+
+Runtime implementation cannot be verified.
+
+### Impact
+
+Authorization appears to rely primarily on current authentication boundaries.
+
+Fine-grained authorization coverage remains unverified.
+
+### Classification
+
+Verified Gap
+
+---
+
+## GAP-05
+### Visual Acceptance Evidence
+
+### Verified Facts
+
+Multiple frontend task records contain:
+
+- Pending screenshots
+- Missing screenshots
+- Partial visual review
+- UNV markers
+
+### Important Clarification
+
+Missing evidence does not prove failure.
+
+It only means acceptance evidence is incomplete.
+
+### Impact
+
+Visual parity cannot currently be asserted.
+
+### Classification
+
+Verified Gap
+
+---
+
+## GAP-06
+### Merge SHA Validation
+
+### Verified Facts
+
+Across multiple frontend PRs:
+
+- Head CI success is documented.
+- Merge SHA validation remains UNV.
+
+### Impact
+
+Successful validation of branch heads does not automatically verify merge results.
+
+### Classification
+
+Verified Gap
+
+---
+
+# Commerce Verification Gaps
+
+## Cart
+
+### Verified
+
+OpenAPI contains Cart operations.
+
+Storefront documentation keeps Cart unavailable or disabled.
+
+### Unknown
+
+- Runtime Controller availability
+- Runtime Service availability
+- End-to-end execution
+
+### Status
+
+Unverified Capability
+
+---
+
+## Checkout
+
+### Verified
+
+Checkout operations exist in OpenAPI.
+
+Checkout is listed as unavailable in storefront navigation.
+
+### Unknown
+
+- Runtime implementation
+- Production readiness
+
+### Status
+
+Unverified Capability
+
+---
+
+## Orders
+
+### Verified
+
+Order-related APIs exist in OpenAPI.
+
+### Unknown
+
+- Runtime workflow
+- Operational purchase journey
+
+### Status
+
+Unverified Capability
+
+---
+
+# Product Contract Risks
+
+## Product Enrichment Risk
+
+### Verified
+
+Current product contract does not document:
+
+- discountPercent
+- isNew
+- badge
+
+within reviewed public product summaries.
+
+Discount Badge and New Badge are formally deferred.
+
+### Impact
+
+Future storefront enhancements depend on backend contract evolution.
+
+### Status
+
+Dependency Risk
+
+---
+
+## Best Sellers Data Quality Risk
+
+### Verified
+
+Home implementation uses fallback behavior rather than sales ranking.
+
+### Impact
+
+Business users may assume merchandising logic exists when only fallback behavior is documented.
+
+### Status
+
+Medium Risk
+
+---
+
+# Identity Risks
+
+## Authentication Architecture Transition
+
+### Verified
+
+Current documented model:
+
+- Stateless JWT
+- Refresh token
+- No server-side revocation
+
+Future ADM-1 model:
+
+- BFF
+- Session storage
+- Revocation
+- Session invalidation
+
+### Risk
+
+Migration complexity.
+
+### Questions
+
+- How are active sessions migrated?
+- Will refresh token behavior change?
+- Will existing clients remain compatible?
+
+### Status
+
+Architecture Risk
+
+---
+
+## Security Review Dependency
+
+### Verified
+
+T-07 explicitly requires an independent security review before production release.
+
+### Impact
+
+Production readiness cannot be claimed solely from internal approvals.
+
+### Status
+
+Governance Risk
+
+---
+
+# Documentation Risks
+
+## Backend Documentation Drift
+
+### Verified
+
+ADM-1 notes a mismatch between:
+
+- Backend README descriptions
+- Actual backend dependencies and migrations
+
+### Impact
+
+Future team members may draw incorrect conclusions from outdated documentation.
+
+### Status
+
+Documentation Risk
+
+---
+
+## Evidence Distribution Risk
+
+### Verified
+
+Evidence currently exists across:
+
+- PR records
+- Decisions
+- Planning documents
+- Inventory documents
+
+### Impact
+
+Verification requires navigation through multiple documents.
+
+### Status
+
+Documentation Governance Risk
+
+---
+
+# Dependency Analysis
+
+## Dependency Group A
+### Security Foundation
+
+Dependencies:
+
+- ADM-1 approval
+- DOC-01 completion
+- PO approval
+
+Blocked Deliverables:
+
+- EDITOR
+- Permission Mapping
+- BFF
+- Audit Log
+
+---
+
+## Dependency Group B
+### Commerce Expansion
+
+Dependencies:
+
+- Backend implementation validation
+- Cart implementation
+- Checkout implementation
+
+Blocked Deliverables:
+
+- Purchase flow
+- Order confirmation
+- Checkout navigation
+
+---
+
+## Dependency Group C
+### Product Enrichment
+
+Dependencies:
+
+- Backend contract definition
+- OpenAPI update
+
+Blocked Deliverables:
+
+- Discount Badge
+- New Badge
+- Product freshness indicators
+
+---
+
+## Dependency Group D
+### Production Readiness
+
+Dependencies:
+
+- Visual evidence completion
+- Independent security review
+- Operational verification
+
+Blocked Deliverables:
+
+- Production sign-off
+- Cloud deployment approval
+
+---
+
+# Readiness Assessment
+
+## Evidence-Supported Readiness
+
+The following statements are supported:
+
+### Frontend
+
+Frontend feature delivery exists across FE-001 through FE-009.
+
+### Backend
+
+Backend foundation exists.
+
+### OpenAPI
+
+OpenAPI contract work exists.
+
+### Security
+
+Security planning exists.
+
+### Governance
+
+Governance controls exist.
+
+---
+
+## Not Yet Supported By Evidence
+
+The following conclusions cannot currently be proven:
+
+- Production ready
+- Commerce complete
+- Administrative platform operational
+- Complete role-based access control
+- Complete visual parity
+- Full Merge-SHA validation
+- Full OpenAPI implementation coverage
+
+---
+
+# Review Questions For Claude
+
+Please review and comment on the following.
+
+## Gap Validation
+
+1. Are any verified gaps overstated?
+2. Are additional evidence categories required?
+3. Are any identified gaps actually implementation risks rather than gaps?
+
+## Dependency Review
+
+4. Which dependencies are critical path?
+5. Which dependencies can be deferred?
+
+## Security Review
+
+6. Is ADM-1 appropriately scoped?
+7. Should BFF implementation occur before Commerce expansion?
+
+## Product Review
+
+8. Should Product Enrichment wait for Admin capabilities?
+9. Are deferred badges correctly deferred?
+
+## Readiness Review
+
+10. What additional evidence would be required before production approval?
+
+---
+
+# Preliminary Conclusion
+
+The reviewed documentation demonstrates a strong distinction between:
+
+- Design
+- Contracts
+- Implementation
+- Verification
+
+The most significant verified gaps are not missing documentation.
+
+They are missing verification of runtime implementation and operational readiness.
+
+The next review phase should focus on:
+
+1. Roadmap validation.
+2. Delivery sequencing.
+3. Backlog structure.
+4. Sprint planning.
+5. Release planning.
+
+These topics are covered in Part 4.
+
+## Roadmap Review Questions
+
+1. Is the ADM-1 → ADM-8 sequence optimal?
+
+2. Should Commerce implementation occur before Administration?
+
+3. Should Admin API Foundation precede BFF adoption?
+
+4. What would be the minimum viable production scope?
+
+5. Which documented capabilities can be deferred safely?
+
+6. Which roadmap dependencies are critical path?
+
+7. How should OpenAPI implementation be prioritized?
+
+8. What release milestone structure would you recommend?
+
+9. What should define Release Candidate readiness?
+
+10. What objective gates should exist before production approval?
+
+
+# CLAUDE REVIEW PACKAGE
+## Part 4 of 4
+## Delivery Strategy, Governance Gates, Roadmap Review, and Release Readiness
+
+---
+
+# Purpose of This Section
+
+This section intentionally differs from the previous sections.
+
+Parts 1–3 focused on:
+
+- Verified implementation evidence
+- Architecture review
+- Gap analysis
+- Risks
+
+This section focuses on:
+
+- Delivery sequencing
+- Governance checkpoints
+- Decision gates
+- Readiness criteria
+- Reviewer recommendations
+
+Important:
+
+Except where explicitly documented in project artifacts, the sequencing proposed below should be interpreted as:
+
+> Review recommendation, not an approved project roadmap.
+
+The official approved roadmap remains limited to documented decisions and ADM phase definitions.
+
+---
+
+# Documented Delivery Constraints
+
+The following constraints are explicitly documented.
+
+## Constraint 1
+### ADM-1 is Not Approved
+
+ADM-1 is currently:
+
+- Proposal only
+- No implementation
+- No migration
+- No code changes
+
+ADM-1 requires:
+
+- DOC-01 completion
+- Explicit written PO approval
+
+before implementation can begin.
+
+---
+
+## Constraint 2
+### OpenAPI Is Not Runtime Evidence
+
+OpenAPI currently exists as:
+
+- Draft PR
+- Unmerged contract work
+
+The existence of an endpoint contract does not prove:
+
+- Controller implementation
+- Service implementation
+- Runtime availability
+
+---
+
+## Constraint 3
+### Visual Acceptance Is Not Complete
+
+Multiple frontend features remain in one of the following states:
+
+- Screenshots pending
+- Visual parity pending
+- Post-merge review pending
+- UNV
+
+Therefore visual acceptance cannot yet be considered complete.
+
+---
+
+## Constraint 4
+### Badges Are Deferred
+
+Discount Badge and New Badge are formally deferred.
+
+Reopening them requires:
+
+- A dedicated backend contract
+- Approved field definitions
+- Product approval
+
+---
+
+## Constraint 5
+### Production Release Requires Independent Security Review
+
+Identity governance documentation explicitly states:
+
+- Internal approvals exist.
+- Independent security review does not yet exist.
+- Production release must not occur without that review.
+
+---
+
+# Officially Documented Phase Structure
+
+The only documented administration roadmap currently available is:
+
+| Phase | Scope |
+|---------|---------|
+| ADM-1 | Authentication, Authorization, Audit |
+| ADM-2 | Admin API Foundation |
+| ADM-3 | Admin Frontend & Session UX |
+| ADM-4 | Category Management |
+| ADM-5 | Product & Pricing Management |
+| ADM-6 | Image & Storage Platform |
+| ADM-7 | Orders, Users, Settings |
+| ADM-8 | Hardening & Acceptance |
+
+This sequence is documented but not yet approved for implementation execution.
+
+---
+
+# Reviewer Delivery Recommendation
+
+The following sequence is proposed for independent review.
+
+This section represents analysis, not documented project policy.
+
+---
+
+# Stage A
+## Verification Closure
+
+### Goal
+
+Reduce uncertainty before implementing new capabilities.
+
+### Recommended Activities
+
+- Complete pending visual evidence.
+- Verify Merge-SHA runs where possible.
+- Update implementation inventory.
+- Confirm runtime endpoint inventory.
+- Reconcile documentation inconsistencies.
+
+### Exit Criteria
+
+- Evidence gaps reduced.
+- Visual review status documented.
+- Runtime inventory updated.
+
+---
+
+# Stage B
+## ADM-1 Decision Review
+
+### Goal
+
+Determine whether ADM-1 should proceed unchanged.
+
+### Questions
+
+- Is BFF migration still desired?
+- Is EDITOR role required now?
+- Is full permission mapping justified?
+- Is audit logging required before Admin UI?
+
+### Exit Criteria
+
+- ADM-1 approved, modified, or split.
+
+---
+
+# Stage C
+## Security Foundation
+
+### Potential Scope
+
+If ADM-1 is approved:
+
+- EDITOR role
+- Permission mapping
+- Method security
+- Audit logging
+- Session security
+
+### Governance Gate
+
+No implementation until documented approval exists.
+
+---
+
+# Stage D
+## Runtime Administration Foundation
+
+### Potential Scope
+
+- Admin Controllers
+- Admin Services
+- Validation
+- Error contracts
+- Pagination
+- Authorization integration
+
+### Reasoning
+
+Admin API capability appears to be a dependency for later administration work.
+
+---
+
+# Stage E
+## Commerce Capability Verification
+
+### Goal
+
+Determine actual implementation status of:
+
+- Cart
+- Checkout
+- Orders
+
+### Important
+
+Current documentation proves contract existence.
+
+Current documentation does not prove operational execution.
+
+### Recommended Outcome
+
+Produce a dedicated runtime inventory before committing to further commerce design work.
+
+---
+
+# Stage F
+## Administration UX
+
+### Potential Scope
+
+According to ADM roadmap:
+
+- Admin shell
+- BFF integration
+- Session handling
+- Product administration UI
+- Category administration UI
+
+---
+
+# Stage G
+## Product Enrichment
+
+### Candidate Scope
+
+Only after backend contract approval:
+
+- Discount Badge
+- New Badge
+- Product freshness indicators
+- Discount calculations
+
+### Dependency
+
+Requires new approved backend contract.
+
+---
+
+# Stage H
+## Storage & Media
+
+### Candidate Scope
+
+- Upload service
+- Storage adapter
+- Local storage
+- Migration tooling
+
+### Consistent With
+
+ADMIN-0 storage strategy.
+
+---
+
+# Stage I
+## Hardening
+
+### Candidate Scope
+
+- Security review
+- Backup testing
+- Restore testing
+- E2E validation
+- Accessibility validation
+- Cloud readiness validation
+
+---
+
+# Decision Gates
+
+The project already uses review gates extensively.
+
+The following gates appear appropriate based on the documentation.
+
+---
+
+## Gate 1
+### Documentation Approval
+
+Requirements:
+
+- DOC-01 complete
+- Documentation reconciled
+- PO approval
+
+Blocks:
+
+- ADM-1 execution
+
+---
+
+## Gate 2
+### Security Approval
+
+Requirements:
+
+- ADM-1 reviewed
+- Security controls documented
+- Migration strategy documented
+
+Blocks:
+
+- Authorization rollout
+
+---
+
+## Gate 3
+### Runtime Verification
+
+Requirements:
+
+- Controller inventory
+- Service inventory
+- Endpoint inventory
+
+Blocks:
+
+- Capability claims
+
+---
+
+## Gate 4
+### Commerce Validation
+
+Requirements:
+
+- Cart evidence
+- Checkout evidence
+- Order evidence
+
+Blocks:
+
+- Checkout release
+
+---
+
+## Gate 5
+### Visual Acceptance
+
+Requirements:
+
+- Screenshot evidence
+- PO review
+
+Blocks:
+
+- Frontend acceptance closure
+
+---
+
+## Gate 6
+### Production Approval
+
+Requirements:
+
+- Security review
+- Operational validation
+- Release signoff
+
+Blocks:
+
+- Production deployment
+
+---
+
+# Minimum Evidence Before Production
+
+The reviewed documentation supports requiring at least:
+
+## Security
+
+- Independent security review completed.
+- Authorization verified.
+- Audit strategy verified.
+
+---
+
+## Runtime
+
+- Runtime inventory documented.
+- OpenAPI coverage understood.
+- Critical endpoints verified.
+
+---
+
+## Frontend
+
+- Visual evidence completed.
+- Remaining UNV items resolved or accepted.
+
+---
+
+## Operations
+
+- Backup process documented.
+- Restore test documented.
+- Logging strategy documented.
+- Monitoring strategy documented.
+
+---
+
+## Governance
+
+- Explicit release approval.
+- Explicit acceptance approval.
+
+---
+
+# Topics Requiring Independent Review
+
+The following items appear most valuable for Claude to analyze.
+
+---
+
+## Architecture
+
+1. Is ADM-1 appropriately scoped?
+2. Should BFF remain part of ADM-1?
+3. Should JWT remain the long-term architecture?
+
+---
+
+## Product
+
+4. Is Commerce more important than Administration?
+5. Which deferred capabilities should remain deferred?
+
+---
+
+## Delivery
+
+6. Is the ADM-1 → ADM-8 sequence optimal?
+7. Which phases are on the critical path?
+8. Which phases can be split?
+
+---
+
+## Risk
+
+9. What is the largest delivery risk?
+10. What evidence is still missing?
+
+---
+
+## Governance
+
+11. Are existing approval gates sufficient?
+12. Which acceptance criteria require stronger evidence?
+
+---
+
+# Final Reviewer Summary
+
+The reviewed documentation demonstrates:
+
+- Strong governance discipline.
+- Strong documentation quality.
+- Strong separation between documented and implemented capabilities.
+- Strong effort to prevent unsupported claims.
+
+The primary challenge identified is not lack of design.
+
+The primary challenge is establishing verified runtime evidence for documented capabilities and completing governance gates before claiming readiness.
+
+The most important next action is not additional feature development.
+
+It is reducing uncertainty around implementation status, approval status, and operational readiness.
+
+---
+
+# End of Review Package
+
+This concludes:
+
+- Part 1 — Executive Summary & Current State
+- Part 2 — Architecture & Security Review
+- Part 3 — Gaps, Risks & Dependencies
+- Part 4 — Delivery Strategy & Readiness Review
+
+This package is intentionally evidence-oriented and avoids treating documentation, OpenAPI contracts, or design plans as proof of runtime implementation.
+
+
+بعد مراجعة الأجزاء الأربعة مقابل الوثائق الأصلية مرة أخرى، أستطيع القول إن الحزمة أصبحت دقيقة جدًا، لكن ما زالت هناك 7 نقاط تحتاج تصحيحًا أو توضيحًا قبل إرسالها إلى Claude. جميعها من نوع "تحسين دقة" وليست أخطاء كبيرة.
+1. تضارب خفيف حول Commerce
+في بعض أجزاء الحزمة استخدمنا:
+Plain Text
+Cart implementation not verified
+Checkout implementation not verified
+وهذا صحيح.
+لكن في بعض المواضع تم وصفها ضمنيًا باعتبارها:
+Plain Text
+Missing capability
+ 
+الأدق دائمًا:
+Plain Text
+Contract exists.
+Runtime implementation not verified.
+لأن OpenAPI يحتوي Cart وCheckout وOrders بالفعل.
+2. تضارب خفيف حول Admin APIs
+في بعض الفقرات قيل:
+Plain Text
+No proven Admin Controllers
+وهذا صحيح.
+لكن لا يجب أن تتحول الصياغة إلى:
+Plain Text
+Admin APIs do not exist
+ 
+لأن الوثائق لا تثبت عدم وجودها مطلقًا.
+الصياغة الموحدة:
+Plain Text
+Runtime coverage for Admin APIs has not been verified.
+3. يجب إضافة ملاحظة عن F3
+في الجزء الأول والثالث تم التعامل مع المراجعة البصرية وكأنها غير موجودة.
+لكن PR-27 يمتلك حالة خاصة:
+لديه موافقة PO موثقة.
+لديه تنازل بصري جزئي موثق.
+لذلك F3 لا يجب أن يوضع في نفس سلة PR-22 وPR-23.
+أضف:
+Plain Text
+F3 has partial documented visual acceptance
+and explicit PO approval,
+although full screenshot coverage remains incomplete.
+4. تعارض مهم حول Badges
+في جزء Product Review استخدمنا أحيانًا:
+Plain Text
+discountPercent not available
+بينما القرار الرسمي أدق من ذلك.
+الحقيقة:
+Plain Text
+The reviewed public ProductSummary contract
+does not expose compareAtPrice,
+discountPercent,
+createdAt,
+badge,
+or isNew.
+لذلك المشكلة ليست فقط badge.
+بل العقد بأكمله لم يُعتمد بعد.
+5. ADM-1 مقابل T-07
+هذه أهم نقطة معمارية بالحزمة كلها.
+الحالي:
+T-07
+Plain Text
+JWT Stateless
+No Revocation
+المستهدف:
+ADM-1
+Plain Text
+BFF
+Session Store
+Revocation
+Refresh Rotation
+ 
+الحزمة تشير إليها، لكن أوصي بإضافة فقرة مستقلة:
+Markdown
+## Architecture Transition Risk
+ 
+The project currently documents
+two compatible but materially different
+authentication architectures.
+ 
+Current runtime assumptions are based on stateless JWT.
+ 
+Future administrative security planning
+assumes a BFF session model.
+ 
+Migration planning is documented only partially
+and should be independently reviewed.
+6. Roadmap Part 4
+في الجزء الرابع كتبت:
+Plain Text
+Stage A
+Stage B
+Stage C
+وهذا جيد.
+لكن أوصي بإضافة تحذير فوقها:
+Markdown
+The following stages are review recommendations
+generated from documented dependencies.
+ 
+They do not represent approved project phases,
+commitments,
+roadmap approvals,
+or PO decisions.
+لأن الوثائق لا تعتمد هذا الترتيب رسمياً.
+7. نقطة مفقودة بالكامل
+الحزمة لا تذكر Open Questions داخل OpenAPI.
+وهذه مهمة جدًا.
+يوجد في OpenAPI:
+Plain Text
+OPEN-01
+OPEN-02
+OPEN-03
+OPEN-04
+OPEN-05
+OPEN-07
+OPEN-09
+OPEN-11
+OPEN-12
+وبعضها يمس:
+Checkout
+Shipping
+Payments
+Returns
+User Roles
+لذلك أوصي بإضافة قسم كامل:
+Markdown
+## Outstanding Contract Questions
+ 
+OpenAPI draft still contains unresolved
+OPEN-* entries.
+ 
+These questions affect:
+ 
+- Payments
+- Checkout
+- Shipping
+- Returns
+- User role management
+ 
+The implementation roadmap should be reviewed
+in light of these unresolved contract decisions.
+النتيجة النهائية
+لو اعتبرنا الجودة 100:
+الجزء	التقييم
+Part 1	98%
+Part 2	97%
+Part 3	96%
+Part 4	95%
+وأرى أن الحزمة بعد إضافة النقاط 4 و5 و7 بالذات تصبح جاهزة جدًا للإرسال إلى Claude لإجراء مراجعة مستقلة دون وجود تناقضات جوهرية مع الوثائق الأصلية.
