@@ -49,12 +49,16 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | BE-009 | ADM-2 | Admin API for categories/products/variants/images | Planned | — | — | — | Not required | — | ADM-1 | ADMIN-0 roadmap | 2026-11-23 |
 | BE-010 | ADM-6 | Image upload/storage adapter and homepage content | Planned | — | — | — | Not required | — | ADM-1, ADM-2 | ADMIN-0 roadmap | 2026-11-23 |
 | BE-011 | ADM-7 | Orders/users/settings administration | Planned | — | — | — | Not required | — | Cart/checkout, ADM | ADMIN-0 roadmap | 2026-11-23 |
+| BE-015 | ADM-8 | Admin hardening and acceptance APIs/security | Planned | — | — | — | Not required | — | ADM-1–ADM-7 | ADMIN-0 roadmap | 2026-11-23 |
+| BE-014 | ADM-5 | Product/variant/price management API | Planned | — | — | — | Not required | — | ADM-2 | ADMIN-0 roadmap | 2026-11-23 |
+| BE-013 | ADM-4 | Category management API and lifecycle rules | Planned | — | — | — | Not required | — | ADM-2 | ADMIN-0 roadmap | 2026-11-23 |
+| BE-012 | ADM-3 | Admin frontend shell and Next.js BFF session | Planned | — | — | — | Not required | — | ADM-1 | ADMIN-0 roadmap | 2026-11-23 |
 
 ## Database (DB)
 
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DB-001 | V1 | Baseline schema, extensions, identity/users, addresses/settings | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | [UNV] | [UNV] | Not required | Hash approval stated in PR #4 body | — | PR-04-migrations.md | 2026-11-23 |
+| DB-001 | V1 | Baseline schema, extensions, identity/users, addresses/settings | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | 2e7ce2ab281c62b9af3f66512d2a579eaf045b42 | [UNV] | Not required | Hash approval stated in PR #4 body | — | PR-04-migrations.md | 2026-11-23 |
 | DB-002 | V2 | Brands/categories/products/variants/images/coupons | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | [UNV] | [UNV] | Not required | Hash approval stated in PR #4 body | DB-001 | PR-04-migrations.md | 2026-11-23 |
 | DB-003 | V3 | Warehouses/inventory/movements | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | [UNV] | [UNV] | Not required | Hash approval stated in PR #4 body | DB-002 | PR-04-migrations.md | 2026-11-23 |
 | DB-004 | V4 | Carts/orders/order items/fulfillment/reservations | Merged | [#4](https://github.com/mosalah00x-source/classic-store-New/pull/4) | [UNV] | [UNV] | Not required | Hash approval stated in PR #4 body | DB-003 | PR-04-migrations.md | 2026-11-23 |
@@ -96,8 +100,8 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Pre-DOC-02 Head 96c8648 / Run #115 success 3/3; new Head pending | Not required | Pending PO review | — | V5/project-reference docs | 2026-11-23 |
-| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In progress | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Pending | DOC-001 | README.md | 2026-11-23 |
+| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Pre-DOC-02 Head 96c8648 / Run #115 success 3/3; new Head pending | Not required | Pending PO review | — | [PR-31.md](./PR-31.md) | 2026-11-23 |
+| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In progress | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Pending | DOC-001 | [DOC-02.md](./DOC-02.md) | 2026-11-23 |
 | DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Design decisions approved; PR #31 pending | — | ../ADMIN-0.md | 2026-11-23 |
 | DOC-004 | ADM-1-plan | Report-only ADM-1 plan | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Implementation not authorized | DOC-001 + written PO authorization | ../ADM-1-plan.md | 2026-11-23 |
 
