@@ -30,7 +30,7 @@ The documentation PR targets `BackendApp` because the project-reference docs are
 
 - A task implemented by one application PR uses `PR-NN.md` (for example `PR-29.md`).
 - When one documentation PR contains a separately tracked workstream, use `PR-NN-<TASK-ID>.md` (for example `PR-31-DOC-01.md`).
-- A task spanning multiple PRs, or a started task not yet represented by a single PR, uses `<ID>-<slug>.md` (for example `DOC-002-tasks-system.md`).
+- A task spanning multiple PRs, or a started task not yet represented by a single PR, uses `<ID>-<slug>.md` (for example `DOC-002-tasks-system.md`). That file is the master task record; it links each contributing `PR-NN.md` evidence record. The register links to the master task record, so status is maintained once.
 - A cross-domain epic uses `<EPIC-ID>.md` (for example `ADM-EPIC.md`).
 - Planned tasks remain register rows without a detailed file until work starts. Every started task must have one canonical file and a link from REGISTER.
 - Preserve prior names in the `Legacy ID` field; do not rename historical identifiers silently.
