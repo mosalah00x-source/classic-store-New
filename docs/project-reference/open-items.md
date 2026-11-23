@@ -14,7 +14,7 @@
 ## البيئة والتوثيق
 
 - **ENV-01:** إنشاء frontend/.env.example بعد التحقق من المتغيرات الفعلية، مع API_MOCKING=true وAPI_MOCK_SCENARIO=showcase وAPI_BASE_URL بقيمة غير حقيقية/فارغة في example وتعليقات النسخ إلى .env.local وإعادة تشغيل الخادم. تحقق من استثناء .env.example في .gitignore. التنفيذ مؤجل إلى PR مستقل بعد إغلاق DOC-01.
-- **CI-01:** إصلاح path filters الخاص بـ backend-ci. التعديل المقترح في PR #32؛ تفاصيل Merge SHA وPush run وRun IDs ستضاف بعد أن يدمج PO PR #32 بنفسه. إلى حين ذلك يبقى هذا البند [IN PROGRESS]، وسينقل السجل التفصيلي من ADM-1-plan إلى tech-debt.md بعد الدمج.
+- **CI-01:** [GH] تم دمج PR #32 لإضافة `docs/project-reference/**` و`docs/README.md` إلى مرشّحي `push` و`pull_request`. Merge SHA: `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`. PR #32 Head run #109 / `45152356436` نجح على Head SHA `fb813d866522c1f5a1cbef78643b2abca948063e`؛ هذا ليس إثباتًا لتشغيل `push` على Merge SHA. PR #31 أُعيد تشغيله بعد مزامنة workflow، ونتيجة CI على Head الجديد ما زالت [UNV] حتى اكتمال التشغيل. سجل التفاصيل: [`tech-debt.md`](./tech-debt.md).
 - **backend/README.md:** نسخة README القديمة لا تطابق dependencies وFlyway الفعلية؛ تحديثها بند توثيقي منفصل.
 - **Theme flash:** قياس أول إطار للثيم في F1 غير مثبت [UNV].
 
