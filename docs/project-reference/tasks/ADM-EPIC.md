@@ -18,7 +18,7 @@
 
 | Phase | Domain | Scope | Status | Dependencies / gate |
 |---|---|---|---|---|
-| ADM-0 | DOC / Product | Inventory, design, role/permission decisions and roadmap | Done as decision record only | PO decisions recorded in ADMIN-0; no application implementation implied |
+| ADM-0 | DOC / Product | Inventory, design, role/permission decisions and roadmap | In review | PO decisions recorded; documentation remains in Draft PR #31 and is not merged |
 | ADM-1 | BE / SEC / DB | Authentication, ADMIN/EDITOR roles, permissions and append-only audit log | Planned | DOC-01 review/merge and separate written PO approval of ADM-1 plan |
 | ADM-2 | BE / DB | Admin APIs for categories, products, variants and images | Planned | ADM-1 foundation; approved contracts and schema |
 | ADM-3 | FE / OPS / SEC | Admin frontend shell and same-origin Next.js BFF session | Planned | ADM-1 authentication/session contracts |
