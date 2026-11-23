@@ -114,5 +114,5 @@ The matrix reports evidence as it exists on this branch; it does not imply PO ac
 
 ## Review stamps
 
-- Reviewed by ChatGPT on 2026-11-23 against live GitHub PR metadata, changed-file lists and workflow runs; result: task system created, final CI on latest Head pending.
+- Reviewed by ChatGPT on 2026-11-23 against live GitHub PR metadata, changed-file lists and workflow runs; result: canonical task system and redirects implemented; PR #31 final exact-Head CI and PO review remain pending.
 - Approved by PO: [UNV].
