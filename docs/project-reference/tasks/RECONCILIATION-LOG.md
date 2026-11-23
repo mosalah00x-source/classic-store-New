@@ -95,3 +95,10 @@ These are Head runs, not Merge-SHA runs.
 - PR #31 remains Draft and unmerged.
 - Pre-DOC-02 Head 96c8648… had Run #115 success 3/3. A new run is required for the updated Head.
 - No Ready transition, approval, merge or ADM-1 implementation is performed by this reconciliation.
+
+
+## 2026-11-23 — Correction to initial task-directory inventory
+
+The initial DOC-02 entry #5 was imprecise about where the existing task records lived. A follow-up live fetch confirmed that the canonical records PR-22.md through PR-30.md already exist under docs/project-reference/tasks/ and contain the standard evidence sections. They were not newly recreated. The older docs/tasks/ directory is a compatibility copy; its README now points to the canonical task system. The new work adds REGISTER.md, _TEMPLATE.md, RECONCILIATION-LOG.md, DOC-02.md, PR-31-DOC-01.md linkage, PR-32.md and PR-04-migrations.md, plus index and status corrections.
+
+This correction is appended rather than silently rewriting the original observation.
