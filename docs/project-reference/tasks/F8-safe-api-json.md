@@ -33,7 +33,7 @@ An additional test verifies the showcase mock path.
 - Run #131 / 45170519549: failed on an earlier Head.
 - Run #132 / 45170582159: failed on Head `0611b903fd2cd55c0dc7df02b81ae30e20eb2a55`; lint passed, TypeScript failed because the test helper assigned to readonly `process.env.NODE_ENV`. Unit tests and build were skipped.
 - Fixed the test helper by removing the NODE_ENV assignment.
-- Final-Head Run #133 / [45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) targets exact Head `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0`; result pending at record creation.
+- Final-Head Run #133 / [45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) targets exact Head `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0`; frontend job completed/success and every step (install, lint, typecheck, unit tests, production build and cleanup) completed successfully.
 
 ## Review gates
 
