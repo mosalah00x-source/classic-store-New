@@ -14,7 +14,7 @@
 ## البيئة والتوثيق
 
 - **ENV-01:** إنشاء frontend/.env.example بعد التحقق من المتغيرات الفعلية، مع API_MOCKING=true وAPI_MOCK_SCENARIO=showcase وAPI_BASE_URL بقيمة غير حقيقية/فارغة في example وتعليقات النسخ إلى .env.local وإعادة تشغيل الخادم. تحقق من استثناء .env.example في .gitignore. التنفيذ مؤجل إلى PR مستقل بعد إغلاق DOC-01.
-- **CI-01:** [GH] تم دمج PR #32 لإضافة `docs/project-reference/**` و`docs/README.md` إلى مرشّحي `push` و`pull_request`. Merge SHA: `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`. PR #32 Head run #109 / `45152356436` نجح على Head SHA `fb813d866522c1f5a1cbef78643b2abca948063e`؛ هذا ليس إثباتًا لتشغيل `push` على Merge SHA. PR #31: Run #113 / `45154884360` بدأ على Head `33bc2216103ebb69114502deb062a6cfbf614262`؛ `api-lint` نجح، و`verify migrations` كان قيد التنفيذ، و`backend` ينتظر. ثم تقدمت تحديثات التوثيق إلى Head `92cae568ddc791d668b2886fbf481242467188d9`؛ لا يوجد Run موثق على هذا الـ Head الأحدث، لذلك CI النهائي [UNV]. سجل التفاصيل: [`tech-debt.md`](./tech-debt.md).
+- **CI-01:** [GH] PR #32 مدمج؛ Merge SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`. Head Run #109 / `45152356436` ناجح على Head SHA `fb813d866522c1f5a1cbef78643b2abca948063e`. Push Run #110 / `45154657899` ناجح على Merge SHA، والوظائف الثلاث api-lint وverify migrations وbackend ناجحة. PR #31 قبل DOC-02: Head `96c8648ab5b7f3143149297e0b6f0ffae70b99af`، Run #115 / `45155049507` ناجح 3/3 على نفس SHA؛ يلزم Run جديد على Head DOC-02. سجل التفاصيل: [`tech-debt.md`](./tech-debt.md) و[`tasks/RECONCILIATION-LOG.md`](./tasks/RECONCILIATION-LOG.md).
 - **backend/README.md:** نسخة README القديمة لا تطابق dependencies وFlyway الفعلية؛ تحديثها بند توثيقي منفصل.
 - **Theme flash:** قياس أول إطار للثيم في F1 غير مثبت [UNV].
 
