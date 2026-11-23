@@ -330,3 +330,12 @@ Frontend task records are updated through documentation-only PRs from short-live
 ### Correction — F8 final Head CI completion [GH] (2026-11-23)
 
 The earlier DOC-03 log entry recorded Run #133 as in progress at that point in time. Run #133 / [45170837047](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45170837047) subsequently completed successfully on exact F8 Head SHA `812b3fc8d8b6da7cd4352c295d8cdcb8801dc1b0`. The frontend job and every step completed/success, including Install dependencies, Lint, Typecheck, Unit tests, Production build and cleanup. No additional F8 source changes were made after this successful run.
+
+## 2026-11-23 — DOC-03 pre-correction Head CI recorded; documentation correction follows [GH]
+
+- This entry records the DOC-03 PR Head **before this documentation correction**: `ac0d4d97464881d17e0d2a7c860600916dfeec35`.
+- GitHub Actions Run #195 / [45171119082](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45171119082) was associated with that exact Head SHA.
+- All three jobs completed successfully on that SHA: `api-lint` — Success; `verify migrations` — Success; `backend` — Success (3/3).
+- SHA match was checked between the PR Head recorded for this pre-correction state and Run #195's `head_sha`.
+- **Important limitation:** this evidence describes only the Head before this correction. It does not validate the commit(s) that add this entry or the other documentation corrections. A new workflow run matching the updated PR Head is required.
+- PR #33 remained Draft; it was not converted to Ready and was not merged.
