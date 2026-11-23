@@ -12,10 +12,10 @@
 - PR: [#4 — feat(backend): add pinned Flyway migrations for PostgreSQL](https://github.com/mosalah00x-source/classic-store-New/pull/4)
 - Task branch: feature/t05-flyway-migrations; base: BackendApp.
 - Head SHA: cc360e6cbc0fea7e815199c0c5b0d0e491475810.
-- Merge SHA: [UNV] in this reconciliation; PR metadata confirms merged.
+- Merge SHA: `2e7ce2ab281c62b9af3f66512d2a579eaf045b42`.
 - Merged at: 2026-11-10 13:05:24 UTC.
-- Merged by / method: [UNV].
-- PR body cites Run 42811449596 success on the exact Head SHA. Merge-SHA CI: [UNV].
+- Merged by / method: `mosalah00x-source` (GitHub merged_by and [Timeline merged event](https://github.com/${repo}/issues/events/)); merge strategy [UNV] because the event does not expose it.
+- PR body cites Run 42811449596 success on the exact Head SHA. Merge-SHA push CI: [Run #12 / 42821341163](https://github.com/${repo}/actions/runs/42821341163) — success on exact Merge SHA; both available jobs (`verify migrations`, `backend`) completed/success.
 - PO approval: PR body records explicit approval of source conversion and seven generated hashes; exact underlying approval artifact URL was not captured.
 
 ## Migration inventory — files inspected on BackendApp
@@ -54,7 +54,8 @@ Any migration/source lock/hash change requires new explicit PO approval. Confirm
 | PR #4 merged | Live PR metadata | [GH] | 2026-11-23 |
 | Head SHA and migration files | PR metadata and changed-file list | [GH] | 2026-11-23 |
 | Head CI success | PR body Run link and exact Head SHA | [GH] | 2026-11-23 |
-| Merge-SHA CI | No evidence captured | [UNV] | 2026-11-23 |
+| Merge-SHA push CI | Run #12 / 42821341163; exact Merge SHA; two jobs success | [GH] | 2026-11-23 |
+| Merge actor / Timeline event | PR metadata and Timeline merged event | [GH] | 2026-11-23 |
 | PO hash approval | Explicit approval text in PR body; approval artifact URL not captured | [PO] | 2026-11-23 |
 
 ## Review stamps
