@@ -303,7 +303,8 @@ At comparison time the canonical records included the expanded evidence sections
 ### Documentation branch inventory [GH]
 
 - `docs/project-reference` still exists as a branch after PR #31 merge. `BackendApp` points to the Merge SHA above.
-- The canonical task README, REGISTER header and PR #31 task record refer to `docs/project-reference` as the former/canonical docs branch. Canonical docs now exist on `BackendApp`.
+- The task README and REGISTER now identify `BackendApp` as the canonical docs base and `docs/project-reference` as the legacy merged branch. PR-31-DOC-01 retains the original task-branch fact. Canonical docs now exist on `BackendApp`.
+- `.github/workflows/backend-ci.yml` contains `docs/project-reference/**` in push and pull_request path filters. This is a repository path filter, not a dependency on a branch ref named `docs/project-reference`.
 - GitHub exact-path code search returned zero matches but marked the result incomplete; therefore it is not evidence that no other references exist. No workflow dependency on this branch name was established by the available search. No deletion was attempted.
 - Recommendation: after a complete reference review and explicit PO approval, delete the merged long-lived docs branch and use short-lived docs branches from current `BackendApp`. This reduces branch drift and sync work. Deletion remains unauthorized and is not part of DOC-03.
 
