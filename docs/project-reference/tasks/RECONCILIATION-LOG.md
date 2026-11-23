@@ -256,3 +256,10 @@ The following blob SHAs were captured from the two directories before the legacy
 | #30 | `0c094fe7f2acf3c97622e9b67cd97811375c7708` | `fdb88cf20ce6e22d0e50350f07b7899f404452de` | Different legacy compact Arabic note vs standardized canonical task record |
 
 At comparison time the canonical records included the expanded evidence sections (Head CI, Merge-SHA CI, approvals, Visual QA, claim verification and review stamps); the legacy versions had earlier/shorter summaries. Current legacy paths now contain redirects only, so future edits must be made exclusively in the canonical directory.
+
+
+## 2026-11-23 — PR #4 PO approval evidence classification correction
+
+- PR #4's description contains text approving the source conversion/generated migration hashes. That is source/implementation decision context, but it is not an explicit PO approval comment or submitted review for merge.
+- No direct PO approval comment/review URL was found in the inspected PR #4 evidence. Therefore PR-04-migrations.md and REGISTER DB-001…DB-007 now state that explicit PO merge approval is not found; the description text is not counted as a merge approval artifact.
+- The PR #4 Merge SHA, merged actor, Timeline event and exact Merge-SHA push Run #12 / 42821341163 remain verified. This correction changes only the approval classification.
