@@ -14,9 +14,7 @@
 ## البيئة والتوثيق
 
 - **ENV-01:** إنشاء frontend/.env.example بعد التحقق من المتغيرات الفعلية، مع API_MOCKING=true وAPI_MOCK_SCENARIO=showcase وAPI_BASE_URL بقيمة غير حقيقية/فارغة في example وتعليقات النسخ إلى .env.local وإعادة تشغيل الخادم. تحقق من استثناء .env.example في .gitignore. التنفيذ مؤجل إلى PR مستقل بعد إغلاق DOC-01.
-- **CI-01:** [GH] PR #32 مدمج؛ Merge SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`. Head Run #109 / `45152356436` ناجح على Head SHA `fb813d866522c1f5a1cbef78643b2abca948063e`. Push Run #110 / `45154657899` ناجح على Merge SHA، والوظائف الثلاث api-lint وverify migrations وbackend ناجحة. PR #31 قبل DOC-02: Head `96c8648ab5b7f3143149297e0b6f0ffae70b99af`، Run #115 / `45155049507` ناجح 3/3 على نفس SHA؛ يلزم Run جديد على Head DOC-02. سجل التفاصيل: [`tech-debt.md`](./tech-debt.md) و[`tasks/RECONCILIATION-LOG.md`](./tasks/RECONCILIATION-LOG.md).
-- **backend/README.md:** نسخة README القديمة لا تطابق dependencies وFlyway الفعلية؛ تحديثها بند توثيقي منفصل.
-- **Theme flash:** قياس أول إطار للثيم في F1 غير مثبت [UNV].
+- **CI-01:** [GH] PR #32 is merged. Merge SHA `4303bfe8941301cb1314a0805e7e0ae8c8a0c1bc`; PR Head Run #109 / `45152356436` passed on exact Head SHA `fb813d866522c1f5a1cbef78643b2abca948063e`; Merge-SHA push Run #110 / `45154657899` passed with all three jobs (`api-lint`, `verify migrations`, `backend`) on the exact Merge SHA. PR #31 pre-DOC-02 Head `96c8648...` passed 3/3 in Run #115 / `45155049507`. The updated DOC-02 Head `5da1c20...` started Run #116 / `45156874912`; at the last check two jobs passed and `backend` was still running. Final Head validation must be refreshed after the remaining DOC-02 commits. Architectural CI improvement remains follow-up debt; see [tech-debt.md](./tech-debt.md).
 
 ## الإدارة
 
