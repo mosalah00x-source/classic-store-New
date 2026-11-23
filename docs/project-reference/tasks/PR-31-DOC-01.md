@@ -13,13 +13,13 @@
 |---|---|
 | PR | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) |
 | Task branch / base | `docs/project-reference` / `BackendApp` |
-| Audit-start Head SHA | `5da1c20a265c527375c932a9aa29241b9d4eac0b` |
-| Latest validated Head before this record update | `ba2dbc9a734f7cdfc153059b57eede5df3dc3a1d` |
-| Merge SHA | Not merged |
-| State | Open, Draft; not merged |
-| Head CI at audit-start | Run #116 / `45156874912` — two jobs passed; backend was running |
-| Latest validated CI | Run #144 / `45158457372` — success 3/3 on exact Head `ba2dbc9a734f7cdfc153059b57eede5df3dc3a1d`; api-lint, verify migrations and backend all passed |
-| Merge-SHA CI | Not applicable until merged |
+| Head SHA | [LIVE PLACEHOLDER — intentionally not persisted in this self-referential record; read current PR #31 metadata] |
+
+| Merge SHA | [NOT MERGED — no Merge SHA exists yet] |
+| State | Open, Draft; not merged (read live metadata at review time) |
+| Head CI | [LIVE PLACEHOLDER — record only the exact-current-Head run after the final PR #31 commit] |
+
+| Merge-SHA CI | [NOT APPLICABLE UNTIL MERGE — DOC-03 will record it] |
 | PO approval | Not approved; PR must remain Draft |
 
 ## Goal and scope
@@ -36,7 +36,7 @@
 
 ## Changed files
 
-See the live PR #31 changed-file list. This record is included in that list; its own commit necessarily advances the PR Head, so the final CI result must be read from live GitHub after the last documentation commit.
+See the live PR #31 changed-file list. This record is included in that list; its own commit necessarily advances the PR Head. Do not persist a final Head SHA in this self-referential record.
 
 ## Database / API
 
@@ -56,11 +56,12 @@ No database migrations, tables, seeds, OpenAPI paths or API fields are changed b
 
 ## Issues and lessons
 
-The repository had legacy task notes under `docs/tasks/` and a partial register in this directory. DOC-02 expands the existing register, creates canonical detailed records for started tasks and keeps legacy notes without deleting them.
+The repository had detailed legacy notes under `docs/tasks/`. DOC-02 established `docs/project-reference/tasks/` as the only source of truth and converted the old PR-22…PR-30 files into short compatibility redirects without deleting any path.
 
 ## Open items and follow-up tasks
 
-- Recheck 3/3 CI on the final PR Head after the last documentation commit.
+- Recheck 3/3 CI on the exact live PR Head at final PO review; do not copy an earlier Head/run into this record.
+- DOC-03: after PR #31 merges, open a small documentation PR to record the final Merge SHA, Merge-SHA push CI, merge actor/method and explicit PO approval artifact.
 - PO review required before Ready or merge.
 - ENV-01 remains a separate follow-up.
 
@@ -68,11 +69,10 @@ The repository had legacy task notes under `docs/tasks/` and a partial register 
 
 | Claim | Evidence | Tag | Verified date |
 |---|---|---|---|
-| PR open/Draft/base and checkpoint Head | Live PR #31 metadata | [GH] | 2026-11-23 |
-| Run #135 state and job progress | Live workflow run/jobs on exact checkpoint SHA | [GH] | 2026-11-23 |
+| PR open/Draft/base | Live PR #31 metadata | [GH] | 2026-11-23 |
 | PO approval/state transition | No approval supplied | [UNV] | 2026-11-23 |
 
 ## Review stamps
 
-- Reviewed by ChatGPT on 2026-11-23 against live PR #31 metadata, changed-file list and Run #135; result: still Draft/open, final 3/3 on the eventual final Head remains to be confirmed.
+- Reviewed by ChatGPT on 2026-11-23 against live PR #31 metadata and changed-file list; result: still Draft/open. Exact current Head CI must be read live at final review.
 - Approved by PO: [UNV].
