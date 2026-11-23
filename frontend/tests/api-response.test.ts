@@ -34,13 +34,11 @@ async function withMockFetch(
     API_BASE_URL: process.env.API_BASE_URL,
     API_MOCKING: process.env.API_MOCKING,
     API_MOCK_SCENARIO: process.env.API_MOCK_SCENARIO,
-    NODE_ENV: process.env.NODE_ENV
   };
   globalThis.fetch = handler;
   process.env.API_BASE_URL = 'https://api.example.invalid';
   process.env.API_MOCKING = 'false';
   process.env.API_MOCK_SCENARIO = '';
-  process.env.NODE_ENV = 'test';
 
   try {
     await callback();
