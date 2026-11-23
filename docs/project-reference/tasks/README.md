@@ -23,6 +23,8 @@ The canonical task records are maintained on `BackendApp`. Frontend implementati
 - [PR-22.md](./PR-22.md), [PR-23.md](./PR-23.md), [PR-24.md](./PR-24.md), [PR-25.md](./PR-25.md), [PR-26.md](./PR-26.md), [PR-27.md](./PR-27.md), [PR-28.md](./PR-28.md), [PR-29.md](./PR-29.md), [PR-30.md](./PR-30.md) — frontend PR task records.
 - [PR-31-DOC-01.md](./PR-31-DOC-01.md) — PR #31 close-out record with final Head/Merge SHAs and exact CI evidence.
 - [DOC-03-close-pr31.md](./DOC-03-close-pr31.md) — DOC-03 close-out and report-only documentation-branch lifecycle assessment.
+- [ENV-01.md](./ENV-01.md) — ENV-01 frontend environment example PR #34.
+- [F8-safe-api-json.md](./F8-safe-api-json.md) — F8 safe API JSON handling PR #35.
 - [PR-32.md](./PR-32.md) — merged CI-01 workflow path-filter fix.
 - [ADM-EPIC.md](./ADM-EPIC.md) — cross-domain ADM-0 through ADM-8 roadmap.
 - [DOC-002-tasks-system.md](./DOC-002-tasks-system.md) — DOC-02 task-system implementation and compliance matrix.
