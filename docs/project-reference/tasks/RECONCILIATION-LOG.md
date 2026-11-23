@@ -173,3 +173,67 @@ This DOC-02 extension changes documentation files only. PR #31 remains Draft and
 - PR #31 Head `ba2dbc9a734f7cdfc153059b57eede5df3dc3a1d` completed backend-ci Run #144 / `45158457372` with overall conclusion `success`.
 - Exact-SHA jobs: `api-lint` completed/success; `verify migrations` completed/success; `backend` completed/success.
 - The PR was still Open, Draft and unmerged. The task-record/register update that records Run #144 will itself advance the Head, so a new run on the resulting final Head is required before claiming the updated branch is 3/3.
+
+
+## 2026-11-23 — Single-source-of-truth, frontend Merge-SHA CI and PR timeline reconciliation
+
+### 1. Legacy and canonical task-file inventory [GH]
+
+- The old `docs/tasks/README.md` was already a short compatibility index pointing to `docs/project-reference/tasks/`; it was not a second detailed register.
+- Before this reconciliation, both directories contained nine detailed files with matching PR numbers. All nine old files and their canonical counterparts had different Git blob SHAs; none was byte-identical.
+- The nine overlapping path pairs were:
+  - `docs/tasks/PR-22.md` → `docs/project-reference/tasks/PR-22.md`
+  - `docs/tasks/PR-23.md` → `docs/project-reference/tasks/PR-23.md`
+  - `docs/tasks/PR-24.md` → `docs/project-reference/tasks/PR-24.md`
+  - `docs/tasks/PR-25.md` → `docs/project-reference/tasks/PR-25.md`
+  - `docs/tasks/PR-26.md` → `docs/project-reference/tasks/PR-26.md`
+  - `docs/tasks/PR-27.md` → `docs/project-reference/tasks/PR-27.md`
+  - `docs/tasks/PR-28.md` → `docs/project-reference/tasks/PR-28.md`
+  - `docs/tasks/PR-29.md` → `docs/project-reference/tasks/PR-29.md`
+  - `docs/tasks/PR-30.md` → `docs/project-reference/tasks/PR-30.md`
+- The legacy versions were shorter, earlier Arabic task notes; the canonical records are the expanded standardized records with separate Head/Merge CI, scope, decisions, changed files, tests, Visual QA, claim verification and review stamps. The legacy contents are now replaced by short path-preserving redirects to the canonical record.
+- No file was deleted. `docs/tasks/README.md` remains a compatibility index. The single current source of truth is `docs/project-reference/tasks/`.
+
+### 2. Exact Frontend Merge-SHA push CI [GH]
+
+Each workflow was queried with `event=push` and the exact Merge SHA. Each returned one `frontend-ci` run on branch `FrontendApp`; the exact job `frontend` completed/success.
+
+| PR | Exact Merge SHA | Push Run ID | Job |
+|---:|---|---:|---|
+| #22 | `c21a089e69477bf033c0e149835ce1d6b474754a` | [44118235141](https://github.com/mosalah00x-source/classic-store-New/actions/runs/44118235141) | frontend — success |
+| #23 | `c3734268fa3a76ff63bc20f504665198063560c7` | [44099650247](https://github.com/mosalah00x-source/classic-store-New/actions/runs/44099650247) | frontend — success |
+| #24 | `e27f5977a12127bc52195c64700f62d82c87d815` | [44289634885](https://github.com/mosalah00x-source/classic-store-New/actions/runs/44289634885) | frontend — success |
+| #25 | `dd00ddd5fb6c21800f9928662893a27b4a290d63` | [44317304438](https://github.com/mosalah00x-source/classic-store-New/actions/runs/44317304438) | frontend — success |
+| #26 | `eea323cde726ef17666525bb047f4c2e093af1ac` | [45021255892](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45021255892) | frontend — success |
+| #27 | `896fe55515a4640c0cd36f6ba4f204afc329ebba` | [45026797029](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45026797029) | frontend — success |
+| #28 | `8cb49280d7d0cc989ea779b71994928d8e8707c1` | [45035234113](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45035234113) | frontend — success |
+| #29 | `a5d722ec74170ab02b7e121a37619f51bf6c7782` | [45038732812](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45038732812) | frontend — success |
+| #30 | `666dd2151172b56f57e10b4446c63a58f5d9d7a2` | [45041317755](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45041317755) | frontend — success |
+
+This supersedes the earlier [UNV] Merge-SHA CI claims for PR #22–#30. These are push runs on exact Merge SHAs, not PR Head runs.
+
+### 3. Merge actor, Timeline and method [GH]
+
+- PR #29 merged event: actor `mosalah00x-source`, Merge SHA `a5d722ec74170ab02b7e121a37619f51bf6c7782`, [direct Timeline event](https://github.com/mosalah00x-source/classic-store-New/issues/events/36931250278).
+- PR #30 merged event: actor `mosalah00x-source`, Merge SHA `666dd2151172b56f57e10b4446c63a58f5d9d7a2`, [direct Timeline event](https://github.com/mosalah00x-source/classic-store-New/issues/events/36932680289).
+- PR metadata reports `merged_by=mosalah00x-source` for PRs #22–#30 and #32. The merge strategy (merge/squash/rebase) is not exposed by the inspected Timeline/PR metadata; it remains [UNV] and is not inferred.
+- PR #26 comment 7078863065 is a limited visual concession, not explicit merge approval. PR #27 has an explicit PO approval comment [7079714545](https://github.com/mosalah00x-source/classic-store-New/pull/27#issuecomment-7079714545). No explicit merge-approval artifact link was captured for the other frontend PRs.
+
+### 4. PR #4 / V1–V7 correction [GH]
+
+- PR #4 Merge SHA is `2e7ce2ab281c62b9af3f66512d2a579eaf045b42`; merged actor is `mosalah00x-source`, with [Timeline merged event](https://github.com/mosalah00x-source/classic-store-New/issues/events/35682975123).
+- Exact Merge-SHA push Run #12 / [42821341163](https://github.com/mosalah00x-source/classic-store-New/actions/runs/42821341163) completed successfully. The run exposed two jobs (`verify migrations`, `backend`), both completed/success; it is recorded as 2/2 available jobs, not 3/3.
+- REGISTER DB-001…DB-007 and `PR-04-migrations.md` now use the actual PR #4 Merge SHA and Merge-SHA CI run. The PR description is linked as the source/hash PO approval artifact; no separate comment/review URL was captured.
+
+### 5. DOC-03 and PR #31 self-reference [GH]
+
+- Added DOC-03 as a planned register row: a small post-merge documentation PR to record PR #31's final Merge SHA, Merge-SHA CI, merged actor/method and explicit PO approval artifact.
+- `PR-31-DOC-01.md` and `DOC-002-tasks-system.md` deliberately use live-only placeholders for PR #31 Head SHA/CI and no Merge SHA. No stale Head SHA/run is presented as current.
+- PR #31 remains Draft/open/unmerged. No Ready transition, approval, merge, force push or ADM-1 implementation was performed.
+- The DOC-02 compliance matrix maps requirements 1–9 to exact files/sections. Requirement 9 is marked partially present until a fresh 3/3 run on the exact live PR #31 Head is checked after the final documentation commit and PO review is completed.
+
+### 6. Status and Visual QA safeguards
+
+- FE-006 (F3), FE-007 (BN), FE-008 (F4) and FE-009 (Mega Menu/#30) remain `Merged` with Visual QA `Pending`; none is marked `Done` or `Passed`.
+- No task row is marked `Done`.
+- PR #31 remains `In review` / Draft; DOC-03 is `Planned`.
