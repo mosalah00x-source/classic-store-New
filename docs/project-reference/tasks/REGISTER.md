@@ -104,7 +104,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Head 5da1c20 / Run #116 in progress (2 jobs passed; backend running); final-head recheck pending | Not required | Pending PO review | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
-| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In progress | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Pending | DOC-001 | [DOC-02.md](./DOC-002-tasks-system.md) | 2026-11-23 |
+| DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Pending | DOC-001 | [DOC-02.md](./DOC-002-tasks-system.md) | 2026-11-23 |
 | DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Design decisions approved; PR #31 pending | — | ../ADMIN-0.md | 2026-11-23 |
 | DOC-004 | ADM-1-plan | Report-only ADM-1 plan | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Implementation not authorized | DOC-001 + written PO authorization | ../ADM-1-plan.md | 2026-11-23 |
 
