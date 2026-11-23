@@ -1,7 +1,8 @@
 # Task register system
 
 **Repository:** `mosalah00x-source/classic-store-New`  
-**Canonical documentation branch:** `docs/project-reference`  
+**Canonical documentation base:** `BackendApp`  
+**Legacy merged docs branch:** `docs/project-reference` (retained pending PO deletion decision)  
 **PR #31 base:** `BackendApp`  
 **Application PR bases:** frontend work targets `FrontendApp`; backend/database work targets `BackendApp`.
 
