@@ -110,7 +110,7 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 
 | ID | Legacy ID | Title / scope | Status | PR | Merge SHA | CI on Merge | Visual QA | PO approval | Dependencies | Task file | Last checked |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Head 5da1c20 / Run #116 in progress (2 jobs passed; backend running); final-head recheck pending | Not required | Pending PO review | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
+| DOC-001 | DOC-01 | Project reference and completion audit | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | Audit-start Head 5da1c20 / Run #116 partial; checkpoint Head fb727a2 / Run #135 queued/in progress; final-head recheck pending | Not required | Pending PO review | — | [PR-31-DOC-01.md](./PR-31-DOC-01.md) | 2026-11-23 |
 | DOC-002 | DOC-02 | Task register, template, per-task records and reconciliation | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Pending | DOC-001 | [DOC-02.md](./DOC-002-tasks-system.md) | 2026-11-23 |
 | DOC-003 | ADMIN-0 | Admin inventory, design and approved decisions | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Design decisions approved; PR #31 pending | — | ../ADMIN-0.md | 2026-11-23 |
 | DOC-004 | ADM-1-plan | Report-only ADM-1 plan | In review | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) | — | New Head CI pending | Not required | Implementation not authorized | DOC-001 + written PO authorization | ../ADM-1-plan.md | 2026-11-23 |
@@ -126,5 +126,5 @@ Only these statuses are permitted: Planned, In progress, In review, Merged, Done
 ## Additional task-register controls
 
 - **Visual QA vocabulary:** Not required / Pending / Passed / Failed. For FE-006 (F3), only the PO-conceded subset is covered; remaining screenshots stay Pending. FE-007 (BN), FE-008 (F4) and FE-009 (#30) remain Pending.
-- **PR #31 validation:** the earlier Head `96c8648…` Run #115 (3/3) is historical. Current audit-start Head `5da1c20…` Run #116 had `verify migrations` and `api-lint` pass while `backend` was still running; recheck the final Head after the last DOC-02 commit.
+- **PR #31 validation:** the earlier Head `96c8648…` Run #115 (3/3) is historical. Audit-start Head `5da1c20…` Run #116 was partial. Checkpoint Head `fb727a2…` Run #135 was queued/in progress (api-lint passed; verify migrations running) before two task-record updates; recheck the final Head after all DOC-02 commits.
 - **Task detail links:** PR #22–#30 and #32 are in this directory; PR #4 migration record remains PR-04-migrations.md; PR #31 and DOC-02 use the exact filenames linked in the DOC table.
