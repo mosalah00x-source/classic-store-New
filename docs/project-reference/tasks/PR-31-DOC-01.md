@@ -3,77 +3,57 @@
 - **Legacy ID:** DOC-01
 - **Title:** Project reference documentation and completion audit
 - **Domain:** Documentation
-- **Status:** In review
+- **Status:** Merged
 - **Repository:** mosalah00x-source/classic-store-New
-- **Docs branch:** docs/project-reference
+- **Original task branch / base:** `docs/project-reference` / `BackendApp`
 
 ## GitHub evidence [GH]
 
-| Field | Value |
+| Field | Verified value |
 |---|---|
 | PR | [#31](https://github.com/mosalah00x-source/classic-store-New/pull/31) |
-| Task branch / base | `docs/project-reference` / `BackendApp` |
-| Head SHA | [LIVE PLACEHOLDER — intentionally not persisted in this self-referential record; read current PR #31 metadata] |
+| Final Head SHA before merge | `4ecba73a4a403ce8ef41342c87267a9ce1ea8060` |
+| Merge SHA | `67dbd343185742c30ecb5d65eca939bd0efb9d68` |
+| Merged at | 2026-11-23 11:52:05 UTC |
+| Merged actor | `mosalah00x-source` |
+| Merge Timeline event | [event 37003224078](https://github.com/mosalah00x-source/classic-store-New/issues/events/37003224078) |
+| Merge method | [UNV] — inspected PR metadata and Timeline do not expose merge strategy |
+| Base | `BackendApp` |
 
-| Merge SHA | [NOT MERGED — no Merge SHA exists yet] |
-| Merged by / method | [NOT MERGED — DOC-03 will record the Timeline actor and merge strategy after merge] |
-| State | Open, Draft; not merged (read live metadata at review time) |
-| Head CI | [LIVE PLACEHOLDER — record only the exact-current-Head run after the final PR #31 commit] |
+## CI evidence [GH]
 
-| Merge-SHA CI | [NOT APPLICABLE UNTIL MERGE — DOC-03 will record it] |
-| PO approval | Not approved; PR must remain Draft |
+| CI type | Run | Exact SHA | Result |
+|---|---|---|---|
+| Final PR Head CI | [Run #185 / 45168530591](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45168530591) | `4ecba73a4a403ce8ef41342c87267a9ce1ea8060` | 3/3 jobs success |
+| Merge-SHA push CI | [Run #186 / 45169011839](https://github.com/mosalah00x-source/classic-store-New/actions/runs/45169011839) | `67dbd343185742c30ecb5d65eca939bd0efb9d68` | 3/3 jobs success |
+
+Run #186 jobs and steps were rechecked after completion:
+- `verify migrations`: completed/success; all listed steps completed/success.
+- `api-lint`: completed/success; all listed steps completed/success.
+- `backend`: completed/success; all listed steps completed/success.
+
+## PO approval and Visual QA
+
+- **PO approval:** Pending / [UNV]. At the DOC-03 review, PR #31 had no issue comments and no submitted reviews. The merge event is not treated as PO approval.
+- **Visual QA:** Pending. The PO-provided visual states are not transcribed as Passed until the PO posts the specified comment and links the evidence on PR #31.
+- **Status remains `Merged`, not `Done`**, because the explicit PO approval artifact and recorded Visual QA gates are not yet present.
 
 ## Goal and scope
 
-- **Implemented:** ADMIN-0 inventory/decisions, ADM-1 report-only plan, project-reference docs, V5 report, local visual review guide, open-items and tech-debt records, CI-01 workflow synchronization and canonical task-register expansion under DOC-02.
-- **Not implemented:** Backend/admin code, schema/migrations, dependencies, frontend environment file ENV-01, cloud deployment, visual screenshot capture or PO approval.
-- **Scope guard:** documentation-only additions/updates under `docs/`; the single workflow path-filter sync was already part of DOC-01's original scope. No application source changes are authorized.
+DOC-01 delivered ADMIN-0 inventory/decisions, the ADM-1 report-only plan, project-reference documentation, V5 report, local visual-review guide, open-items and tech-debt records, CI-01 workflow synchronization and the canonical task-register expansion under DOC-02.
 
-## Decisions
-
-- PR #31 base remains BackendApp to run required backend documentation checks; frontend implementation PRs target FrontendApp.
-- PR remains Draft until PO reviews the canonical task files and explicitly approves any state change.
-- ADM-1 remains a plan only.
-
-## Changed files
-
-See the live PR #31 changed-file list. This record is included in that list; its own commit necessarily advances the PR Head. Do not persist a final Head SHA in this self-referential record.
-
-## Database / API
-
-No database migrations, tables, seeds, OpenAPI paths or API fields are changed by DOC-01/DOC-02 documentation work.
-
-## Tests
-
-| Test / workflow | Result | Exact SHA / Run |
-|---|---|---|
-| Backend CI | New Head check required after this record update | Current latest Head and matching workflow run must be confirmed after this record update |
-
-## Visual QA
-
-- **Status:** Not required for documentation-only work; separate storefront visual gates remain open in FE records.
-- **Captured:** None as part of this documentation PR.
-- **Not captured:** Not applicable to docs content.
-
-## Issues and lessons
-
-The repository had detailed legacy notes under `docs/tasks/`. DOC-02 established `docs/project-reference/tasks/` as the only source of truth and converted the old PR-22…PR-30 files into short compatibility redirects without deleting any path.
+No Backend/admin implementation, schema/migrations, dependencies, frontend environment file or cloud deployment was included. ADM-1 remains report-only; implementation still requires separate explicit written PO approval.
 
 ## Open items and follow-up tasks
 
-- Recheck 3/3 CI on the exact live PR Head at final PO review; do not copy an earlier Head/run into this record.
-- DOC-03: after PR #31 merges, open a small documentation PR to record the final Merge SHA, Merge-SHA push CI, merge actor/method and explicit PO approval artifact.
-- PO review required before Ready or merge.
-- ENV-01 remains a separate follow-up.
-
-## Claim verification
-
-| Claim | Evidence | Tag | Verified date |
-|---|---|---|---|
-| PR open/Draft/base | Live PR #31 metadata | [GH] | 2026-11-23 |
-| PO approval/state transition | No approval supplied | [UNV] | 2026-11-23 |
+- **DOC-03 / DOC-005:** this follow-up PR records final merge evidence and maintains the open approval/Visual QA gates.
+- **FE-home-categories-limit:** retain the current eight-category cap as the proposed design decision; proposed “عرض كل التصنيفات” link to `/products` is description-only until the PO explicitly approves implementation. Do not change application code yet.
+- **A11Y-input-borders:** report-only audit of all input/control borders in light and dark themes; measure contrast and recommend a dedicated token with at least 3:1 while keeping decorative card borders subtle. No CSS changes in DOC-03.
+- **BN-desktop-verify:** desktop viewport verification remains open. BN is not marked Passed here; any future PO acceptance must be scoped to mobile only (390px and 844px) unless desktop evidence is separately supplied.
+- **DOC-BRANCH:** report-only inventory and recommendation for the merged `docs/project-reference` branch. No branch deletion is authorized.
+- ENV-01 and F8 remain separate FrontendApp PRs. No implementation is included in DOC-03.
 
 ## Review stamps
 
-- Reviewed by ChatGPT on 2026-11-23 against live PR #31 metadata and changed-file list; result: still Draft/open. Exact current Head CI must be read live at final review.
-- Approved by PO: [UNV].
+- Reviewed by ChatGPT on 2026-11-23 against PR #31 metadata, Timeline, comments/reviews and Run #186 jobs/steps.
+- PO approval: [UNV] — no direct comment/review artifact found at review time.
